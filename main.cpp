@@ -1,13 +1,17 @@
 #include <QApplication>
-#include <QLabel>
+#include <QMainWindow>
+#include <iostream>
+using namespace std;
+
+#include "mainwindow.h"
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
+    QFont font("Arial");
+    app.setFont(font);
 
-    QLabel* label = new QLabel("Hello!World! Orz...");
-    label->setWindowTitle("First Qt!");
-    label->resize(200, 50);
-    label->show();
+    MainWindow window;
+    window.show();
 
     return app.exec();
 }

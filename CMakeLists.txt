@@ -19,8 +19,9 @@ add_executable (MCUControllerCPP)
 
 target_sources(MCUControllerCPP PRIVATE
 			   main.cpp
-			   MCUControllerCPP.cpp
-			   MCUControllerCPP.h)
+			   mainwindow.cpp
+			   mainwindow.h 
+			   mainwindow_ui.h)
 
 target_link_libraries(MCUControllerCPP
 					  Qt6::Widgets
