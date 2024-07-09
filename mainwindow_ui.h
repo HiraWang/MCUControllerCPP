@@ -42,6 +42,9 @@ public:
         retranslateUi(MainWindow);
 
         QMetaObject::connectSlotsByName(MainWindow);
+
+        MainWindow->setWindowTitle("MCU Controller");
+        MainWindow->setStyleSheet("QMainWindow > QWidget{ background-color: rgb(0, 0, 0);}");
     } // setupUi
 
     void retranslateUi(QMainWindow* MainWindow)
