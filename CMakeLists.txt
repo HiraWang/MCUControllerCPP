@@ -15,13 +15,18 @@ set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
 find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
 
-add_executable (MCUControllerCPP)
+add_executable(MCUControllerCPP)
 
 target_sources(MCUControllerCPP PRIVATE
 			   main.cpp
-			   "main_window.cpp"
 			   "main_window.h" 
-			   "main_window_ui.h" )
+			   "main_window.cpp"
+			   "main_window_ui.h"
+			   "utility.h"
+			   "utility.cpp")
+
+set(MET_IMAGES ${./images/})
+target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)
 
 target_link_libraries(MCUControllerCPP
 					  Qt6::Widgets

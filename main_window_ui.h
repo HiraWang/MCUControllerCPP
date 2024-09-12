@@ -3,6 +3,7 @@
 #endif
 
 #include <QtWidgets/QWidget>
+#include <utility.h>
 
 class MainWindowUI
 {
@@ -20,6 +21,9 @@ public:
         
         // set properties for main window
         QMetaObject::connectSlotsByName(MainWindow);
+        QIcon icon = QIcon();
+        icon.addFile(QString::fromStdString(get_image_path(IMAGE_MET_ICO)));
+        MainWindow->setWindowIcon(icon);
         MainWindow->resize(1920, 1080);
         MainWindow->setCentralWidget(central_widget);
         MainWindow->setWindowTitle("MCU Controller");

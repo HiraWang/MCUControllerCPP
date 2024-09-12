@@ -22,6 +22,4 @@ public:
 private:
     MainWindowUI* ui;
     QHBoxLayout* layout;
-    QWidget* _widget1;
-    QWidget* _widget2;
 };
