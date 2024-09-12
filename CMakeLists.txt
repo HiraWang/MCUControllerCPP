@@ -23,7 +23,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "main_window.cpp"
 			   "main_window_ui.h"
 			   "utility.h"
-			   "utility.cpp")
+			   "utility.cpp" 
+			   "upper_view.h"
+			   "upper_view.cpp")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)

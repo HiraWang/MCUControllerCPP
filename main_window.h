@@ -1,14 +1,9 @@
 ﻿#ifndef MAIN_WINDOW_H
 #define MAIN_WINDOW_H
-#endif
 
 #include <QMainWindow>
 #include "main_window_ui.h"
 
-class QWiddget;
-class QHBoxLayout;
-class UI_MainWindow;
-  
 class MainWindow : public QMainWindow
 {  
     Q_OBJECT // enable meta object abilities
@@ -21,5 +16,6 @@ public:
 
 private:
     MainWindowUI* ui;
-    QHBoxLayout* layout;
 };
+
+#endif
