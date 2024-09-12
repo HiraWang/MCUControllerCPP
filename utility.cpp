@@ -1,6 +1,8 @@
 #include <direct.h>
 #include "utility.h"
 
+std::string IMAGE_MET_ICO = "\\images\\MET.ico";
+
 std::string get_separator() 
 {
 #ifdef _WIN32
@@ -16,7 +18,7 @@ std::string get_current_path()
     char* buf = nullptr;
     buf = _getcwd(nullptr, 0);
     if (buf) {
-        std::string path = buf;
+        std::string path = buf; // buf is copied to path
         free(buf);
         return path;
     } else {
