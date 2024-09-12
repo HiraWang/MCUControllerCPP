@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QMainWindow>
 #include <iostream>
 using namespace std;
 

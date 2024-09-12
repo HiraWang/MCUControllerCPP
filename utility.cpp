@@ -1,7 +1,6 @@
 #include <direct.h>
 #include "utility.h"
 
-
 std::string get_separator() 
 {
 #ifdef _WIN32
