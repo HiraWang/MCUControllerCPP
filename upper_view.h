@@ -3,6 +3,7 @@
 
 #include <QPushButton>
 #include <QHBoxLayout>
+#include "widgets/buttons.h"
 
 class UpperView : public QWidget
 {
@@ -16,6 +17,7 @@ private:
     void setup_ui();
     QHBoxLayout* layout;
     QPushButton* button;
+    METButton* power_button;
 };
 
 #endif
