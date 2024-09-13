@@ -28,8 +28,8 @@ METButton::METButton(QString name_default,
 		icon_path_pressed.isEmpty()) {
 		setText(name_default);
 	} else {
-		QIcon icon_default(icon_path_default);
-		QIcon icon_pressed(icon_path_pressed);
+		icon_default = QIcon(icon_path_default);
+		icon_pressed = QIcon(icon_path_pressed);
 		setIcon(icon_default);
 		setIconSize(QSize(w, h));
 	}

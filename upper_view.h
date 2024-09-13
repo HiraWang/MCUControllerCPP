@@ -18,6 +18,7 @@ private:
     void paintEvent(QPaintEvent* pe);
     QHBoxLayout* layout;
     METButton* power_button;
+    METButton* window_button;
 };
 
 #endif

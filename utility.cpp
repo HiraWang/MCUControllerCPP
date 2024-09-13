@@ -3,6 +3,8 @@
 
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
 std::string IMAGE_MET_POWER = "\\images\\Power.png";
+std::string IMAGE_MET_MAX_SIZE = "\\images\\MaxSize.png";
+std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
 
 std::string get_separator() 
 {
