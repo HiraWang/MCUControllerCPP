@@ -1,3 +1,6 @@
+#include <QStyleOption>
+#include <QPainter>
+
 #include "utility.h"
 #include "upper_view.h"
 #include "widgets/style.h"
@@ -34,6 +37,15 @@ void UpperView::setup_ui()
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_POWER)));
 
 	layout = new QHBoxLayout();
-	layout->addWidget(power_button);
+	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);
 }
+
+void UpperView::paintEvent(QPaintEvent* pe)
+{
+	QStyleOption o;
+	o.initFrom(this);
+	QPainter p(this);
+	style()->drawPrimitive(
+	QStyle::PE_Widget, &o, &p, this);
+};

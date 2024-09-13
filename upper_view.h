@@ -15,6 +15,7 @@ public:
 
 private:
     void setup_ui();
+    void paintEvent(QPaintEvent* pe);
     QHBoxLayout* layout;
     METButton* power_button;
 };

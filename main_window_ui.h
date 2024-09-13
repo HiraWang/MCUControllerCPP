@@ -38,7 +38,7 @@ public:
         
         // add views
         layout = new QHBoxLayout();
-        layout->addWidget(upper_view);
+        layout->addWidget(upper_view, 0, Qt::AlignTop);
         central_widget->setLayout(layout);
     }
 };
