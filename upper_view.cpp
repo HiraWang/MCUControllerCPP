@@ -1,5 +1,8 @@
+#include "utility.h"
 #include "upper_view.h"
 #include "widgets/style.h"
+
+extern std::string IMAGE_MET_POWER;
 
 UpperView::UpperView(QWidget* parent) :
 	QWidget(parent)
@@ -9,23 +12,18 @@ UpperView::UpperView(QWidget* parent) :
 
 UpperView::~UpperView()
 {
-	delete button;
 	delete layout;
 }
 
 void UpperView::setup_ui()
 {
-	button = new QPushButton("My Button", this);
-	button->setGeometry(QRect(QPoint(100, 100), QSize(200, 50)));
-
-	Style power_button_style;
-	power_button = new METButton("ON", "OFF", power_button_style, 200, 50);
+	Style power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
+		OFF_COLOR_3, ON_COLOR_3);
+	power_button = new METButton("OFF", "ON", power_button_style, 80, 80,
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_POWER)),
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_POWER)));
 
 	layout = new QHBoxLayout();
-	layout->addWidget(button);
 	layout->addWidget(power_button);
-	this->setLayout(layout);
-
-	// Connect button signal to appropriate slot
-	//connect(m_button, &QPushButton::released, this, &MainWindow::handleButton);
+	setLayout(layout);
 }

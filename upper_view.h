@@ -16,7 +16,6 @@ public:
 private:
     void setup_ui();
     QHBoxLayout* layout;
-    QPushButton* button;
     METButton* power_button;
 };
 

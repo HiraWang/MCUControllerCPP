@@ -25,7 +25,7 @@ public:
         // set properties for main window
         QMetaObject::connectSlotsByName(main_window);
         QIcon icon = QIcon();
-        icon.addFile(QString::fromStdString(get_image_path(IMAGE_MET_ICO)));
+        icon.addFile(QString::fromStdString(get_image_abs_path(IMAGE_MET_ICO)));
         main_window->setWindowIcon(icon);
         main_window->resize(1920, 1080);
         main_window->setCentralWidget(central_widget);

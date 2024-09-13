@@ -2,6 +2,7 @@
 #include "utility.h"
 
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
+std::string IMAGE_MET_POWER = "\\images\\Power.png";
 
 std::string get_separator() 
 {
@@ -26,7 +27,7 @@ std::string get_current_path()
     }
 }
 
-std::string get_image_path(std::string file_name) 
+std::string get_image_abs_path(std::string file_name) 
 {
     std::string path = get_current_path();
     if (path.empty() || file_name.empty())
