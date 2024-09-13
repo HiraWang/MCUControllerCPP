@@ -7,6 +7,8 @@ METButton::METButton(QString name_default,
 					 Style style,
 					 int w,
 				     int h,
+					 void (*callback_default)(),
+					 void (*callback_pressed)(),
 					 QString icon_path_default,
 					 QString icon_path_pressed,
 					 QWidget* parent) :
@@ -15,6 +17,8 @@ METButton::METButton(QString name_default,
 	style(style),
 	w(w),
 	h(h),
+	callback_default(callback_default),
+	callback_pressed(callback_pressed),
 	icon_path_default(icon_path_default),
 	icon_path_pressed(icon_path_pressed),
 	QPushButton(parent),
@@ -50,6 +54,7 @@ void METButton::toggle()
 			setIcon(icon_default);
 		}
 		setStyleSheet(style_sheet_default);
+		callback_default();
 		status = false; // default
 	} else {
 		if (icon_path_pressed.isEmpty()) {
@@ -58,6 +63,7 @@ void METButton::toggle()
 			setIcon(icon_pressed);
 		}
 		setStyleSheet(style_sheet_pressed);
+		callback_pressed();
 		status = true; // pressed
 	}
 }

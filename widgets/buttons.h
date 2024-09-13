@@ -15,6 +15,8 @@ public:
 			  Style style,
 			  int w,
 			  int h,
+			  void (*callback_default)(),
+			  void (*callback_pressed)(),
 			  QString icon_path_default = "",
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
@@ -28,6 +30,8 @@ public:
 	Style style;
 	int w;
 	int h;
+	void (*callback_default)();
+	void (*callback_pressed)();
 
 private:
 	bool status;
