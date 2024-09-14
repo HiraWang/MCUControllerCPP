@@ -31,7 +31,7 @@ public:
         main_window->setCentralWidget(central_widget);
         main_window->setWindowTitle("MCU Controller");
         main_window->setStyleSheet("QMainWindow > QWidget { background-color: rgb(100, 100, 100); }");
-        main_window->showMaximized();
+        main_window->showFullScreen();
 
         // create views
         upper_view = new UpperView;

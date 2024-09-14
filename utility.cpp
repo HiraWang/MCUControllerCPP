@@ -1,4 +1,5 @@
 #include <direct.h>
+
 #include "utility.h"
 
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
@@ -25,7 +26,7 @@ std::string get_current_path()
         free(buf);
         return path;
     } else {
-        return nullptr;
+        return std::string();
     }
 }
 
@@ -33,7 +34,7 @@ std::string get_image_abs_path(std::string file_name)
 {
     std::string path = get_current_path();
     if (path.empty() || file_name.empty())
-        return nullptr;
+        return std::string();
     std::cout << "get image from " << get_current_path() + file_name << '\n';
     return get_current_path() + file_name;
 }

@@ -3,6 +3,7 @@
 
 #include <QPushButton>
 #include <QString>
+
 #include "style.h"
 
 class METButton : public QPushButton
@@ -15,8 +16,6 @@ public:
 			  Style style,
 			  int w,
 			  int h,
-			  void (*callback_default)(),
-			  void (*callback_pressed)(),
 			  QString icon_path_default = "",
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
@@ -30,15 +29,12 @@ public:
 	Style style;
 	int w;
 	int h;
-	void (*callback_default)();
-	void (*callback_pressed)();
-
-private:
 	bool status;
-	void toggle();
-	void load_style_sheet();
 	QIcon icon_default;
 	QIcon icon_pressed;
+
+private:
+	void load_style_sheet();
 };
 
 #endif
