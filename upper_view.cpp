@@ -34,8 +34,6 @@ void UpperView::setup_ui()
 
 	METComboBoxStyle combo_box_style;
 	combo_box = new METComboBox(combo_box_style, 250, 20);
-	combo_box->addItem("ABC");
-	combo_box->addItem("DEF");
 
 	layout = new QHBoxLayout();
 	layout->addWidget(combo_box, 0, Qt::AlignTop | Qt::AlignLeft);

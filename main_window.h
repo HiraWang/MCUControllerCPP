@@ -20,6 +20,7 @@ private slots:
     void toggle_power_button();
 
 private:
+    QStringList device_list;
     MainWindowUI* ui;
 };
 
