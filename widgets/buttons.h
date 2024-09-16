@@ -32,6 +32,8 @@ public:
 	bool status;
 	QIcon icon_default;
 	QIcon icon_pressed;
+	void set_button_default();
+	void set_button_pressed();
 
 private:
 	void load_style_sheet();

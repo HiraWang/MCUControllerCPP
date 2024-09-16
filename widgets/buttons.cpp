@@ -41,6 +41,30 @@ METButton::~METButton()
 	
 }
 
+void METButton::set_button_default()
+{
+	if (icon_path_default.isEmpty()) {
+		setText(name_default);
+	} else if (icon_path_default !=
+			   icon_path_pressed) {
+		setIcon(icon_default);
+	}
+	setStyleSheet(style_sheet_default);
+	status = Status::DEFAULT;
+}
+
+void METButton::set_button_pressed()
+{
+	if (icon_path_pressed.isEmpty()) {
+		setText(name_pressed);
+	} else if (icon_path_default !=
+		   	   icon_path_pressed) {
+		setIcon(icon_pressed);
+	}
+	setStyleSheet(style_sheet_pressed);
+	status = Status::PRESSED;
+}
+
 void METButton::load_style_sheet()
 {
 	style_sheet_default =

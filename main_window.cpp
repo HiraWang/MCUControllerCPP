@@ -25,24 +25,10 @@ void MainWindow::toggle_window_button()
 {
 	METButton* button = ui->upper_view->window_button;
 	if (button->status) {
-		if (button->icon_path_default.isEmpty()) {
-			button->setText(button->name_default);
-		} else if (button->icon_path_default !=
-				   button->icon_path_pressed) {
-			button->setIcon(button->icon_default);
-		}
-		button->setStyleSheet(button->style_sheet_default);
-		button->status = false; // default
+		button->set_button_default();
 		showFullScreen();
 	} else {
-		if (button->icon_path_pressed.isEmpty()) {
-			button->setText(button->name_pressed);
-		} else if (button->icon_path_default !=
-				   button->icon_path_pressed) {
-			button->setIcon(button->icon_pressed);
-		}
-		button->setStyleSheet(button->style_sheet_pressed);
-		button->status = true; // pressed
+		button->set_button_pressed();
 		showMaximized();
 	}
 }
@@ -51,22 +37,8 @@ void MainWindow::toggle_power_button()
 {
 	METButton* button = ui->upper_view->power_button;
 	if (button->status) {
-		if (button->icon_path_default.isEmpty()) {
-			button->setText(button->name_default);
-		} else if (button->icon_path_default !=
-				   button->icon_path_pressed) {
-			button->setIcon(button->icon_default);
-		}
-		button->setStyleSheet(button->style_sheet_default);
-		button->status = false; // default
+		button->set_button_default();
 	} else {
-		if (button->icon_path_pressed.isEmpty()) {
-			button->setText(button->name_pressed);
-		} else if (button->icon_path_default !=
-				   button->icon_path_pressed) {
-			button->setIcon(button->icon_pressed);
-		}
-		button->setStyleSheet(button->style_sheet_pressed);
-		button->status = true; // pressed
+		button->set_button_pressed();
 	}
 }
