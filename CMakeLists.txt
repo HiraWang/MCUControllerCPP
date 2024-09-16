@@ -28,8 +28,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "upper_view.cpp"
 			   "widgets/buttons.h" 
 			   "widgets/buttons.cpp" 
-			   "widgets/style.h" 
-			   "widgets/style.cpp" 
+			    
+			    
 			   "widgets/color.h" 
 			   "widgets/font.h" 
 			   "widgets/combo_box.h" 

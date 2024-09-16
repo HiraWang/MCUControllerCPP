@@ -6,6 +6,7 @@
 #include <QHBoxLayout>
 
 #include "widgets/buttons.h"
+#include "widgets/combo_box.h"
 
 class UpperView : public QWidget
 {

@@ -3,7 +3,6 @@
 
 #include "utility.h"
 #include "upper_view.h"
-#include "widgets/style.h"
 
 extern std::string IMAGE_MET_POWER;
 extern std::string IMAGE_MET_MAX_SIZE;
