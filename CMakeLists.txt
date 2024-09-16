@@ -31,7 +31,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/color.h" 
 			   "widgets/font.h" 
 			   "widgets/combo_box.h" 
-			   "widgets/combo_box.cpp")
+			   "widgets/combo_box.cpp"
+			   "widgets/label.h"
+			   "widgets/label.cpp")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)

@@ -5,6 +5,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
+#include "widgets/label.h"
 #include "widgets/buttons.h"
 #include "widgets/combo_box.h"
 
@@ -21,6 +22,7 @@ public:
 
 private:
     void setup_ui();
+    METLabel* label;
     QHBoxLayout* layout;
 };
 
