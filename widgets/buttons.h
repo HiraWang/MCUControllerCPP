@@ -20,22 +20,22 @@ public:
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
 	~METButton();
+	bool status;
+	void set_button_default();
+	void set_button_pressed();
+
+private:
 	QString name_default;
 	QString name_pressed;
 	QString style_sheet_default;
 	QString style_sheet_pressed;
 	QString icon_path_default;
 	QString icon_path_pressed;
+	QIcon icon_default;
+	QIcon icon_pressed;
 	Style style;
 	int w;
 	int h;
-	bool status;
-	QIcon icon_default;
-	QIcon icon_pressed;
-	void set_button_default();
-	void set_button_pressed();
-
-private:
 	void load_style_sheet();
 };
 
