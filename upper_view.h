@@ -17,6 +17,7 @@ public:
     ~UpperView();
     METButton* power_button;
     METButton* window_button;
+    METComboBox* combo_box;
 
 private:
     void setup_ui();

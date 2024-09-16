@@ -32,7 +32,13 @@ void UpperView::setup_ui()
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_POWER)),
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_POWER)));
 
+	METComboBoxStyle combo_box_style;
+	combo_box = new METComboBox(combo_box_style, 250, 20);
+	combo_box->addItem("ABC");
+	combo_box->addItem("DEF");
+
 	layout = new QHBoxLayout();
+	layout->addWidget(combo_box, 0, Qt::AlignTop | Qt::AlignLeft);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);

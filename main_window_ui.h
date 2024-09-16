@@ -22,15 +22,19 @@ public:
         // set the object name of private member for user to access
         central_widget->setObjectName(QString::fromUtf8("central_widget"));
         
-        // set properties for main window
         QMetaObject::connectSlotsByName(main_window);
         QIcon icon = QIcon();
         icon.addFile(QString::fromStdString(get_image_abs_path(IMAGE_MET_ICO)));
+        QString style_sheet = QString("QMainWindow > QWidget { background-color: ") +
+                              COLOR_DEEP_GRAY +
+                              QString("; }");
+
+        // set properties for main window
         main_window->setWindowIcon(icon);
         main_window->resize(1920, 1080);
         main_window->setCentralWidget(central_widget);
         main_window->setWindowTitle("MCU Controller");
-        main_window->setStyleSheet("QMainWindow > QWidget { background-color: rgb(100, 100, 100); }");
+        main_window->setStyleSheet(style_sheet);
         main_window->showFullScreen();
 
         // create views
