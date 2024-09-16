@@ -31,9 +31,9 @@ public:
 	~METLabel();
 
 private:
-	QString style_sheet;
 	METLabelStyle style;
 	QString name;
+	QString style_sheet;
 	int w;
 	int h;
 	void load_style_sheet();

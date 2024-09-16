@@ -46,8 +46,8 @@ public:
 	~METComboBox();
 
 private:
-	QString style_sheet;
 	METComboBoxStyle style;
+	QString style_sheet;
 	int w;
 	int h;
 	void load_style_sheet();

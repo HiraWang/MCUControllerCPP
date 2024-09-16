@@ -3,9 +3,9 @@
 #include "buttons.h"
 #include "utility.h"
 
-METButton::METButton(QString name_default,
+METButton::METButton(METButtonStyle style,
+					 QString name_default,
 				     QString name_pressed,
-					 METButtonStyle style,
 					 int w,
 				     int h,
 					 QString icon_path_default,

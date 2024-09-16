@@ -19,6 +19,7 @@ public:
 				   QString font_size = FONT_SIZE,
 				   QString font_color = FONT_COLOR);
 	~METButtonStyle();
+
 	QString color_1;
 	QString color_2;
 	QString hover_color_1;
@@ -34,9 +35,9 @@ class METButton : public QPushButton
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METButton(QString name_default,
+	METButton(METButtonStyle style,
+	     	  QString name_default,
 			  QString name_pressed,
-			  METButtonStyle style,
 			  int w,
 			  int h,
 			  QString icon_path_default = "",
@@ -48,15 +49,15 @@ public:
 	void set_button_pressed();
 
 private:
+	METButtonStyle style;
 	QString name_default;
 	QString name_pressed;
-	QString style_sheet_default;
-	QString style_sheet_pressed;
 	QString icon_path_default;
 	QString icon_path_pressed;
+	QString style_sheet_default;
+	QString style_sheet_pressed;
 	QIcon icon_default;
 	QIcon icon_pressed;
-	METButtonStyle style;
 	int w;
 	int h;
 	void load_style_sheet();
