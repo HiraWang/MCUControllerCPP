@@ -22,8 +22,8 @@ UpperView::~UpperView()
 
 void UpperView::setup_ui()
 {
-	Style button_style;
-	Style power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
+	METButtonStyle button_style;
+	METButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
 		OFF_COLOR_3, ON_COLOR_3);
 
 	window_button = new METButton("FULL", "MAX", button_style, 80, 80,

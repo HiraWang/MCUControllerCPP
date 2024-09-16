@@ -10,21 +10,46 @@
 class Style
 {
 public:
-	Style(QString color_1 = COLOR_WHITE,
-		  QString color_2 = COLOR_WHITE,
-		  QString hover_color_1 = COLOR_LIGHT_GRAY,
-		  QString hover_color_2 = COLOR_LIGHT_GRAY,
-		  QString pressed_color_1 = COLOR_GRAY,
-		  QString pressed_color_2 = COLOR_GRAY,
+	// METButton
+	Style(QString met_button_color_1 = COLOR_WHITE,
+		  QString met_button_color_2 = COLOR_WHITE,
+		  QString met_button_hover_color_1 = COLOR_LIGHT_GRAY,
+		  QString met_button_hover_color_2 = COLOR_LIGHT_GRAY,
+		  QString met_button_pressed_color_1 = COLOR_GRAY,
+		  QString met_button_pressed_color_2 = COLOR_GRAY,
+		  QString font_size = FONT_SIZE,
+		  QString font_color = FONT_COLOR);
+	// METComboBox
+	Style(QString met_combobox_selection_color = COLOR_WHITE,
+		  QString met_combobox_selection_bkg_color = COLOR_WHITE,
+		  QString met_combobox_editable_color = COLOR_WHITE,
+		  QString met_combobox_disabled_color = COLOR_WHITE,
+		  QString met_combobox_hover_color = COLOR_WHITE,
+		  QString met_combobox_drop_down_color = COLOR_WHITE,
+		  QString met_combobox_down_arrow_color = COLOR_WHITE,
+		  QString met_combobox_down_arrow_on_color = COLOR_WHITE,
 		  QString font_size = FONT_SIZE,
 		  QString font_color = FONT_COLOR);
 	~Style();
-	QString color_1;
-	QString color_2;
-	QString hover_color_1;
-	QString hover_color_2;
-	QString pressed_color_1;
-	QString pressed_color_2;
+
+	// METButton
+	QString met_button_color_1;
+	QString met_button_color_2;
+	QString met_button_hover_color_1;
+	QString met_button_hover_color_2;
+	QString met_button_pressed_color_1;
+	QString met_button_pressed_color_2;
+
+	// METComboBox
+	QString met_combobox_selection_color;
+	QString met_combobox_selection_bkg_color;
+	QString met_combobox_editable_color;
+	QString met_combobox_disabled_color;
+	QString met_combobox_hover_color;
+	QString met_combobox_drop_down_color;
+	QString met_combobox_down_arrow_color;
+	QString met_combobox_down_arrow_on_color;
+
 	QString font_size;
 	QString font_color;
 };
