@@ -2,6 +2,7 @@
 #include <QPainter>
 
 #include "main_window.h"
+#include "device.h"
 
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
@@ -50,14 +51,32 @@ void MainWindow::toggle_power_button()
 	} else {
 		button->set_button_pressed();
 		// add pages to tab widget
-		for (const auto& device : device_list)
-		{
+		int w = 1200;
+		int h = 500;
+		int current_device = ui->upper_view->combo_box->currentIndex();
+		if (current_device == Device::AUTOMATION) {
+			for (const auto& device : device_list)
+			{
+				QWidget* tab = new QWidget();
+				tab->setFixedWidth(w);
+				tab->setFixedHeight(h);
+				ui->bottom_view->tab->addTab(tab, device);
+				ui->bottom_view->tab->show();
+			}
+		} else if (current_device == Device::G1B) {
 			QWidget* tab = new QWidget();
-			tab->setFixedWidth(1000);
-			tab->setFixedHeight(450);
-			ui->bottom_view->tab->addTab(tab, device);
+			tab->setFixedWidth(w);
+			tab->setFixedHeight(h);
+			ui->bottom_view->tab->addTab(tab, device_list[current_device]);
+			ui->bottom_view->tab->show();
+		} else if (current_device == Device::REGLO_ICC) {
+			QWidget* tab = new QWidget();
+			tab->setFixedWidth(w);
+			tab->setFixedHeight(h);
+			ui->bottom_view->tab->addTab(tab, device_list[current_device]);
 			ui->bottom_view->tab->show();
 		}
+		
 		ui->upper_view->combo_box->setEnabled(false);
 	}
 }

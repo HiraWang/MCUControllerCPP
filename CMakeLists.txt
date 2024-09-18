@@ -37,7 +37,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/label.h"
 			   "widgets/label.cpp"
 			   "widgets/tab.h"
-			   "widgets/tab.cpp")
+			   "widgets/tab.cpp"
+			   "device.h")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)
