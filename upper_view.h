@@ -1,7 +1,6 @@
 #ifndef UPPER_VIEW_H
 #define UPPER_VIEW_H
 
-#include <QMainWindow>
 #include <QPushButton>
 #include <QHBoxLayout>
 

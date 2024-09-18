@@ -1,6 +1,3 @@
-#include <QStyleOption>
-#include <QPainter>
-
 #include "utility.h"
 #include "upper_view.h"
 
@@ -11,7 +8,7 @@ extern std::string IMAGE_MET_FULL_SCREEN;
 UpperView::UpperView(QWidget* parent) :
 	QWidget(parent)
 {
-	this->setup_ui();
+	setup_ui();
 }
 
 UpperView::~UpperView()
@@ -21,7 +18,7 @@ UpperView::~UpperView()
 
 void UpperView::setup_ui()
 {
-	METLabelStyle label_style;
+	METLabelStyle label_style(FONT_SIZE, COLOR_LIGHT_GRAY);
 	label = new METLabel(label_style, "Device", 60, 25);
 
 	METComboBoxStyle combo_box_style;

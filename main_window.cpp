@@ -43,7 +43,21 @@ void MainWindow::toggle_power_button()
 	METButton* button = ui->upper_view->power_button;
 	if (button->status) {
 		button->set_button_default();
+		// remove pages from tab widget
+		ui->bottom_view->tab->hide();
+		ui->bottom_view->tab->clear();
+		ui->upper_view->combo_box->setEnabled(true);
 	} else {
 		button->set_button_pressed();
+		// add pages to tab widget
+		for (const auto& device : device_list)
+		{
+			QWidget* tab = new QWidget();
+			tab->setFixedWidth(1000);
+			tab->setFixedHeight(450);
+			ui->bottom_view->tab->addTab(tab, device);
+			ui->bottom_view->tab->show();
+		}
+		ui->upper_view->combo_box->setEnabled(false);
 	}
 }

@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "combo_box.h"
-#include "utility.h"
 
 METComboBox::METComboBox(METComboBoxStyle style,
 					     int w,
@@ -42,12 +41,21 @@ void METComboBox::load_style_sheet()
         "}"
         "QComboBox QAbstractItemView:item {"
         "background: " + style.bkg_color + ";"
+        "min-width: 15ex;"
+        "padding: 5px;"
+        // remove the dotted line of focus rect
+        "border-left: -6px solid black;"
         "}"
         "QComboBox QAbstractItemView:item:hover {"
         "background: " + style.selection_bkg_color + ";"
         "}"
         "QComboBox QAbstractItemView:item:selected {"
         "background: " + style.selection_bkg_color + ";"
+        "color: " + style.hover_color + ";"
+        "}"
+        // remove the dotted line of focus rect
+        "QComboBox QAbstractItemView:item:selected:focus {"
+        "border: -6px solid black;"
         "}"
         "QComboBox:!editable, QComboBox::drop-down:editable {"
         "background: " + style.editable_color + ";"

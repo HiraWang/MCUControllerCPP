@@ -3,15 +3,17 @@
 
 #include "utility.h"
 #include "upper_view.h"
+#include "bottom_view.h"
 
 extern std::string IMAGE_MET_ICO;
 
 class MainWindowUI
 {
 public:
-    QHBoxLayout* layout;
+    QVBoxLayout* layout;
     QWidget* central_widget;
     UpperView* upper_view;
+    BottomView* bottom_view;
 
     void setup_ui(QMainWindow* main_window)
     {
@@ -39,10 +41,12 @@ public:
 
         // create views
         upper_view = new UpperView;
-        
+        bottom_view = new BottomView;
+
         // add views
-        layout = new QHBoxLayout();
+        layout = new QVBoxLayout();
         layout->addWidget(upper_view, 0, Qt::AlignTop);
+        layout->addWidget(bottom_view, 0, Qt::AlignTop);
         central_widget->setLayout(layout);
     }
 };

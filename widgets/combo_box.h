@@ -11,7 +11,7 @@ class METComboBoxStyle
 {
 public:
 	METComboBoxStyle(QString bkg_color = COLOR_WHITE,
-					 QString selection_bkg_color = COLOR_DEEP_GRAY,
+					 QString selection_bkg_color = COLOR_BLACK,
 					 QString editable_color = COLOR_WHITE,
 					 QString disabled_color = COLOR_GRAY,
 					 QString hover_color = COLOR_LIGHT_GRAY,
