@@ -16,6 +16,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void toggle_exit_button();
     void toggle_window_button();
     void toggle_power_button();
 

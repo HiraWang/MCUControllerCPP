@@ -1,9 +1,10 @@
 #include "utility.h"
 #include "upper_view.h"
 
-extern std::string IMAGE_MET_POWER;
-extern std::string IMAGE_MET_MAX_SIZE;
+extern std::string IMAGE_MET_EXIT;
 extern std::string IMAGE_MET_FULL_SCREEN;
+extern std::string IMAGE_MET_MAX_SIZE;
+extern std::string IMAGE_MET_POWER;
 
 UpperView::UpperView(QWidget* parent) :
 	QWidget(parent)
@@ -25,7 +26,10 @@ void UpperView::setup_ui()
 	combo_box = new METComboBox(combo_box_style, 250, 20);
 
 	METButtonStyle button_style;
-	window_button = new METButton(button_style, "FULL", "MAX", 80, 80,
+	exit_button = new METButton(button_style, "FULL", "MAX", 80, 80,
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_EXIT)),
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_EXIT)));
+	window_button = new METButton(button_style, "EXIT", "", 80, 80,
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_FULL_SCREEN)),
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_MAX_SIZE)));
 
@@ -39,6 +43,7 @@ void UpperView::setup_ui()
 	layout->addWidget(label, 0, Qt::AlignTop | Qt::AlignLeft);
 	layout->addWidget(combo_box, 0, Qt::AlignTop | Qt::AlignLeft);
 	layout->addStretch(10);
+	layout->addWidget(exit_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);

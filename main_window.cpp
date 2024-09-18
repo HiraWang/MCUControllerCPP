@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->setup_ui(this);
 
 	// connet widgets with main window callback functions 
+	connect(ui->upper_view->exit_button, &QPushButton::released,
+		this, &MainWindow::toggle_exit_button);
 	connect(ui->upper_view->window_button, &QPushButton::released,
 		this, &MainWindow::toggle_window_button);
 	connect(ui->upper_view->power_button, &QPushButton::released,
@@ -25,6 +27,13 @@ MainWindow::MainWindow(QWidget* parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::toggle_exit_button()
+{
+	METButton* button = ui->upper_view->exit_button;
+	button->set_button_default();
+	exit(0);
 }
 
 void MainWindow::toggle_window_button()
@@ -51,8 +60,8 @@ void MainWindow::toggle_power_button()
 	} else {
 		button->set_button_pressed();
 		// add pages to tab widget
-		int w = 1200;
-		int h = 500;
+		int w = 1230;
+		int h = 520;
 		int current_device = ui->upper_view->combo_box->currentIndex();
 		if (current_device == Device::AUTOMATION) {
 			for (const auto& device : device_list)

@@ -15,8 +15,9 @@ class UpperView : public QWidget
 public:
     UpperView(QWidget* parent = nullptr);
     ~UpperView();
-    METButton* power_button;
+    METButton* exit_button;
     METButton* window_button;
+    METButton* power_button;
     METComboBox* combo_box;
 
 private:
