@@ -4,6 +4,7 @@
 extern std::string IMAGE_MET_EXIT;
 extern std::string IMAGE_MET_FULL_SCREEN;
 extern std::string IMAGE_MET_MAX_SIZE;
+extern std::string IMAGE_MET_MENU;
 extern std::string IMAGE_MET_POWER;
 
 UpperView::UpperView(QWidget* parent) :
@@ -32,6 +33,9 @@ void UpperView::setup_ui()
 	window_button = new METButton(button_style, "EXIT", "", 80, 80,
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_FULL_SCREEN)),
 		QString::fromStdString(get_image_abs_path(IMAGE_MET_MAX_SIZE)));
+	menu_button = new METButton(button_style, "MENU", "", 80, 80,
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_MENU)),
+		QString::fromStdString(get_image_abs_path(IMAGE_MET_MENU)));
 
 	METButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
 		OFF_COLOR_3, ON_COLOR_3);
@@ -45,6 +49,7 @@ void UpperView::setup_ui()
 	layout->addStretch(10);
 	layout->addWidget(exit_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
+	layout->addWidget(menu_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);
 }

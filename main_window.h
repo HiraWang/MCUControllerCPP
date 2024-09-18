@@ -18,6 +18,7 @@ public:
 private slots:
     void toggle_exit_button();
     void toggle_window_button();
+    void toggle_menu_button();
     void toggle_power_button();
 
 private:

@@ -17,6 +17,7 @@ public:
     ~UpperView();
     METButton* exit_button;
     METButton* window_button;
+    METButton* menu_button;
     METButton* power_button;
     METComboBox* combo_box;
 

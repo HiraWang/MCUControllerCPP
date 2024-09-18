@@ -48,6 +48,12 @@ void MainWindow::toggle_window_button()
 	}
 }
 
+void MainWindow::toggle_menu_button()
+{
+	METButton* button = ui->upper_view->menu_button;
+	button->set_button_default();
+}
+
 void MainWindow::toggle_power_button()
 {
 	METButton* button = ui->upper_view->power_button;
