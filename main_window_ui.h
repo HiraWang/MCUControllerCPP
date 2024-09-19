@@ -40,11 +40,11 @@ public:
         main_window->showFullScreen();
 
         // create views
-        upper_view = new UpperView;
-        bottom_view = new BottomView;
+        upper_view = new UpperView(main_window);
+        bottom_view = new BottomView(main_window);
 
         // add views
-        layout = new QVBoxLayout();
+        layout = new QVBoxLayout(central_widget);
         layout->addWidget(upper_view, 0, Qt::AlignTop);
         layout->addWidget(bottom_view, 0, Qt::AlignTop);
         central_widget->setLayout(layout);

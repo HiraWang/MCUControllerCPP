@@ -9,7 +9,7 @@ BottomView::BottomView(QWidget* parent) :
 
 BottomView::~BottomView()
 {
-	delete layout;
+
 }
 
 void BottomView::setup_ui()
@@ -18,7 +18,7 @@ void BottomView::setup_ui()
 	tab = new METTab(tab_style, this);
 	tab->hide();
 
-	layout = new QHBoxLayout();
+	layout = new QHBoxLayout(this);
 	layout->addWidget(tab, 0, Qt::AlignCenter);
 	setLayout(layout);
 }
