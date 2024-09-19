@@ -26,7 +26,7 @@ public:
         
         QMetaObject::connectSlotsByName(main_window);
         QIcon icon = QIcon();
-        icon.addFile(QString::fromStdString(get_image_abs_path(IMAGE_MET_ICO)));
+        icon.addFile(QString::fromStdString(get_abs_path(IMAGE_MET_ICO)));
         QString style_sheet = QString("QMainWindow > QWidget { background-color: ") +
                               COLOR_DEEP_GRAY +
                               QString("; }");

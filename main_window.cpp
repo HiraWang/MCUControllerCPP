@@ -6,7 +6,8 @@
 
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
-    ui(new MainWindowUI())
+    ui(new MainWindowUI()),
+	para_list(new METParaList())
 {
 	// set main window ui
     ui->setup_ui(this);
@@ -16,17 +17,25 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::toggle_exit_button);
 	connect(ui->upper_view->window_button, &QPushButton::released,
 		this, &MainWindow::toggle_window_button);
+	connect(ui->upper_view->load_config_button, &QPushButton::released,
+		this, &MainWindow::toggle_load_config_button);
+	connect(ui->upper_view->menu_button, &QPushButton::released,
+		this, &MainWindow::toggle_menu_button);
 	connect(ui->upper_view->power_button, &QPushButton::released,
 		this, &MainWindow::toggle_power_button);
 
 	// set device list to combo box
 	device_list = { "Automation", "G1B", "Reglo ICC" };
 	ui->upper_view->combo_box->addItems(device_list);
+
+	// set menu with para list
+	ui->upper_view->menu = new METMenu(para_list, this);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+	delete para_list;
 }
 
 void MainWindow::toggle_exit_button()
@@ -48,10 +57,24 @@ void MainWindow::toggle_window_button()
 	}
 }
 
+void MainWindow::toggle_load_config_button()
+{
+	METButton* button = ui->upper_view->load_config_button;
+	button->set_button_default();
+	para_list->load_json_file();
+	ui->upper_view->menu->update_attributes();
+}
+
 void MainWindow::toggle_menu_button()
 {
 	METButton* button = ui->upper_view->menu_button;
-	button->set_button_default();
+	if (button->status) {
+		button->set_button_default();
+		ui->upper_view->menu->close();
+	} else {
+		button->set_button_pressed();
+		ui->upper_view->menu->show();
+	}
 }
 
 void MainWindow::toggle_power_button()
