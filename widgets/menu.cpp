@@ -14,9 +14,6 @@ METMenu::METMenu(METParaList* para_list,
 
 METMenu::~METMenu()
 {
-	for (int id = 0; id < para_list->size; id++) {
-		delete layout_list[id];
-	}
 	free(layout_list);
 	free(line_edit_list);
 }
