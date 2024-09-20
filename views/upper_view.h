@@ -4,10 +4,11 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 
-#include "widgets/buttons.h"
-#include "widgets/combo_box.h"
-#include "widgets/label.h"
-#include "widgets/menu.h"
+#include "../utility.h"
+#include "../widgets/buttons.h"
+#include "../widgets/combo_box.h"
+#include "../widgets/label.h"
+#include "../widgets/menu.h"
 
 class UpperView : public QWidget
 {
@@ -25,9 +26,9 @@ public:
     METComboBox* combo_box;
 
 private:
-    void setup_ui();
     METLabel* label;
     QHBoxLayout* layout;
+    void setup_ui();
 };
 
 #endif

@@ -27,8 +27,8 @@ public:
     BYTE parity;
     virtual void open() = 0;
     virtual void close() = 0;
-    virtual void read(char* buf, const DWORD size) = 0;
-    virtual void write(char* buf, const DWORD size) = 0;
+    virtual void read() = 0;
+    virtual void write() = 0;
 };
 
 class DeviceG1B : public SerialPort
@@ -42,8 +42,8 @@ public:
     ~DeviceG1B();
     virtual void open() override;
     virtual void close() override;
-    virtual void read(char* buf, const DWORD size) override;
-    virtual void write(char* buf, const DWORD size) override;
+    virtual void read() override;
+    virtual void write() override;
 };
 
 #endif

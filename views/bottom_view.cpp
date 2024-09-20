@@ -1,4 +1,3 @@
-#include "utility.h"
 #include "bottom_view.h"
 
 BottomView::BottomView(QWidget* parent) :

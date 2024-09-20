@@ -1,4 +1,3 @@
-#include "utility.h"
 #include "upper_view.h"
 
 extern std::string IMAGE_MET_CLOSE;

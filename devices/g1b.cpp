@@ -89,8 +89,11 @@ void DeviceG1B::close()
 	CloseHandle(serial_handle);
 }
 
-void DeviceG1B::read(char* buf, const DWORD size)
+void DeviceG1B::read()
 {
+	const int size = 5;
+	char buf[size + 1] = { 0 };
+
 	DWORD dwBytesRead = 0;
 	if (!ReadFile(serial_handle, buf, size, &dwBytesRead, NULL)) {
 		std::cout << "error reading" << '\n';
@@ -100,8 +103,11 @@ void DeviceG1B::read(char* buf, const DWORD size)
 	}
 }
 
-void DeviceG1B::write(char* buf, const DWORD size)
+void DeviceG1B::write()
 {
+	char buf[] = "go\r";
+	DWORD size = strlen(buf);
+
 	DWORD dwBytesRead = 0;
 	WriteFile(serial_handle, buf, size, &dwBytesRead, NULL);
 }
