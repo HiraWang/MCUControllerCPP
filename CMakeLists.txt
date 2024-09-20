@@ -22,7 +22,6 @@ target_sources(MCUControllerCPP PRIVATE
 			   "main_window.h" 
 			   "main_window.cpp"
 			   "main_window_ui.h"
-			   "device.h"
 			   "utility.h"
 			   "utility.cpp" 
 			   "upper_view.h"
@@ -42,7 +41,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/menu.h"
 			   "widgets/menu.cpp"
 			   "widgets/line_edit.h"
-			   "widgets/line_edit.cpp")
+			   "widgets/line_edit.cpp"
+			   "devices/device.h"
+			   "devices/g1b.cpp")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)
