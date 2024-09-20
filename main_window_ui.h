@@ -2,8 +2,8 @@
 #define MAIN_WINDOW_UI_H
 
 #include "utility.h"
-#include "upper_view.h"
-#include "bottom_view.h"
+#include "views/upper_view.h"
+#include "views/bottom_view.h"
 
 extern std::string IMAGE_MET_ICO;
 
