@@ -96,7 +96,7 @@ void MainWindow::toggle_power_button()
 		button->set_button_pressed();
 		// add pages to tab widget
 		int w = 1230;
-		int h = 520;
+		int h = 540;
 		if (current_device == Device::AUTOMATION) {
 			for (const auto& device : device_list)
 			{
