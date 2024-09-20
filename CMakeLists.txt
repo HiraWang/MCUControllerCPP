@@ -19,6 +19,7 @@ add_executable(MCUControllerCPP)
 
 target_sources(MCUControllerCPP PRIVATE
 			   main.cpp
+			   MET.rc
 			   "main_window.h" 
 			   "main_window.cpp"
 			   "main_window_ui.h"
