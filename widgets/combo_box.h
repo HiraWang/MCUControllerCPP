@@ -21,7 +21,6 @@ public:
 					 QString font_size = FONT_SIZE,
 					 QString font_color = FONT_COLOR);
 	virtual ~METComboBoxStyle();
-
 	QString bkg_color;
 	QString selection_bkg_color;
 	QString editable_color;
@@ -46,11 +45,11 @@ public:
 	virtual ~METComboBox();
 
 private:
-	METComboBoxStyle style;
-	QString style_sheet;
+	void load_style_sheet();
 	int w;
 	int h;
-	void load_style_sheet();
+	METComboBoxStyle style;
+	QString style_sheet;
 };
 
 #endif

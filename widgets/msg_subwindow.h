@@ -15,12 +15,12 @@ public:
 	virtual ~METMsgSubwindow();
 
 private:
+	void setup_ui();
+	void load_style_sheet();
 	QString message;
 	QString style_sheet_dialog;
 	QString style_sheet_label;
 	QVBoxLayout* layout;
-	void setup_ui();
-	void load_style_sheet();
 };
 
 #endif

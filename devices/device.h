@@ -21,16 +21,16 @@ public:
                BYTE stop_bits,
                BYTE parity);
     virtual ~SerialPort();
-    const wchar_t* port_name;
-    HANDLE serial_handle;
-    DWORD baud_rate;
-    BYTE byte_size;
-    BYTE stop_bits;
-    BYTE parity;
     virtual SerialCode open() = 0;
     virtual SerialCode close() = 0;
     virtual SerialCode read() = 0;
     virtual SerialCode write() = 0;
+    BYTE byte_size;
+    BYTE stop_bits;
+    BYTE parity;
+    DWORD baud_rate;
+    HANDLE serial_handle;
+    const wchar_t* port_name;
 };
 
 class DeviceG1B : public SerialPort

@@ -13,7 +13,6 @@ public:
 	METLabelStyle(QString font_size = FONT_SIZE,
 				  QString font_color = FONT_COLOR);
 	virtual ~METLabelStyle();
-
 	QString font_size;
 	QString font_color;
 };
@@ -31,12 +30,12 @@ public:
 	virtual ~METLabel();
 
 private:
-	METLabelStyle style;
-	QString name;
-	QString style_sheet;
+	void load_style_sheet();
 	int w;
 	int h;
-	void load_style_sheet();
+	METLabelStyle style;
+	QString style_sheet;
+	QString name;
 };
 
 #endif

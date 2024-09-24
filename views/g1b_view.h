@@ -22,14 +22,14 @@ public:
     METButton* write_button;
 
 private:
+    void setup_ui();
+    void read();
+    void write();
     int w;
     int h;
     DeviceG1B* G1B;
     QHBoxLayout* layout;
     METParaList* para_list;
-    void setup_ui();
-    void read();
-    void write();
 };
 
 #endif

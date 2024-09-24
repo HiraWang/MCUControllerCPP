@@ -19,7 +19,6 @@ public:
 				   QString font_size = FONT_SIZE,
 				   QString font_color = FONT_COLOR);
 	virtual ~METButtonStyle();
-
 	QString color_1;
 	QString color_2;
 	QString hover_color_1;
@@ -44,11 +43,14 @@ public:
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
 	virtual ~METButton();
-	bool status;
 	void set_button_default();
 	void set_button_pressed();
+	bool status;
 
 private:
+	void load_style_sheet();
+	int w;
+	int h;
 	METButtonStyle style;
 	QString name_default;
 	QString name_pressed;
@@ -58,9 +60,6 @@ private:
 	QString style_sheet_pressed;
 	QIcon icon_default;
 	QIcon icon_pressed;
-	int w;
-	int h;
-	void load_style_sheet();
 };
 
 #endif

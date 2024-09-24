@@ -17,8 +17,8 @@ public:
     G1BView* g1b_view;
 
 private:
-    QHBoxLayout* layout;
     void setup_ui();
+    QHBoxLayout* layout;
 };
 
 #endif

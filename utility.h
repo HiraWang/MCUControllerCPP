@@ -49,11 +49,11 @@ class METPara
 public:
     METPara();
     virtual ~METPara();
+    void reset();
     bool is_editable;
     int num;
     std::string str;
     std::string name;
-    void reset();
 };
 
 class METParaList
@@ -61,9 +61,9 @@ class METParaList
 public:
     METParaList();
     virtual ~METParaList();
+    ExitCode load_json_file();
     size_t size;
     METPara* list;
-    ExitCode load_json_file();
 };
 
 #endif
