@@ -50,7 +50,7 @@ void METButton::set_button_default()
 		setIcon(icon_default);
 	}
 	setStyleSheet(style_sheet_default);
-	status = Status::DEFAULT;
+	status = BUTTON_DEFAULT;
 }
 
 void METButton::set_button_pressed()
@@ -62,7 +62,7 @@ void METButton::set_button_pressed()
 		setIcon(icon_pressed);
 	}
 	setStyleSheet(style_sheet_pressed);
-	status = Status::PRESSED;
+	status = BUTTON_PRESSED;
 }
 
 void METButton::load_style_sheet()

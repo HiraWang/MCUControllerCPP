@@ -3,10 +3,12 @@
 #include <nlohmann/json.hpp>
 
 #include "utility.h"
+#include "widgets/msg_subwindow.h"
 
 using json = nlohmann::json;
 
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
+std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
 std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
@@ -85,8 +87,8 @@ void METParaList::load_json_file()
     // load data from json configuration file
     std::ifstream f(get_abs_path(CONFIG_MET));
     if (f.fail()) {
-        std::cout << "config file is not exist" << '\n';
-        exit(ExitCode::NO_CONFIG);
+        METMsgSubwindow("config file not found");
+        exit(PROGRAM_NO_CONFIG);
     }
 
     json data = json::parse(f);

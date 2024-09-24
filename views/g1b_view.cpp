@@ -1,4 +1,5 @@
 #include "g1b_view.h"
+#include "widgets/msg_subwindow.h"
 
 G1BView::G1BView(int w,
 				 int h,
@@ -9,9 +10,7 @@ G1BView::G1BView(int w,
 	para_list(para_list),
 	QWidget(parent)
 {
-	setup_ui();
-
-	std::string str = para_list->list[PUMP_KEYWORD].str;
+	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
 	std::wcout << port << " " << sizeof(port) << '\n';
@@ -22,12 +21,18 @@ G1BView::G1BView(int w,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
-	G1B->open();
+	if (G1B->open() != SERIAL_OK) {
+		METMsgSubwindow("device G1B open failed");
+	}
+
+	setup_ui();
 }
 
 G1BView::~G1BView()
 {
-	G1B->close();
+	if (G1B->close() != SERIAL_OK) {
+		METMsgSubwindow("device G1B close failed");
+	}
 }
 
 void G1BView::setup_ui()
@@ -50,10 +55,14 @@ void G1BView::setup_ui()
 
 void G1BView::read()
 {
-	G1B->read();
+	if (G1B->read() != SERIAL_OK) {
+		METMsgSubwindow("device G1B read failed");
+	}
 }
 
 void G1BView::write()
 {
-	G1B->write();
+	if (G1B->write() != SERIAL_OK) {
+		METMsgSubwindow("device G1B write failed");
+	}
 }

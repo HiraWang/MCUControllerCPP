@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <iostream>
 
+#include "utility.h"
+
 typedef enum {
     AUTOMATION,
     G1B,
@@ -25,10 +27,10 @@ public:
     BYTE byte_size;
     BYTE stop_bits;
     BYTE parity;
-    virtual void open() = 0;
-    virtual void close() = 0;
-    virtual void read() = 0;
-    virtual void write() = 0;
+    virtual SerialCode open() = 0;
+    virtual SerialCode close() = 0;
+    virtual SerialCode read() = 0;
+    virtual SerialCode write() = 0;
 };
 
 class DeviceG1B : public SerialPort
@@ -40,10 +42,10 @@ public:
               BYTE stop_bits,
               BYTE parity);
     ~DeviceG1B();
-    virtual void open() override;
-    virtual void close() override;
-    virtual void read() override;
-    virtual void write() override;
+    virtual SerialCode open() override;
+    virtual SerialCode close() override;
+    virtual SerialCode read() override;
+    virtual SerialCode write() override;
 };
 
 #endif

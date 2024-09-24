@@ -34,7 +34,7 @@ DeviceG1B::~DeviceG1B()
 
 }
 
-void DeviceG1B::open()
+SerialCode DeviceG1B::open()
 {
 	// open serial port
 	serial_handle = CreateFile(port_name,
@@ -49,8 +49,10 @@ void DeviceG1B::open()
 	if (serial_handle == INVALID_HANDLE_VALUE) {
 		if (GetLastError() == ERROR_FILE_NOT_FOUND) {
 			std::cout << "serial port does not exist" << '\n';
+			return SERIAL_NO_PORT;
 		}
 		std::cout << "some other error occurred" << '\n';
+		return SERIAL_FAIL;
 	}
 
 	// do basic settings
@@ -59,6 +61,7 @@ void DeviceG1B::open()
 
 	if (!GetCommState(serial_handle, &serial_params)) {
 		std::cout << "error getting serial port state" << '\n';
+		return SERIAL_FAIL_TO_GET_STATE;
 	}
 
 	serial_params.BaudRate = baud_rate;
@@ -68,6 +71,7 @@ void DeviceG1B::open()
 
 	if (!SetCommState(serial_handle, &serial_params)) {
 		std::cout << "error setting serial port state" << '\n';
+		return SERIAL_FAIL_TO_SET_STATE;
 	}
 
 	// set timeouts
@@ -81,33 +85,45 @@ void DeviceG1B::open()
 	SetCommTimeouts(serial_handle, &timeout);
 	if (!SetCommTimeouts(serial_handle, &timeout)) {
 		std::cout << "error setting timeout" << '\n';
+		return SERIAL_FAIL_TO_SET_TIMEOUT;
+	}
+
+	return SERIAL_OK;
+}
+
+SerialCode DeviceG1B::close()
+{
+	if (!CloseHandle(serial_handle)) {
+		return SERIAL_FAIL;
+	} else {
+		return SERIAL_OK;
 	}
 }
 
-void DeviceG1B::close()
-{
-	CloseHandle(serial_handle);
-}
-
-void DeviceG1B::read()
+SerialCode DeviceG1B::read()
 {
 	const int size = 5;
 	char buf[size + 1] = { 0 };
 
 	DWORD dwBytesRead = 0;
 	if (!ReadFile(serial_handle, buf, size, &dwBytesRead, NULL)) {
-		std::cout << "error reading" << '\n';
-	}
-	else {
+		return SERIAL_FAIL_TO_READ;
+	} else {
 		std::cout << buf << '\n';
+		return SERIAL_OK;
 	}
 }
 
-void DeviceG1B::write()
+SerialCode DeviceG1B::write()
 {
 	char buf[] = "go\r";
-	DWORD size = strlen(buf);
+	DWORD size = (DWORD)strlen(buf);
 
 	DWORD dwBytesRead = 0;
-	WriteFile(serial_handle, buf, size, &dwBytesRead, NULL);
+	if (!WriteFile(serial_handle, buf, size, &dwBytesRead, NULL)) {
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		std::cout << buf << '\n';
+		return SERIAL_OK;
+	}
 }

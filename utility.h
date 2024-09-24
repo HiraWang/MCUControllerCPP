@@ -8,14 +8,25 @@ std::string get_current_path();
 std::string get_abs_path(std::string file_name);
 
 typedef enum {
-    DEFAULT = false,
-    PRESSED = true
-} Status;
+    BUTTON_DEFAULT = false,
+    BUTTON_PRESSED = true
+} ButtonStatus;
 
 typedef enum {
-    OK = 0,
-    NO_CONFIG = 1
+    PROGRAM_OK = 0,
+    PROGRAM_NO_CONFIG = 1
 } ExitCode;
+
+typedef enum {
+    SERIAL_OK = 0,
+    SERIAL_FAIL = 1,
+    SERIAL_NO_PORT = 2,
+    SERIAL_FAIL_TO_GET_STATE = 3,
+    SERIAL_FAIL_TO_SET_STATE = 4,
+    SERIAL_FAIL_TO_SET_TIMEOUT = 5,
+    SERIAL_FAIL_TO_READ = 6,
+    SERIAL_FAIL_TO_WRITE = 7
+} SerialCode;
 
 typedef enum {
     BAUDRATE = 0,

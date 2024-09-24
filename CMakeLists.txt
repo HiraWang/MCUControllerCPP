@@ -46,7 +46,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/menu.h"
 			   "widgets/menu.cpp"
 			   "widgets/tab.h"
-			   "widgets/tab.cpp")
+			   "widgets/tab.cpp"
+			   "widgets/msg_subwindow.h"
+			   "widgets/msg_subwindow.cpp")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)
