@@ -1,4 +1,5 @@
 #include "g1b_view.h"
+
 #include "widgets/msg_subwindow.h"
 
 G1BView::G1BView(int w,

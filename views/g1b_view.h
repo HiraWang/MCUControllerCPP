@@ -1,12 +1,12 @@
 #ifndef G1B_VIEW_H
 #define G1B_VIEW_H
 
-#include <QWidget>
 #include <QHBoxLayout>
+#include <QWidget>
 
 #include "../utility.h"
-#include "../widgets/buttons.h"
 #include "../devices/device.h"
+#include "../widgets/buttons.h"
 
 class G1BView : public QWidget
 {

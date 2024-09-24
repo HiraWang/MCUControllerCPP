@@ -3,9 +3,8 @@
 
 #include <QHBoxLayout>
 
-#include "../utility.h"
-#include "../widgets/tab.h"
 #include "../views/g1b_view.h"
+#include "../widgets/tab.h"
 
 class BottomView : public QWidget
 {

@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "combo_box.h"
 
 METComboBox::METComboBox(METComboBoxStyle style,

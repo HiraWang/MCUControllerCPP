@@ -1,8 +1,8 @@
 #ifndef TAB_H
 #define TAB_H
 
-#include <QTabWidget>
 #include <QString>
+#include <QTabWidget>
 
 #include "color.h"
 #include "font.h"

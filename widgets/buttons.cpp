@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include "buttons.h"
+
 #include "utility.h"
 
 METButton::METButton(METButtonStyle style,

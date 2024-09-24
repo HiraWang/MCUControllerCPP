@@ -1,8 +1,8 @@
 #ifndef UPPER_VIEW_H
 #define UPPER_VIEW_H
 
-#include <QPushButton>
 #include <QHBoxLayout>
+#include <QPushButton>
 
 #include "../utility.h"
 #include "../widgets/buttons.h"

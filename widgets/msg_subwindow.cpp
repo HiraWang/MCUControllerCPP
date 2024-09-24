@@ -1,7 +1,8 @@
+#include "msg_subwindow.h"
+
 #include <QLabel>
 #include <QPixmap>
 
-#include "msg_subwindow.h"
 #include "color.h"
 #include "font.h"
 #include "../utility.h"

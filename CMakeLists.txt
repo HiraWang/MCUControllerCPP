@@ -45,10 +45,10 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/line_edit.cpp"
 			   "widgets/menu.h"
 			   "widgets/menu.cpp"
-			   "widgets/tab.h"
-			   "widgets/tab.cpp"
 			   "widgets/msg_subwindow.h"
-			   "widgets/msg_subwindow.cpp")
+			   "widgets/msg_subwindow.cpp"
+			   "widgets/tab.h"
+			   "widgets/tab.cpp")
 
 set(MET_IMAGES ${./images/})
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)

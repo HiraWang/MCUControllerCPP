@@ -1,9 +1,10 @@
-﻿#include <QStyleOption>
-#include <QPainter>
+﻿#include "main_window.h"
 
-#include "main_window.h"
-#include "views/g1b_view.h"
+#include <QPainter>
+#include <QStyleOption>
+
 #include "devices/device.h"
+#include "views/g1b_view.h"
 #include "widgets/msg_subwindow.h"
 
 MainWindow::MainWindow(QWidget* parent) : 
