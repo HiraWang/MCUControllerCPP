@@ -43,7 +43,7 @@ void MainWindow::toggle_exit_button()
 {
 	METButton* button = ui->upper_view->exit_button;
 	button->set_button_default();
-	exit(0);
+	exit(ExitCode::OK);
 }
 
 void MainWindow::toggle_window_button()

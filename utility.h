@@ -13,6 +13,11 @@ typedef enum {
 } Status;
 
 typedef enum {
+    OK = 0,
+    NO_CONFIG = 1
+} ExitCode;
+
+typedef enum {
     BAUDRATE = 0,
     BUFFER_SIZE,
     BYTESIZE,

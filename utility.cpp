@@ -84,6 +84,11 @@ void METParaList::load_json_file()
 {
     // load data from json configuration file
     std::ifstream f(get_abs_path(CONFIG_MET));
+    if (f.fail()) {
+        std::cout << "config file is not exist" << '\n';
+        exit(ExitCode::NO_CONFIG);
+    }
+
     json data = json::parse(f);
     size = data.size();
     if (!list) {
