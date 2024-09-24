@@ -1,9 +1,8 @@
+#include "utility.h"
+
 #include <direct.h>
 #include <fstream>
 #include <nlohmann/json.hpp>
-
-#include "utility.h"
-#include "widgets/msg_subwindow.h"
 
 using json = nlohmann::json;
 
@@ -74,7 +73,7 @@ void METPara::reset()
 METParaList::METParaList() : 
     list(nullptr)
 {
-    load_json_file();
+
 }
 
 METParaList::~METParaList()
@@ -82,13 +81,12 @@ METParaList::~METParaList()
     delete[] list;
 }
 
-void METParaList::load_json_file()
+ExitCode METParaList::load_json_file()
 {
     // load data from json configuration file
     std::ifstream f(get_abs_path(CONFIG_MET));
     if (f.fail()) {
-        METMsgSubwindow("config file not found");
-        exit(PROGRAM_NO_CONFIG);
+        return PROGRAM_NO_CONFIG;
     }
 
     json data = json::parse(f);
@@ -119,4 +117,6 @@ void METParaList::load_json_file()
         }
         list[id].is_editable = false;
     }
+
+    return PROGRAM_OK;
 }

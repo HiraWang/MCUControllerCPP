@@ -4,6 +4,7 @@
 #include "main_window.h"
 #include "views/g1b_view.h"
 #include "devices/device.h"
+#include "widgets/msg_subwindow.h"
 
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
@@ -28,6 +29,12 @@ MainWindow::MainWindow(QWidget* parent) :
 	// set device list to combo box
 	device_list = { "Automation", "G1B", "Reglo ICC" };
 	ui->upper_view->combo_box->addItems(device_list);
+
+	// load data to para list
+	if (para_list->load_json_file() == PROGRAM_NO_CONFIG) {
+		METMsgSubwindow("config file not found");
+		exit(PROGRAM_NO_CONFIG);
+	}
 
 	// set menu with para list
 	ui->upper_view->menu = new METMenu(para_list, this);
@@ -62,7 +69,9 @@ void MainWindow::toggle_load_config_button()
 {
 	METButton* button = ui->upper_view->load_config_button;
 	button->set_button_default();
-	para_list->load_json_file();
+	if (para_list->load_json_file() == PROGRAM_NO_CONFIG) {
+		METMsgSubwindow("config file not found");
+	}
 	ui->upper_view->menu->update_attributes();
 }
 

@@ -63,7 +63,7 @@ public:
     virtual ~METParaList();
     size_t size;
     METPara* list;
-    void load_json_file();
+    ExitCode load_json_file();
 };
 
 #endif
