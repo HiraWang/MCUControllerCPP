@@ -20,7 +20,7 @@ public:
 					 QString down_arrow_on_color = COLOR_WHITE,
 					 QString font_size = FONT_SIZE,
 					 QString font_color = FONT_COLOR);
-	~METComboBoxStyle();
+	virtual ~METComboBoxStyle();
 
 	QString bkg_color;
 	QString selection_bkg_color;
@@ -43,7 +43,7 @@ public:
 			    int w,
 			    int h,
 			    QWidget* parent = nullptr);
-	~METComboBox();
+	virtual ~METComboBox();
 
 private:
 	METComboBoxStyle style;

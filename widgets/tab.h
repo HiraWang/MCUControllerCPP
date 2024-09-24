@@ -14,7 +14,7 @@ public:
 				QString selection_bkg_color = COLOR_BLACK,
 			    QString font_size = FONT_SIZE,
 			    QString font_color = FONT_COLOR);
-	~METTabStyle();
+	virtual ~METTabStyle();
 
 	QString bkg_color;
 	QString selection_bkg_color;
@@ -29,7 +29,7 @@ class METTab : public QTabWidget
 public:
 	METTab(METTabStyle style,
 		   QWidget* parent = nullptr);
-	~METTab();
+	virtual ~METTab();
 
 private:
 	METTabStyle style;

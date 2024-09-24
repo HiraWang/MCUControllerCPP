@@ -13,7 +13,7 @@ public:
     // prohibit the implicit call of constructor
     // argument makes object have no parent QWidget
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
+    virtual ~MainWindow();
 
 private slots:
     void toggle_exit_button();

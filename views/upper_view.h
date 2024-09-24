@@ -16,7 +16,7 @@ class UpperView : public QWidget
 
 public:
     UpperView(QWidget* parent = nullptr);
-    ~UpperView();
+    virtual ~UpperView();
     METMenu* menu;
     METButton* exit_button;
     METButton* window_button;

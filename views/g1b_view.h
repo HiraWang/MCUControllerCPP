@@ -17,7 +17,7 @@ public:
             int h, 
             METParaList* para_list,
             QWidget* parent = nullptr);
-    ~G1BView();
+    virtual ~G1BView();
     METButton* read_button;
     METButton* write_button;
 

@@ -12,7 +12,7 @@ class METLabelStyle
 public:
 	METLabelStyle(QString font_size = FONT_SIZE,
 				  QString font_color = FONT_COLOR);
-	~METLabelStyle();
+	virtual ~METLabelStyle();
 
 	QString font_size;
 	QString font_color;
@@ -28,7 +28,7 @@ public:
 			 int w,
 			 int h,
 			 QWidget* parent = nullptr);
-	~METLabel();
+	virtual ~METLabel();
 
 private:
 	METLabelStyle style;

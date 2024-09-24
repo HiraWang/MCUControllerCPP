@@ -18,7 +18,7 @@ public:
 				   QString pressed_color_2 = COLOR_GRAY,
 				   QString font_size = FONT_SIZE,
 				   QString font_color = FONT_COLOR);
-	~METButtonStyle();
+	virtual ~METButtonStyle();
 
 	QString color_1;
 	QString color_2;
@@ -43,7 +43,7 @@ public:
 			  QString icon_path_default = "",
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
-	~METButton();
+	virtual ~METButton();
 	bool status;
 	void set_button_default();
 	void set_button_pressed();

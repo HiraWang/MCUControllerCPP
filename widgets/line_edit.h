@@ -13,7 +13,7 @@ public:
 	METLineEditStyle(QString bkg_color = COLOR_WHITE, 
 					 QString font_size = FONT_SIZE,
 					 QString font_color = FONT_COLOR);
-	~METLineEditStyle();
+	virtual ~METLineEditStyle();
 
 	QString bkg_color;
 	QString font_size;
@@ -29,7 +29,7 @@ public:
 			    int w,
 			    int h,
 			    QWidget* parent = nullptr);
-	~METLineEdit();
+	virtual ~METLineEdit();
 
 private:
 	METLineEditStyle style;

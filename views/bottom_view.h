@@ -13,7 +13,7 @@ class BottomView : public QWidget
 
 public:
     BottomView(QWidget* parent = nullptr);
-    ~BottomView();
+    virtual ~BottomView();
     METTab* tab;
     G1BView* g1b_view;
 

@@ -12,7 +12,7 @@ class METMsgSubwindow : public QDialog
 public:
 	METMsgSubwindow(QString message,
 					QWidget* parent = nullptr);
-	~METMsgSubwindow();
+	virtual ~METMsgSubwindow();
 
 private:
 	QString message;

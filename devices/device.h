@@ -41,7 +41,7 @@ public:
               BYTE byte_size,
               BYTE stop_bits,
               BYTE parity);
-    ~DeviceG1B();
+    virtual ~DeviceG1B();
     virtual SerialCode open() override;
     virtual SerialCode close() override;
     virtual SerialCode read() override;

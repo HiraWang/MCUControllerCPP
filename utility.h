@@ -48,7 +48,7 @@ class METPara
 {
 public:
     METPara();
-    ~METPara();
+    virtual ~METPara();
     bool is_editable;
     int num;
     std::string str;
@@ -60,7 +60,7 @@ class METParaList
 {
 public:
     METParaList();
-    ~METParaList();
+    virtual ~METParaList();
     size_t size;
     METPara* list;
     void load_json_file();

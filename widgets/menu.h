@@ -15,7 +15,7 @@ class METMenu : public QDialog
 public:
     METMenu(METParaList* para_list,
             QWidget* parent = nullptr);
-    ~METMenu();
+    virtual ~METMenu();
     METLineEdit** line_edit_list;
     QHBoxLayout** layout_list;
     void show();
