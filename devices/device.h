@@ -66,6 +66,10 @@ public:
     SerialCode SetCcw(BYTE channel);
     SerialCode On(BYTE channel);
     SerialCode Off(BYTE channel);
+
+private:
+    SerialCode SetAddress();
+    SerialCode SetRpmMode(BYTE channel);
 };
 
 #endif

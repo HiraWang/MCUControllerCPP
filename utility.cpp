@@ -6,6 +6,8 @@
 
 using json = nlohmann::json;
 
+std::string LF = "\r";
+std::string CR = "\n";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
 std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
@@ -18,6 +20,16 @@ std::string IMAGE_MET_POWER = "\\images\\Power.png";
 
 std::string CONFIG_MET = "\\configuration\\config.json";
 
+char* CopyStringToCharArray(const std::string& str)
+{
+    const char* c_str = str.c_str();
+    rsize_t size = str.length() + 1;
+    char* arr = new char[size];
+    strcpy_s(arr, size, c_str);
+    std::cout << arr;
+
+    return arr;
+}
 
 std::string GetSeparator() 
 {

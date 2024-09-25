@@ -1,11 +1,15 @@
+#include <string>
+
 #include "device.h"
+
+extern std::string CR;
 
 DeviceRegloIcc::DeviceRegloIcc(const wchar_t* port_name,
 						       DWORD baud_rate,
 						       BYTE byte_size,
 						       BYTE stop_bits,
 						       BYTE parity) :
-						       SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
 {
 
 }
@@ -68,6 +72,10 @@ SerialCode DeviceRegloIcc::Open()
 		std::cout << "error setting timeout" << '\n';
 		return SERIAL_FAIL_TO_SET_TIMEOUT;
 	}
+	
+	// set rpm mode
+	SetRpmMode(1);
+	SetRpmMode(2);
 
 	return SERIAL_OK;
 }
@@ -85,8 +93,8 @@ SerialCode DeviceRegloIcc::Read()
 {
 	const int size = 5;
 	char buf[size + 1] = { 0 };
-
 	DWORD dw_bytes_read = 0;
+
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
@@ -99,8 +107,8 @@ SerialCode DeviceRegloIcc::Write()
 {
 	char buf[] = "go\r";
 	DWORD size = (DWORD)strlen(buf);
-
 	DWORD dw_bytes_read = 0;
+
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
@@ -132,4 +140,25 @@ SerialCode DeviceRegloIcc::On(BYTE channel)
 SerialCode DeviceRegloIcc::Off(BYTE channel)
 {
 	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::SetAddress()
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::SetRpmMode(BYTE channel)
+{
+	std::string buf = std::to_string(channel) + 'L' + CR;
+	char* cmd = CopyStringToCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }

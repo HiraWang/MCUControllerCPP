@@ -54,7 +54,7 @@ void MetPumpChannel::SetupUi()
 	
 	MetButtonStyle two_state_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2,
 		ON_COLOR_2, OFF_COLOR_3, ON_COLOR_3);
-	dir_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
+	dir_button = new MetButton(two_state_button_style, "CCW", "CW", 80, 25, "", "", this);
 	out_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
 
 	connect(rpm_button, &QPushButton::released, this,
@@ -104,8 +104,10 @@ void MetPumpChannel::ToggleDirButton()
 {
 	if (dir_button->status) {
 		dir_button->SetButtonDefault();
+		reglo_icc->SetCcw(channel);
 	} else {
 		dir_button->SetButtonPressed();
+		reglo_icc->SetCw(channel);
 	}
 }
 
@@ -113,8 +115,10 @@ void MetPumpChannel::ToggleOutButton()
 {
 	if (out_button->status) {
 		out_button->SetButtonDefault();
+		reglo_icc->Off(channel);
 	} else {
 		out_button->SetButtonPressed();
+		reglo_icc->On(channel);
 	}
 }
 
