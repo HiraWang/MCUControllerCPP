@@ -51,7 +51,7 @@ std::string GetAbsPath(std::string file_name)
     return GetCurrentPath() + file_name;
 }
 
-METPara::METPara() : 
+MetPara::MetPara() : 
     is_editable(false),
     num(0),
     str(""),
@@ -60,12 +60,12 @@ METPara::METPara() :
 
 }
 
-METPara::~METPara()
+MetPara::~MetPara()
 {
 
 }
 
-void METPara::Reset()
+void MetPara::Reset()
 {
     is_editable = false;
     num = 0;
@@ -73,18 +73,18 @@ void METPara::Reset()
     name = "";
 }
 
-METParaList::METParaList() : 
+MetParaList::MetParaList() : 
     size(0),
     list(nullptr)
 {
 
 }
 
-METParaList::METParaList(const METParaList& source)
+MetParaList::MetParaList(const MetParaList& source)
 {
     this->size = source.size;
     if (this->size >= 0) {
-        this->list = new METPara[this->size];
+        this->list = new MetPara[this->size];
     } else {
         return;
     }
@@ -94,11 +94,11 @@ METParaList::METParaList(const METParaList& source)
     }
 }
 
-void METParaList::operator = (const METParaList& source)
+void MetParaList::operator = (const MetParaList& source)
 {
     this->size = source.size;
     if (this->size >= 0) {
-        this->list = new METPara[this->size];
+        this->list = new MetPara[this->size];
     } else {
         return;
     }
@@ -108,12 +108,12 @@ void METParaList::operator = (const METParaList& source)
     }
 }
 
-METParaList::~METParaList()
+MetParaList::~MetParaList()
 {
     delete[] list;
 }
 
-ExitCode METParaList::LoadJsonFile()
+ExitCode MetParaList::LoadJsonFile()
 {
     // load data from json configuration file
     std::ifstream f(GetAbsPath(CONFIG_MET));
@@ -125,7 +125,7 @@ ExitCode METParaList::LoadJsonFile()
     size = data.size();
     if (!list) {
         std::cout << "create new list of met para" << '\n';
-        list = new METPara[size];
+        list = new MetPara[size];
     } else {
         std::cout << "reset the list of met para" << '\n';
         for (int id = 0; id < size; id++) {
@@ -133,7 +133,7 @@ ExitCode METParaList::LoadJsonFile()
         }
     }
 
-    // Insert data to METParaList 
+    // Insert data to MetParaList 
     int id = 0;
     for (json::iterator it = data.begin(); it != data.end(); ++it, id++) {
         std::cout << std::left << std::setw(20) << it.key() << " : " << it.value();

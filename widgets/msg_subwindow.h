@@ -5,14 +5,14 @@
 #include <QString>
 #include <QVBoxLayout>
 
-class METMsgSubwindow : public QDialog
+class MetMsgSubwindow : public QDialog
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METMsgSubwindow(QString message,
+	MetMsgSubwindow(QString message,
 					QWidget* parent = nullptr);
-	virtual ~METMsgSubwindow();
+	virtual ~MetMsgSubwindow();
 
 private:
 	void SetupUi();

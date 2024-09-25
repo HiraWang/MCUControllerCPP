@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
     ui(new MainWindowUI()),
-	para_list(new METParaList())
+	para_list(new MetParaList())
 {
 	// set main window ui
     ui->SetupUi(this);
@@ -34,12 +34,12 @@ MainWindow::MainWindow(QWidget* parent) :
 
 	// load data to para list
 	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
-		METMsgSubwindow("config file not found");
+		MetMsgSubwindow("config file not found");
 		exit(PROGRAM_NO_CONFIG);
 	}
 
 	// set menu with para list
-	ui->upper_view->menu = new METMenu(para_list, this);
+	ui->upper_view->menu = new MetMenu(para_list, this);
 }
 
 MainWindow::~MainWindow()
@@ -50,14 +50,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::ToggleExitButton()
 {
-	METButton* button = ui->upper_view->exit_button;
+	MetButton* button = ui->upper_view->exit_button;
 	button->SetButtonDefault();
 	exit(PROGRAM_OK);
 }
 
 void MainWindow::ToggleWindowButton()
 {
-	METButton* button = ui->upper_view->window_button;
+	MetButton* button = ui->upper_view->window_button;
 	if (button->status) {
 		button->SetButtonDefault();
 		showFullScreen();
@@ -69,17 +69,17 @@ void MainWindow::ToggleWindowButton()
 
 void MainWindow::ToggleLoadConfigButton()
 {
-	METButton* button = ui->upper_view->load_config_button;
+	MetButton* button = ui->upper_view->load_config_button;
 	button->SetButtonDefault();
 	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
-		METMsgSubwindow("config file not found");
+		MetMsgSubwindow("config file not found");
 	}
 	ui->upper_view->menu->UpdateAttributes();
 }
 
 void MainWindow::ToggleMenuButton()
 {
-	METButton* button = ui->upper_view->menu_button;
+	MetButton* button = ui->upper_view->menu_button;
 	if (button->status) {
 		button->SetButtonDefault();
 		ui->upper_view->menu->Close();
@@ -91,7 +91,7 @@ void MainWindow::ToggleMenuButton()
 
 void MainWindow::TogglePowerButton()
 {
-	METButton* button = ui->upper_view->power_button;
+	MetButton* button = ui->upper_view->power_button;
 	int current_device = ui->upper_view->combo_box->currentIndex();
 
 	if (button->status) {

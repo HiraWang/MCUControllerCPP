@@ -7,14 +7,14 @@
 #include "color.h"
 #include "font.h"
 
-class METTabStyle
+class MetTabStyle
 {
 public:
-	METTabStyle(QString bkg_color = COLOR_LIGHT_GRAY,
+	MetTabStyle(QString bkg_color = COLOR_LIGHT_GRAY,
 				QString selection_bkg_color = COLOR_BLACK,
 			    QString font_size = FONT_SIZE,
 			    QString font_color = FONT_COLOR);
-	virtual ~METTabStyle();
+	virtual ~MetTabStyle();
 
 	QString bkg_color;
 	QString selection_bkg_color;
@@ -22,18 +22,18 @@ public:
 	QString font_color;
 };
 
-class METTab : public QTabWidget
+class MetTab : public QTabWidget
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METTab(METTabStyle style,
+	MetTab(MetTabStyle style,
 		   QWidget* parent = nullptr);
-	virtual ~METTab();
+	virtual ~MetTab();
 
 private:
 	void LoadStyleSheet();
-	METTabStyle style;
+	MetTabStyle style;
 	QString style_sheet;
 };
 

@@ -44,11 +44,11 @@ typedef enum {
     TIMER_PERIOD
 } ParaID;
 
-class METPara
+class MetPara
 {
 public:
-    METPara();
-    virtual ~METPara();
+    MetPara();
+    virtual ~MetPara();
     void Reset();
     bool is_editable;
     int num;
@@ -56,16 +56,16 @@ public:
     std::string name;
 };
 
-class METParaList
+class MetParaList
 {
 public:
-    METParaList();
-    METParaList(const METParaList& source);
-    void operator = (const METParaList& source);
-    virtual ~METParaList();
+    MetParaList();
+    MetParaList(const MetParaList& source);
+    void operator = (const MetParaList& source);
+    virtual ~MetParaList();
     ExitCode LoadJsonFile();
     size_t size;
-    METPara* list;
+    MetPara* list;
 };
 
 #endif

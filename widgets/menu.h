@@ -8,28 +8,28 @@
 #include "utility.h"
 #include "widgets/line_edit.h"
 
-class METMenu : public QDialog
+class MetMenu : public QDialog
 {
     Q_OBJECT // enable meta object abilities
 
 public:
-    METMenu(METParaList* para_list,
+    MetMenu(MetParaList* para_list,
             QWidget* parent = nullptr);
-    virtual ~METMenu();
+    virtual ~MetMenu();
     void Show();
     void Close();
     void UpdateAttributes();
     QHBoxLayout** layout_list;
-    METLineEdit** line_edit_list;
+    MetLineEdit** line_edit_list;
 
 private:
     void SetupUi();
-    void AddAttribute(METPara para,
+    void AddAttribute(MetPara para,
                       QHBoxLayout* layout,
-                      METLineEdit* line_edit,
+                      MetLineEdit* line_edit,
                       bool is_editable);
     QVBoxLayout* layout;
-    METParaList* para_list;
+    MetParaList* para_list;
 };
 
 #endif

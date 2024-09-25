@@ -1,6 +1,6 @@
 #include "tab.h"
 
-METTab::METTab(METTabStyle style,
+MetTab::MetTab(MetTabStyle style,
 			   QWidget* parent) :
     style(style),
     QTabWidget(parent)
@@ -12,12 +12,12 @@ METTab::METTab(METTabStyle style,
     setStyleSheet(style_sheet);
 }
 
-METTab::~METTab()
+MetTab::~MetTab()
 {
 
 }
 
-void METTab::LoadStyleSheet()
+void MetTab::LoadStyleSheet()
 {
     style_sheet =
         "QTabBar::tab {"
@@ -49,7 +49,7 @@ void METTab::LoadStyleSheet()
         "}";
 }
 
-METTabStyle::METTabStyle(QString bkg_color,
+MetTabStyle::MetTabStyle(QString bkg_color,
                          QString selection_bkg_color,
                          QString font_size,
                          QString font_color) :
@@ -61,7 +61,7 @@ METTabStyle::METTabStyle(QString bkg_color,
 
 }
 
-METTabStyle::~METTabStyle()
+MetTabStyle::~MetTabStyle()
 {
 
 }

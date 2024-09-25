@@ -3,23 +3,23 @@
 #include "color.h"
 #include "label.h"
 
-METMenu::METMenu(METParaList* para_list,
+MetMenu::MetMenu(MetParaList* para_list,
 				 QWidget* parent) :
 	para_list(para_list),
 	QDialog(parent)
 {
 	layout_list = (QHBoxLayout**)calloc(para_list->size, sizeof(QHBoxLayout*));
-	line_edit_list = (METLineEdit**)calloc(para_list->size, sizeof(METLineEdit*));
+	line_edit_list = (MetLineEdit**)calloc(para_list->size, sizeof(MetLineEdit*));
 	SetupUi();
 }
 
-METMenu::~METMenu()
+MetMenu::~MetMenu()
 {
 	free(layout_list);
 	free(line_edit_list);
 }
 
-void METMenu::SetupUi()
+void MetMenu::SetupUi()
 {
 	setWindowTitle("Menu");
 	setFixedWidth(300);
@@ -33,8 +33,8 @@ void METMenu::SetupUi()
 	layout = new QVBoxLayout(this);
 	for (int id = 0; id < para_list->size; id++) {
 		layout_list[id] = new QHBoxLayout();
-		METLineEditStyle line_edit_style;
-		line_edit_list[id] = new METLineEdit(line_edit_style, 100, 25, this);
+		MetLineEditStyle line_edit_style;
+		line_edit_list[id] = new MetLineEdit(line_edit_style, 100, 25, this);
 		AddAttribute(para_list->list[id], layout_list[id],
 			line_edit_list[id], para_list->list[id].is_editable);
 		layout->addItem(layout_list[id]);
@@ -42,13 +42,13 @@ void METMenu::SetupUi()
 	setLayout(layout);
 }
 
-void METMenu::AddAttribute(METPara para,
+void MetMenu::AddAttribute(MetPara para,
 						   QHBoxLayout* layout,
-					       METLineEdit* line_edit,
+					       MetLineEdit* line_edit,
 						   bool is_editable)
 {
-	METLabelStyle label_style(FONT_SIZE, FONT_COLOR);
-	METLabel* label = new METLabel(label_style, QString::fromStdString(para.name),
+	MetLabelStyle label_style(FONT_SIZE, FONT_COLOR);
+	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
 		200, 25, this);
 	if (para.str.empty()) {
 		line_edit->setText(QString::fromStdString(std::to_string(para.num)));
@@ -61,10 +61,10 @@ void METMenu::AddAttribute(METPara para,
 	layout->addWidget(line_edit, 0, Qt::AlignRight);
 }
 
-void METMenu::UpdateAttributes()
+void MetMenu::UpdateAttributes()
 {
 	for (int id = 0; id < para_list->size; id++) {
-		METPara para = para_list->list[id];
+		MetPara para = para_list->list[id];
 		if (para.str.empty()) {
 			line_edit_list[id]->setText(QString::fromStdString(std::to_string(para.num)));
 		} else {
@@ -73,12 +73,12 @@ void METMenu::UpdateAttributes()
 	}
 }
 
-void METMenu::Show()
+void MetMenu::Show()
 {
 	QDialog::show();
 }
 
-void METMenu::Close()
+void MetMenu::Close()
 {
 	QDialog::close();
 }

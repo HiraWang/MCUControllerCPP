@@ -7,33 +7,33 @@
 #include "color.h"
 #include "font.h"
 
-class METLabelStyle
+class MetLabelStyle
 {
 public:
-	METLabelStyle(QString font_size = FONT_SIZE,
+	MetLabelStyle(QString font_size = FONT_SIZE,
 				  QString font_color = FONT_COLOR);
-	virtual ~METLabelStyle();
+	virtual ~MetLabelStyle();
 	QString font_size;
 	QString font_color;
 };
 
-class METLabel : public QLabel
+class MetLabel : public QLabel
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METLabel(METLabelStyle style,
+	MetLabel(MetLabelStyle style,
 			 QString name,
 			 int w,
 			 int h,
 			 QWidget* parent = nullptr);
-	virtual ~METLabel();
+	virtual ~MetLabel();
 
 private:
 	void LoadStyleSheet();
 	int w;
 	int h;
-	METLabelStyle style;
+	MetLabelStyle style;
 	QString style_sheet;
 	QString name;
 };

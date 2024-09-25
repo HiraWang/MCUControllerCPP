@@ -2,7 +2,7 @@
 
 #include "utility.h"
 
-METButton::METButton(METButtonStyle style,
+MetButton::MetButton(MetButtonStyle style,
 					 QString name_default,
 				     QString name_pressed,
 					 int w,
@@ -35,12 +35,12 @@ METButton::METButton(METButtonStyle style,
 	setStyleSheet(style_sheet_default);
 }
 
-METButton::~METButton()
+MetButton::~MetButton()
 {
 	
 }
 
-void METButton::SetButtonDefault()
+void MetButton::SetButtonDefault()
 {
 	if (icon_path_default.isEmpty()) {
 		setText(name_default);
@@ -52,7 +52,7 @@ void METButton::SetButtonDefault()
 	status = BUTTON_DEFAULT;
 }
 
-void METButton::SetButtonPressed()
+void MetButton::SetButtonPressed()
 {
 	if (icon_path_pressed.isEmpty()) {
 		setText(name_pressed);
@@ -64,7 +64,7 @@ void METButton::SetButtonPressed()
 	status = BUTTON_PRESSED;
 }
 
-void METButton::LoadStyleSheet()
+void MetButton::LoadStyleSheet()
 {
 	style_sheet_default =
 		"QPushButton {"
@@ -112,7 +112,7 @@ void METButton::LoadStyleSheet()
 		"}";
 }
 
-METButtonStyle::METButtonStyle(QString color_1,
+MetButtonStyle::MetButtonStyle(QString color_1,
 							   QString color_2,
 							   QString hover_color_1,
 							   QString hover_color_2,
@@ -132,7 +132,7 @@ METButtonStyle::METButtonStyle(QString color_1,
 
 }
 
-METButtonStyle::~METButtonStyle()
+MetButtonStyle::~MetButtonStyle()
 {
 
 }

@@ -1,6 +1,6 @@
 #include "line_edit.h"
 
-METLineEdit::METLineEdit(METLineEditStyle style,
+MetLineEdit::MetLineEdit(MetLineEditStyle style,
 						 int w,
 						 int h,
 						 QWidget* parent) :
@@ -15,12 +15,12 @@ METLineEdit::METLineEdit(METLineEditStyle style,
 	setStyleSheet(style_sheet);
 }
 
-METLineEdit::~METLineEdit()
+MetLineEdit::~MetLineEdit()
 {
 
 }
 
-void METLineEdit::LoadStyleSheet()
+void MetLineEdit::LoadStyleSheet()
 {
 	style_sheet =
 		"QLineEdit {"
@@ -32,7 +32,7 @@ void METLineEdit::LoadStyleSheet()
 		"}";
 }
 
-METLineEditStyle::METLineEditStyle(QString bkg_color,
+MetLineEditStyle::MetLineEditStyle(QString bkg_color,
 								   QString font_size,
 								   QString font_color) :
 	bkg_color(bkg_color),
@@ -42,7 +42,7 @@ METLineEditStyle::METLineEditStyle(QString bkg_color,
 
 }
 
-METLineEditStyle::~METLineEditStyle()
+MetLineEditStyle::~MetLineEditStyle()
 {
 
 }

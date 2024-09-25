@@ -17,17 +17,17 @@ class UpperView : public QWidget
 public:
     UpperView(QWidget* parent = nullptr);
     virtual ~UpperView();
-    METMenu* menu;
-    METComboBox* combo_box;
-    METButton* exit_button;
-    METButton* window_button;
-    METButton* load_config_button;
-    METButton* menu_button;
-    METButton* power_button;
+    MetMenu* menu;
+    MetComboBox* combo_box;
+    MetButton* exit_button;
+    MetButton* window_button;
+    MetButton* load_config_button;
+    MetButton* menu_button;
+    MetButton* power_button;
 
 private:
     void SetupUi();
-    METLabel* label;
+    MetLabel* label;
     QHBoxLayout* layout;
 };
 

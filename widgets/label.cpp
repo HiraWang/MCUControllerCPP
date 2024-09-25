@@ -1,6 +1,6 @@
 #include "label.h"
 
-METLabel::METLabel(METLabelStyle style,
+MetLabel::MetLabel(MetLabelStyle style,
 				   QString name,
 				   int w,
 				   int h,
@@ -17,12 +17,12 @@ METLabel::METLabel(METLabelStyle style,
 	setStyleSheet(style_sheet);
 }
 
-METLabel::~METLabel()
+MetLabel::~MetLabel()
 {
 
 }
 
-void METLabel::LoadStyleSheet()
+void MetLabel::LoadStyleSheet()
 {
 	style_sheet =
 		"QLabel {"
@@ -33,7 +33,7 @@ void METLabel::LoadStyleSheet()
 		"}";
 }
 
-METLabelStyle::METLabelStyle(QString font_size, 
+MetLabelStyle::MetLabelStyle(QString font_size, 
 							 QString font_color) :
 	font_size(font_size),
 	font_color(font_color)
@@ -41,7 +41,7 @@ METLabelStyle::METLabelStyle(QString font_size,
 	
 }
 
-METLabelStyle::~METLabelStyle()
+MetLabelStyle::~MetLabelStyle()
 {
 
 }

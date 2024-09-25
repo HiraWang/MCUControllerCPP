@@ -4,7 +4,7 @@
 
 RegloIccView::RegloIccView(int w,
 						   int h,
-						   METParaList* para_list,
+						   MetParaList* para_list,
 						   QWidget* parent) :
 						   w(w),
 						   h(h),
@@ -23,7 +23,7 @@ RegloIccView::RegloIccView(int w,
 								   ONESTOPBIT,
 								   NOPARITY);
 	if (reglo_icc->Open() != SERIAL_OK) {
-		METMsgSubwindow("device RegloIcc open failed");
+		MetMsgSubwindow("device RegloIcc open failed");
 	}
 
 	SetupUi();
@@ -32,7 +32,7 @@ RegloIccView::RegloIccView(int w,
 RegloIccView::~RegloIccView()
 {
 	if (reglo_icc->Close() != SERIAL_OK) {
-		METMsgSubwindow("device RegloIcc close failed");
+		MetMsgSubwindow("device RegloIcc close failed");
 	}
 }
 
@@ -41,11 +41,11 @@ void RegloIccView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
-	METButtonStyle button_style;
-	read_button = new METButton(button_style, "READ", "", 80, 80, "", "", this);
+	MetButtonStyle button_style;
+	read_button = new MetButton(button_style, "READ", "", 80, 80, "", "", this);
 	connect(read_button, &QPushButton::released, this, &RegloIccView::Read);
 
-	write_button = new METButton(button_style, "WRITE", "", 80, 80, "", "", this);
+	write_button = new MetButton(button_style, "WRITE", "", 80, 80, "", "", this);
 	connect(write_button, &QPushButton::released, this, &RegloIccView::Write);
 
 	layout = new QHBoxLayout(this);
@@ -57,13 +57,13 @@ void RegloIccView::SetupUi()
 void RegloIccView::Read()
 {
 	if (reglo_icc->Read() != SERIAL_OK) {
-		METMsgSubwindow("device RegloIcc read failed");
+		MetMsgSubwindow("device RegloIcc read failed");
 	}
 }
 
 void RegloIccView::Write()
 {
 	if (reglo_icc->Write() != SERIAL_OK) {
-		METMsgSubwindow("device RegloIcc write failed");
+		MetMsgSubwindow("device RegloIcc write failed");
 	}
 }

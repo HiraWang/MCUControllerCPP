@@ -7,10 +7,10 @@
 #include "color.h"
 #include "font.h"
 
-class METButtonStyle
+class MetButtonStyle
 {
 public:
-	METButtonStyle(QString color_1 = COLOR_WHITE,
+	MetButtonStyle(QString color_1 = COLOR_WHITE,
 				   QString color_2 = COLOR_WHITE,
 				   QString hover_color_1 = COLOR_LIGHT_GRAY,
 				   QString hover_color_2 = COLOR_LIGHT_GRAY,
@@ -18,7 +18,7 @@ public:
 				   QString pressed_color_2 = COLOR_GRAY,
 				   QString font_size = FONT_SIZE,
 				   QString font_color = FONT_COLOR);
-	virtual ~METButtonStyle();
+	virtual ~MetButtonStyle();
 	QString color_1;
 	QString color_2;
 	QString hover_color_1;
@@ -29,12 +29,12 @@ public:
 	QString font_color;
 };
 
-class METButton : public QPushButton
+class MetButton : public QPushButton
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METButton(METButtonStyle style,
+	MetButton(MetButtonStyle style,
 	     	  QString name_default,
 			  QString name_pressed,
 			  int w,
@@ -42,7 +42,7 @@ public:
 			  QString icon_path_default = "",
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
-	virtual ~METButton();
+	virtual ~MetButton();
 	void SetButtonDefault();
 	void SetButtonPressed();
 	bool status;
@@ -51,7 +51,7 @@ private:
 	void LoadStyleSheet();
 	int w;
 	int h;
-	METButtonStyle style;
+	MetButtonStyle style;
 	QString name_default;
 	QString name_pressed;
 	QString icon_path_default;

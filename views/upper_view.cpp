@@ -21,29 +21,29 @@ UpperView::~UpperView()
 
 void UpperView::SetupUi()
 {
-	METLabelStyle label_style(FONT_SIZE, COLOR_LIGHT_GRAY);
-	label = new METLabel(label_style, "Device", 60, 25, this);
+	MetLabelStyle label_style(FONT_SIZE, COLOR_LIGHT_GRAY);
+	label = new MetLabel(label_style, "Device", 60, 25, this);
 
-	METComboBoxStyle combo_box_style;
-	combo_box = new METComboBox(combo_box_style, 250, 20, this);
+	MetComboBoxStyle combo_box_style;
+	combo_box = new MetComboBox(combo_box_style, 250, 20, this);
 
-	METButtonStyle button_style;
-	exit_button = new METButton(button_style, "FULL", "MAX", 80, 80,
+	MetButtonStyle button_style;
+	exit_button = new MetButton(button_style, "FULL", "MAX", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)), this);
-	window_button = new METButton(button_style, "EXIT", "", 80, 80,
+	window_button = new MetButton(button_style, "EXIT", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)), this);
-	load_config_button = new METButton(button_style, "LOAD", "", 80, 80,
+	load_config_button = new MetButton(button_style, "LOAD", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
-	menu_button = new METButton(button_style, "MENU", "CLOSE", 80, 80,
+	menu_button = new MetButton(button_style, "MENU", "CLOSE", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
 
-	METButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
+	MetButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
 		OFF_COLOR_3, ON_COLOR_3);
-	power_button = new METButton(power_button_style, "OFF", "ON", 80, 80,
+	power_button = new MetButton(power_button_style, "OFF", "ON", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
 

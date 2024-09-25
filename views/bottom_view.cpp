@@ -13,8 +13,8 @@ BottomView::~BottomView()
 
 void BottomView::SetupUi()
 {
-	METTabStyle tab_style;
-	tab = new METTab(tab_style, this);
+	MetTabStyle tab_style;
+	tab = new MetTab(tab_style, this);
 	tab->hide();
 
 	layout = new QHBoxLayout(this);

@@ -10,7 +10,7 @@
 
 extern std::string IMAGE_MET_ERROR;
 
-METMsgSubwindow::METMsgSubwindow(QString message,
+MetMsgSubwindow::MetMsgSubwindow(QString message,
 								 QWidget* parent) :
 	message(message),
 	QDialog(parent)
@@ -20,12 +20,12 @@ METMsgSubwindow::METMsgSubwindow(QString message,
 	SetupUi();
 }
 
-METMsgSubwindow::~METMsgSubwindow()
+MetMsgSubwindow::~MetMsgSubwindow()
 {
 
 }
 
-void METMsgSubwindow::SetupUi()
+void MetMsgSubwindow::SetupUi()
 {
 	setFixedWidth(300);
 	setFixedHeight(300);
@@ -42,8 +42,8 @@ void METMsgSubwindow::SetupUi()
 	label.setText(message);
 	label.setStyleSheet(style_sheet_label);
 
-	METButtonStyle button_style;
-	METButton button = METButton(button_style, "OK", "OK", 80, 80, "", "", this);
+	MetButtonStyle button_style;
+	MetButton button = MetButton(button_style, "OK", "OK", 80, 80, "", "", this);
 	connect(&button, &QPushButton::released, this, &QDialog::close);
 
 	layout = new QVBoxLayout(this);
@@ -55,7 +55,7 @@ void METMsgSubwindow::SetupUi()
 	exec();
 }
 
-void METMsgSubwindow::LoadStyleSheet()
+void MetMsgSubwindow::LoadStyleSheet()
 {
 	style_sheet_dialog =
 		"QDialog {"

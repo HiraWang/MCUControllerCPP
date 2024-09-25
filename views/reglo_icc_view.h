@@ -15,11 +15,11 @@ class RegloIccView : public QWidget
 public:
     RegloIccView(int w,
                  int h,
-                 METParaList* para_list,
+                 MetParaList* para_list,
                  QWidget* parent = nullptr);
     virtual ~RegloIccView();
-    METButton* read_button;
-    METButton* write_button;
+    MetButton* read_button;
+    MetButton* write_button;
 
 private:
     void SetupUi();
@@ -29,7 +29,7 @@ private:
     int h;
     DeviceRegloIcc* reglo_icc;
     QHBoxLayout* layout;
-    METParaList* para_list;
+    MetParaList* para_list;
 };
 
 #endif

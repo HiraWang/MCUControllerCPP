@@ -7,10 +7,10 @@
 #include "color.h"
 #include "font.h"
 
-class METComboBoxStyle
+class MetComboBoxStyle
 {
 public:
-	METComboBoxStyle(QString bkg_color = COLOR_WHITE,
+	MetComboBoxStyle(QString bkg_color = COLOR_WHITE,
 					 QString selection_bkg_color = COLOR_BLACK,
 					 QString editable_color = COLOR_WHITE,
 					 QString disabled_color = COLOR_GRAY,
@@ -20,7 +20,7 @@ public:
 					 QString down_arrow_on_color = COLOR_WHITE,
 					 QString font_size = FONT_SIZE,
 					 QString font_color = FONT_COLOR);
-	virtual ~METComboBoxStyle();
+	virtual ~MetComboBoxStyle();
 	QString bkg_color;
 	QString selection_bkg_color;
 	QString editable_color;
@@ -33,22 +33,22 @@ public:
 	QString font_color;
 };
 
-class METComboBox : public QComboBox
+class MetComboBox : public QComboBox
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METComboBox(METComboBoxStyle style,
+	MetComboBox(MetComboBoxStyle style,
 			    int w,
 			    int h,
 			    QWidget* parent = nullptr);
-	virtual ~METComboBox();
+	virtual ~MetComboBox();
 
 private:
 	void LoadStyleSheet();
 	int w;
 	int h;
-	METComboBoxStyle style;
+	MetComboBoxStyle style;
 	QString style_sheet;
 };
 

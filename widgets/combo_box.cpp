@@ -1,6 +1,6 @@
 #include "combo_box.h"
 
-METComboBox::METComboBox(METComboBoxStyle style,
+MetComboBox::MetComboBox(MetComboBoxStyle style,
 					     int w,
 					     int h,
 					     QWidget* parent) :
@@ -15,12 +15,12 @@ METComboBox::METComboBox(METComboBoxStyle style,
 	setStyleSheet(style_sheet);
 }
 
-METComboBox::~METComboBox()
+MetComboBox::~MetComboBox()
 {
 
 }
 
-void METComboBox::LoadStyleSheet()
+void MetComboBox::LoadStyleSheet()
 {
     style_sheet =
         "QComboBox {"
@@ -88,7 +88,7 @@ void METComboBox::LoadStyleSheet()
         "}";
 }
 
-METComboBoxStyle::METComboBoxStyle(QString bkg_color,
+MetComboBoxStyle::MetComboBoxStyle(QString bkg_color,
                                    QString selection_bkg_color,
                                    QString editable_color,
                                    QString disabled_color,
@@ -112,7 +112,7 @@ METComboBoxStyle::METComboBoxStyle(QString bkg_color,
 
 }
 
-METComboBoxStyle::~METComboBoxStyle()
+MetComboBoxStyle::~MetComboBoxStyle()
 {
 
 }

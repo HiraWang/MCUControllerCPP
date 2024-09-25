@@ -26,7 +26,7 @@ private:
     // instance of class calls constructor in default
     QStringList device_list;
     // pointer to class does not call constructor in default
-    METParaList* para_list;
+    MetParaList* para_list;
     MainWindowUI* ui;
 };
 

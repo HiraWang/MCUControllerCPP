@@ -7,34 +7,34 @@
 #include "color.h"
 #include "font.h"
 
-class METLineEditStyle
+class MetLineEditStyle
 {
 public:
-	METLineEditStyle(QString bkg_color = COLOR_WHITE, 
+	MetLineEditStyle(QString bkg_color = COLOR_WHITE, 
 					 QString font_size = FONT_SIZE,
 					 QString font_color = FONT_COLOR);
-	virtual ~METLineEditStyle();
+	virtual ~MetLineEditStyle();
 	QString bkg_color;
 	QString font_size;
 	QString font_color;
 };
 
-class METLineEdit : public QLineEdit
+class MetLineEdit : public QLineEdit
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	METLineEdit(METLineEditStyle style,
+	MetLineEdit(MetLineEditStyle style,
 			    int w,
 			    int h,
 			    QWidget* parent = nullptr);
-	virtual ~METLineEdit();
+	virtual ~MetLineEdit();
 
 private:
 	void LoadStyleSheet();
 	int w;
 	int h;
-	METLineEditStyle style;
+	MetLineEditStyle style;
 	QString style_sheet;
 };
 
