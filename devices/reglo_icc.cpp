@@ -188,6 +188,24 @@ SerialCode DeviceRegloIcc::Off(BYTE channel)
 
 SerialCode DeviceRegloIcc::SetAddress()
 {
+	std::string buf_1 = "@2" + CR;
+	std::string buf_2 = "2~1" + CR;
+	char* cmd_1 = CopyStringToCharArray(buf_1);
+	char* cmd_2 = CopyStringToCharArray(buf_2);
+	DWORD size_1 = (DWORD)strlen(cmd_1);
+	DWORD size_2 = (DWORD)strlen(cmd_2);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd_1, size_1, &dw_bytes_read, NULL)) {
+		delete[] cmd_1;
+		return SERIAL_FAIL_TO_WRITE;
+	}
+
+	if (!WriteFile(serial_handle, cmd_2, size_2, &dw_bytes_read, NULL)) {
+		delete[] cmd_2;
+		return SERIAL_FAIL_TO_WRITE;
+	}
+
 	return SERIAL_OK;
 }
 
