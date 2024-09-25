@@ -60,6 +60,8 @@ class METParaList
 {
 public:
     METParaList();
+    METParaList(const METParaList& source);
+    void operator = (const METParaList& source);
     virtual ~METParaList();
     ExitCode LoadJsonFile();
     size_t size;

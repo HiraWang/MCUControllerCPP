@@ -51,11 +51,13 @@ std::string GetAbsPath(std::string file_name)
     return GetCurrentPath() + file_name;
 }
 
-METPara::METPara()
+METPara::METPara() : 
+    is_editable(false),
+    num(0),
+    str(""),
+    name("")
 {
-    num = 0;
-    str = "";
-    is_editable = false;
+
 }
 
 METPara::~METPara()
@@ -65,15 +67,45 @@ METPara::~METPara()
 
 void METPara::Reset()
 {
+    is_editable = false;
     num = 0;
     str = "";
-    is_editable = false;
+    name = "";
 }
 
 METParaList::METParaList() : 
+    size(0),
     list(nullptr)
 {
 
+}
+
+METParaList::METParaList(const METParaList& source)
+{
+    this->size = source.size;
+    if (this->size >= 0) {
+        this->list = new METPara[this->size];
+    } else {
+        return;
+    }
+
+    for (int id = 0; id < this->size; id++) {
+        this->list[id] = source.list[id];
+    }
+}
+
+void METParaList::operator = (const METParaList& source)
+{
+    this->size = source.size;
+    if (this->size >= 0) {
+        this->list = new METPara[this->size];
+    } else {
+        return;
+    }
+
+    for (int id = 0; id < this->size; id++) {
+        this->list[id] = source.list[id];
+    }
 }
 
 METParaList::~METParaList()
