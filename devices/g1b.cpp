@@ -105,8 +105,8 @@ SerialCode DeviceG1B::read()
 	const int size = 5;
 	char buf[size + 1] = { 0 };
 
-	DWORD dwBytesRead = 0;
-	if (!ReadFile(serial_handle, buf, size, &dwBytesRead, NULL)) {
+	DWORD dw_bytes_read = 0;
+	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
 		std::cout << buf << '\n';
@@ -119,8 +119,8 @@ SerialCode DeviceG1B::write()
 	char buf[] = "go\r";
 	DWORD size = (DWORD)strlen(buf);
 
-	DWORD dwBytesRead = 0;
-	if (!WriteFile(serial_handle, buf, size, &dwBytesRead, NULL)) {
+	DWORD dw_bytes_read = 0;
+	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
 		std::cout << buf << '\n';
