@@ -15,7 +15,7 @@ public:
     UpperView* upper_view;
     BottomView* bottom_view;
 
-    void setup_ui(QMainWindow* main_window)
+    void SetupUi(QMainWindow* main_window)
     {
         if (main_window->objectName().isEmpty())
             main_window->setObjectName(QString::fromUtf8("main_window"));
@@ -26,7 +26,7 @@ public:
         
         QMetaObject::connectSlotsByName(main_window);
         QIcon icon = QIcon();
-        icon.addFile(QString::fromStdString(get_abs_path(IMAGE_MET_ICO)));
+        icon.addFile(QString::fromStdString(GetAbsPath(IMAGE_MET_ICO)));
         QString style_sheet = QString("QMainWindow > QWidget { background-color: ") +
                               COLOR_DEEP_GRAY +
                               QString("; }");

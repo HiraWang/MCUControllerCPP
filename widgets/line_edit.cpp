@@ -11,7 +11,7 @@ METLineEdit::METLineEdit(METLineEditStyle style,
 {
 	setFixedWidth(w);
 	setFixedHeight(h);
-	load_style_sheet();
+	LoadStyleSheet();
 	setStyleSheet(style_sheet);
 }
 
@@ -20,7 +20,7 @@ METLineEdit::~METLineEdit()
 
 }
 
-void METLineEdit::load_style_sheet()
+void METLineEdit::LoadStyleSheet()
 {
 	style_sheet =
 		"QLineEdit {"

@@ -34,7 +34,7 @@ DeviceG1B::~DeviceG1B()
 
 }
 
-SerialCode DeviceG1B::open()
+SerialCode DeviceG1B::Open()
 {
 	// open serial port
 	serial_handle = CreateFile(port_name,
@@ -91,7 +91,7 @@ SerialCode DeviceG1B::open()
 	return SERIAL_OK;
 }
 
-SerialCode DeviceG1B::close()
+SerialCode DeviceG1B::Close()
 {
 	if (!CloseHandle(serial_handle)) {
 		return SERIAL_FAIL;
@@ -100,7 +100,7 @@ SerialCode DeviceG1B::close()
 	}
 }
 
-SerialCode DeviceG1B::read()
+SerialCode DeviceG1B::Read()
 {
 	const int size = 5;
 	char buf[size + 1] = { 0 };
@@ -114,7 +114,7 @@ SerialCode DeviceG1B::read()
 	}
 }
 
-SerialCode DeviceG1B::write()
+SerialCode DeviceG1B::Write()
 {
 	char buf[] = "go\r";
 	DWORD size = (DWORD)strlen(buf);

@@ -16,11 +16,11 @@ public:
     virtual ~MainWindow();
 
 private slots:
-    void toggle_exit_button();
-    void toggle_window_button();
-    void toggle_load_config_button();
-    void toggle_menu_button();
-    void toggle_power_button();
+    void ToggleExitButton();
+    void ToggleWindowButton();
+    void ToggleLoadConfigButton();
+    void ToggleMenuButton();
+    void TogglePowerButton();
 
 private:
     // instance of class calls constructor in default

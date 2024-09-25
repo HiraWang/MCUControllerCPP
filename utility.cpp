@@ -19,7 +19,7 @@ std::string IMAGE_MET_POWER = "\\images\\Power.png";
 std::string CONFIG_MET = "\\configuration\\config.json";
 
 
-std::string get_separator() 
+std::string GetSeparator() 
 {
 #ifdef _WIN32
     std::string separator("\\");
@@ -29,7 +29,7 @@ std::string get_separator()
     return separator;
 }
 
-std::string get_current_path() 
+std::string GetCurrentPath() 
 {
     char* buf = nullptr;
     buf = _getcwd(nullptr, 0);
@@ -42,13 +42,13 @@ std::string get_current_path()
     }
 }
 
-std::string get_abs_path(std::string file_name) 
+std::string GetAbsPath(std::string file_name) 
 {
-    std::string path = get_current_path();
+    std::string path = GetCurrentPath();
     if (path.empty() || file_name.empty())
         return std::string();
-    std::cout << "get path : " << get_current_path() + file_name << '\n';
-    return get_current_path() + file_name;
+    std::cout << "get path : " << GetCurrentPath() + file_name << '\n';
+    return GetCurrentPath() + file_name;
 }
 
 METPara::METPara()
@@ -63,7 +63,7 @@ METPara::~METPara()
 
 }
 
-void METPara::reset()
+void METPara::Reset()
 {
     num = 0;
     str = "";
@@ -81,10 +81,10 @@ METParaList::~METParaList()
     delete[] list;
 }
 
-ExitCode METParaList::load_json_file()
+ExitCode METParaList::LoadJsonFile()
 {
     // load data from json configuration file
-    std::ifstream f(get_abs_path(CONFIG_MET));
+    std::ifstream f(GetAbsPath(CONFIG_MET));
     if (f.fail()) {
         return PROGRAM_NO_CONFIG;
     }
@@ -97,7 +97,7 @@ ExitCode METParaList::load_json_file()
     } else {
         std::cout << "reset the list of met para" << '\n';
         for (int id = 0; id < size; id++) {
-            list[id].reset();
+            list[id].Reset();
         }
     }
 

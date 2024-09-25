@@ -15,8 +15,8 @@ public:
 	virtual ~METMsgSubwindow();
 
 private:
-	void setup_ui();
-	void load_style_sheet();
+	void SetupUi();
+	void LoadStyleSheet();
 	QString message;
 	QString style_sheet_dialog;
 	QString style_sheet_label;

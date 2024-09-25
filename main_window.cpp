@@ -13,26 +13,26 @@ MainWindow::MainWindow(QWidget* parent) :
 	para_list(new METParaList())
 {
 	// set main window ui
-    ui->setup_ui(this);
+    ui->SetupUi(this);
 
 	// connet widgets with main window callback functions 
 	connect(ui->upper_view->exit_button, &QPushButton::released,
-		this, &MainWindow::toggle_exit_button);
+		this, &MainWindow::ToggleExitButton);
 	connect(ui->upper_view->window_button, &QPushButton::released,
-		this, &MainWindow::toggle_window_button);
+		this, &MainWindow::ToggleWindowButton);
 	connect(ui->upper_view->load_config_button, &QPushButton::released,
-		this, &MainWindow::toggle_load_config_button);
+		this, &MainWindow::ToggleLoadConfigButton);
 	connect(ui->upper_view->menu_button, &QPushButton::released,
-		this, &MainWindow::toggle_menu_button);
+		this, &MainWindow::ToggleMenuButton);
 	connect(ui->upper_view->power_button, &QPushButton::released,
-		this, &MainWindow::toggle_power_button);
+		this, &MainWindow::TogglePowerButton);
 
 	// set device list to combo box
 	device_list = { "Automation", "G1B", "Reglo ICC" };
 	ui->upper_view->combo_box->addItems(device_list);
 
 	// load data to para list
-	if (para_list->load_json_file() == PROGRAM_NO_CONFIG) {
+	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
 		METMsgSubwindow("config file not found");
 		exit(PROGRAM_NO_CONFIG);
 	}
@@ -47,54 +47,54 @@ MainWindow::~MainWindow()
 	delete para_list;
 }
 
-void MainWindow::toggle_exit_button()
+void MainWindow::ToggleExitButton()
 {
 	METButton* button = ui->upper_view->exit_button;
-	button->set_button_default();
+	button->SetButtonDefault();
 	exit(PROGRAM_OK);
 }
 
-void MainWindow::toggle_window_button()
+void MainWindow::ToggleWindowButton()
 {
 	METButton* button = ui->upper_view->window_button;
 	if (button->status) {
-		button->set_button_default();
+		button->SetButtonDefault();
 		showFullScreen();
 	} else {
-		button->set_button_pressed();
+		button->SetButtonPressed();
 		showMaximized();
 	}
 }
 
-void MainWindow::toggle_load_config_button()
+void MainWindow::ToggleLoadConfigButton()
 {
 	METButton* button = ui->upper_view->load_config_button;
-	button->set_button_default();
-	if (para_list->load_json_file() == PROGRAM_NO_CONFIG) {
+	button->SetButtonDefault();
+	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
 		METMsgSubwindow("config file not found");
 	}
-	ui->upper_view->menu->update_attributes();
+	ui->upper_view->menu->UpdateAttributes();
 }
 
-void MainWindow::toggle_menu_button()
+void MainWindow::ToggleMenuButton()
 {
 	METButton* button = ui->upper_view->menu_button;
 	if (button->status) {
-		button->set_button_default();
-		ui->upper_view->menu->close();
+		button->SetButtonDefault();
+		ui->upper_view->menu->Close();
 	} else {
-		button->set_button_pressed();
-		ui->upper_view->menu->show();
+		button->SetButtonPressed();
+		ui->upper_view->menu->Show();
 	}
 }
 
-void MainWindow::toggle_power_button()
+void MainWindow::TogglePowerButton()
 {
 	METButton* button = ui->upper_view->power_button;
 	int current_device = ui->upper_view->combo_box->currentIndex();
 
 	if (button->status) {
-		button->set_button_default();
+		button->SetButtonDefault();
 		// remove pages from tab widget
 		ui->bottom_view->tab->hide();
 		ui->bottom_view->tab->clear();
@@ -103,7 +103,7 @@ void MainWindow::toggle_power_button()
 			ui->bottom_view->g1b_view->~G1BView();
 		}
 	} else {
-		button->set_button_pressed();
+		button->SetButtonPressed();
 		// add pages to tab widget
 		int w = 1230;
 		int h = 540;

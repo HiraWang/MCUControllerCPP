@@ -43,12 +43,12 @@ public:
 			  QString icon_path_pressed = "",
 			  QWidget* parent = nullptr);
 	virtual ~METButton();
-	void set_button_default();
-	void set_button_pressed();
+	void SetButtonDefault();
+	void SetButtonPressed();
 	bool status;
 
 private:
-	void load_style_sheet();
+	void LoadStyleSheet();
 	int w;
 	int h;
 	METButtonStyle style;

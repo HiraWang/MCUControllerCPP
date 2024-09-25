@@ -22,31 +22,31 @@ G1BView::G1BView(int w,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
-	if (G1B->open() != SERIAL_OK) {
+	if (G1B->Open() != SERIAL_OK) {
 		METMsgSubwindow("device G1B open failed");
 	}
 
-	setup_ui();
+	SetupUi();
 }
 
 G1BView::~G1BView()
 {
-	if (G1B->close() != SERIAL_OK) {
+	if (G1B->Close() != SERIAL_OK) {
 		METMsgSubwindow("device G1B close failed");
 	}
 }
 
-void G1BView::setup_ui()
+void G1BView::SetupUi()
 {
 	setFixedWidth(w);
 	setFixedHeight(h);
 
 	METButtonStyle button_style;
 	read_button = new METButton(button_style, "READ", "", 80, 80, "", "", this);
-	connect(read_button, &QPushButton::released, this, &G1BView::read);
+	connect(read_button, &QPushButton::released, this, &G1BView::Read);
 
 	write_button = new METButton(button_style, "WRITE", "", 80, 80, "", "", this);
-	connect(write_button, &QPushButton::released, this, &G1BView::write);
+	connect(write_button, &QPushButton::released, this, &G1BView::Write);
 
 	layout = new QHBoxLayout(this);
 	layout->addWidget(read_button, 0, Qt::AlignCenter);
@@ -54,16 +54,16 @@ void G1BView::setup_ui()
 	setLayout(layout);
 }
 
-void G1BView::read()
+void G1BView::Read()
 {
-	if (G1B->read() != SERIAL_OK) {
+	if (G1B->Read() != SERIAL_OK) {
 		METMsgSubwindow("device G1B read failed");
 	}
 }
 
-void G1BView::write()
+void G1BView::Write()
 {
-	if (G1B->write() != SERIAL_OK) {
+	if (G1B->Write() != SERIAL_OK) {
 		METMsgSubwindow("device G1B write failed");
 	}
 }

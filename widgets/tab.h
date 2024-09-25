@@ -32,9 +32,9 @@ public:
 	virtual ~METTab();
 
 private:
+	void LoadStyleSheet();
 	METTabStyle style;
 	QString style_sheet;
-	void load_style_sheet();
 };
 
 #endif

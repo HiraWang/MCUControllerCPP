@@ -21,10 +21,10 @@ public:
                BYTE stop_bits,
                BYTE parity);
     virtual ~SerialPort();
-    virtual SerialCode open() = 0;
-    virtual SerialCode close() = 0;
-    virtual SerialCode read() = 0;
-    virtual SerialCode write() = 0;
+    virtual SerialCode Open() = 0;
+    virtual SerialCode Close() = 0;
+    virtual SerialCode Read() = 0;
+    virtual SerialCode Write() = 0;
     BYTE byte_size;
     BYTE stop_bits;
     BYTE parity;
@@ -42,10 +42,10 @@ public:
               BYTE stop_bits,
               BYTE parity);
     virtual ~DeviceG1B();
-    virtual SerialCode open() override;
-    virtual SerialCode close() override;
-    virtual SerialCode read() override;
-    virtual SerialCode write() override;
+    virtual SerialCode Open() override;
+    virtual SerialCode Close() override;
+    virtual SerialCode Read() override;
+    virtual SerialCode Write() override;
 };
 
 #endif

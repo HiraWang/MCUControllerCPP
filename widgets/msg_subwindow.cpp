@@ -16,8 +16,8 @@ METMsgSubwindow::METMsgSubwindow(QString message,
 	QDialog(parent)
 {
 	std::cout << message.toStdString() << '\n';
-	load_style_sheet();
-	setup_ui();
+	LoadStyleSheet();
+	SetupUi();
 }
 
 METMsgSubwindow::~METMsgSubwindow()
@@ -25,14 +25,14 @@ METMsgSubwindow::~METMsgSubwindow()
 
 }
 
-void METMsgSubwindow::setup_ui()
+void METMsgSubwindow::SetupUi()
 {
 	setFixedWidth(300);
 	setFixedHeight(300);
 	setStyleSheet(style_sheet_dialog);
 	setWindowFlag(Qt::FramelessWindowHint);
 
-	QPixmap pixmap = QPixmap(QString::fromStdString(get_abs_path(IMAGE_MET_ERROR)));
+	QPixmap pixmap = QPixmap(QString::fromStdString(GetAbsPath(IMAGE_MET_ERROR)));
 
 	QLabel icon;
 	icon.setScaledContents(true);
@@ -55,7 +55,7 @@ void METMsgSubwindow::setup_ui()
 	exec();
 }
 
-void METMsgSubwindow::load_style_sheet()
+void METMsgSubwindow::LoadStyleSheet()
 {
 	style_sheet_dialog =
 		"QDialog {"

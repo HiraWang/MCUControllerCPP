@@ -13,7 +13,7 @@ METLabel::METLabel(METLabelStyle style,
 	setText(name);
 	setFixedWidth(w);
 	setFixedHeight(h);
-	load_style_sheet();
+	LoadStyleSheet();
 	setStyleSheet(style_sheet);
 }
 
@@ -22,7 +22,7 @@ METLabel::~METLabel()
 
 }
 
-void METLabel::load_style_sheet()
+void METLabel::LoadStyleSheet()
 {
 	style_sheet =
 		"QLabel {"

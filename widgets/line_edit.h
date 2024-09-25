@@ -31,7 +31,7 @@ public:
 	virtual ~METLineEdit();
 
 private:
-	void load_style_sheet();
+	void LoadStyleSheet();
 	int w;
 	int h;
 	METLineEditStyle style;

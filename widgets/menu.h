@@ -16,18 +16,18 @@ public:
     METMenu(METParaList* para_list,
             QWidget* parent = nullptr);
     virtual ~METMenu();
-    void show();
-    void close();
-    void update_attributes();
+    void Show();
+    void Close();
+    void UpdateAttributes();
     QHBoxLayout** layout_list;
     METLineEdit** line_edit_list;
 
 private:
-    void setup_ui();
-    void add_attribute(METPara para,
-                       QHBoxLayout* layout,
-                       METLineEdit* line_edit,
-                       bool is_editable);
+    void SetupUi();
+    void AddAttribute(METPara para,
+                      QHBoxLayout* layout,
+                      METLineEdit* line_edit,
+                      bool is_editable);
     QVBoxLayout* layout;
     METParaList* para_list;
 };

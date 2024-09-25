@@ -3,9 +3,9 @@
 
 #include <iostream>
 
-std::string get_separator();
-std::string get_current_path();
-std::string get_abs_path(std::string file_name);
+std::string GetSeparator();
+std::string GetCurrentPath();
+std::string GetAbsPath(std::string file_name);
 
 typedef enum {
     BUTTON_DEFAULT = false,
@@ -49,7 +49,7 @@ class METPara
 public:
     METPara();
     virtual ~METPara();
-    void reset();
+    void Reset();
     bool is_editable;
     int num;
     std::string str;
@@ -61,7 +61,7 @@ class METParaList
 public:
     METParaList();
     virtual ~METParaList();
-    ExitCode load_json_file();
+    ExitCode LoadJsonFile();
     size_t size;
     METPara* list;
 };

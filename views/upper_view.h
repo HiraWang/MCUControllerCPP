@@ -26,7 +26,7 @@ public:
     METButton* power_button;
 
 private:
-    void setup_ui();
+    void SetupUi();
     METLabel* label;
     QHBoxLayout* layout;
 };

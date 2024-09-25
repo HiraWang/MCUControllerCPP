@@ -31,7 +31,7 @@ METButton::METButton(METButtonStyle style,
 	}
 	setFixedWidth(w);
 	setFixedHeight(h);
-	load_style_sheet();
+	LoadStyleSheet();
 	setStyleSheet(style_sheet_default);
 }
 
@@ -40,7 +40,7 @@ METButton::~METButton()
 	
 }
 
-void METButton::set_button_default()
+void METButton::SetButtonDefault()
 {
 	if (icon_path_default.isEmpty()) {
 		setText(name_default);
@@ -52,7 +52,7 @@ void METButton::set_button_default()
 	status = BUTTON_DEFAULT;
 }
 
-void METButton::set_button_pressed()
+void METButton::SetButtonPressed()
 {
 	if (icon_path_pressed.isEmpty()) {
 		setText(name_pressed);
@@ -64,7 +64,7 @@ void METButton::set_button_pressed()
 	status = BUTTON_PRESSED;
 }
 
-void METButton::load_style_sheet()
+void METButton::LoadStyleSheet()
 {
 	style_sheet_default =
 		"QPushButton {"

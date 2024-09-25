@@ -11,7 +11,7 @@ extern std::string IMAGE_MET_POWER;
 UpperView::UpperView(QWidget* parent) :
 	QWidget(parent)
 {
-	setup_ui();
+	SetupUi();
 }
 
 UpperView::~UpperView()
@@ -19,7 +19,7 @@ UpperView::~UpperView()
 
 }
 
-void UpperView::setup_ui()
+void UpperView::SetupUi()
 {
 	METLabelStyle label_style(FONT_SIZE, COLOR_LIGHT_GRAY);
 	label = new METLabel(label_style, "Device", 60, 25, this);
@@ -29,23 +29,23 @@ void UpperView::setup_ui()
 
 	METButtonStyle button_style;
 	exit_button = new METButton(button_style, "FULL", "MAX", 80, 80,
-		QString::fromStdString(get_abs_path(IMAGE_MET_EXIT)),
-		QString::fromStdString(get_abs_path(IMAGE_MET_EXIT)), this);
+		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)), this);
 	window_button = new METButton(button_style, "EXIT", "", 80, 80,
-		QString::fromStdString(get_abs_path(IMAGE_MET_FULL_SCREEN)),
-		QString::fromStdString(get_abs_path(IMAGE_MET_MAX_SIZE)), this);
+		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)), this);
 	load_config_button = new METButton(button_style, "LOAD", "", 80, 80,
-		QString::fromStdString(get_abs_path(IMAGE_MET_LOAD)),
-		QString::fromStdString(get_abs_path(IMAGE_MET_LOAD)), this);
+		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
 	menu_button = new METButton(button_style, "MENU", "CLOSE", 80, 80,
-		QString::fromStdString(get_abs_path(IMAGE_MET_MENU)),
-		QString::fromStdString(get_abs_path(IMAGE_MET_CLOSE)), this);
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
 
 	METButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
 		OFF_COLOR_3, ON_COLOR_3);
 	power_button = new METButton(power_button_style, "OFF", "ON", 80, 80,
-		QString::fromStdString(get_abs_path(IMAGE_MET_POWER)),
-		QString::fromStdString(get_abs_path(IMAGE_MET_POWER)), this);
+		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
 
 	layout = new QHBoxLayout(this);
 	layout->addWidget(label, 0, Qt::AlignTop | Qt::AlignLeft);

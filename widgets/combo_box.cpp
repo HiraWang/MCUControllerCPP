@@ -11,7 +11,7 @@ METComboBox::METComboBox(METComboBoxStyle style,
 {
 	setFixedWidth(w);
 	setFixedHeight(h);
-	load_style_sheet();
+	LoadStyleSheet();
 	setStyleSheet(style_sheet);
 }
 
@@ -20,7 +20,7 @@ METComboBox::~METComboBox()
 
 }
 
-void METComboBox::load_style_sheet()
+void METComboBox::LoadStyleSheet()
 {
     style_sheet =
         "QComboBox {"

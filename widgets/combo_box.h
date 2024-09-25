@@ -45,7 +45,7 @@ public:
 	virtual ~METComboBox();
 
 private:
-	void load_style_sheet();
+	void LoadStyleSheet();
 	int w;
 	int h;
 	METComboBoxStyle style;

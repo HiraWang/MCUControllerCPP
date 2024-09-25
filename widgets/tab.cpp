@@ -8,7 +8,7 @@ METTab::METTab(METTabStyle style,
     QSizePolicy size_policy = sizePolicy();
     size_policy.setRetainSizeWhenHidden(true);
     setSizePolicy(size_policy);
-    load_style_sheet();
+    LoadStyleSheet();
     setStyleSheet(style_sheet);
 }
 
@@ -17,7 +17,7 @@ METTab::~METTab()
 
 }
 
-void METTab::load_style_sheet()
+void METTab::LoadStyleSheet()
 {
     style_sheet =
         "QTabBar::tab {"

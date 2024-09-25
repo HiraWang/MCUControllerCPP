@@ -30,7 +30,7 @@ public:
 	virtual ~METLabel();
 
 private:
-	void load_style_sheet();
+	void LoadStyleSheet();
 	int w;
 	int h;
 	METLabelStyle style;

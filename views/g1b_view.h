@@ -22,9 +22,9 @@ public:
     METButton* write_button;
 
 private:
-    void setup_ui();
-    void read();
-    void write();
+    void SetupUi();
+    void Read();
+    void Write();
     int w;
     int h;
     DeviceG1B* G1B;

@@ -3,7 +3,7 @@
 BottomView::BottomView(QWidget* parent) :
 	QWidget(parent)
 {
-	setup_ui();
+	SetupUi();
 }
 
 BottomView::~BottomView()
@@ -11,7 +11,7 @@ BottomView::~BottomView()
 
 }
 
-void BottomView::setup_ui()
+void BottomView::SetupUi()
 {
 	METTabStyle tab_style;
 	tab = new METTab(tab_style, this);
