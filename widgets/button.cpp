@@ -1,4 +1,4 @@
-#include "buttons.h"
+#include "button.h"
 
 #include "utility.h"
 
@@ -10,9 +10,9 @@ MetButton::MetButton(MetButtonStyle style,
 					 QString icon_path_default,
 					 QString icon_path_pressed,
 					 QWidget* parent) :
+	style(style),
 	name_default(name_default),
 	name_pressed(name_pressed),
-	style(style),
 	w(w),
 	h(h),
 	icon_path_default(icon_path_default),

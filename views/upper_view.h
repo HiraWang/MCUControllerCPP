@@ -5,7 +5,7 @@
 #include <QPushButton>
 
 #include "../utility.h"
-#include "../widgets/buttons.h"
+#include "../widgets/button.h"
 #include "../widgets/combo_box.h"
 #include "../widgets/label.h"
 #include "../widgets/menu.h"

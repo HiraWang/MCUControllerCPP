@@ -26,6 +26,7 @@ void MetLabel::LoadStyleSheet()
 {
 	style_sheet =
 		"QLabel {"
+		"background-color: " + style.bkg_color + ";"
 		"min-width: 65px;"
 		"min-height: 25px;"
 		"font: bold " + style.font_size + ";"
@@ -33,8 +34,10 @@ void MetLabel::LoadStyleSheet()
 		"}";
 }
 
-MetLabelStyle::MetLabelStyle(QString font_size, 
+MetLabelStyle::MetLabelStyle(QString bkg_color,
+							 QString font_size, 
 							 QString font_color) :
+	bkg_color(bkg_color),
 	font_size(font_size),
 	font_color(font_color)
 {

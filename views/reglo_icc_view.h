@@ -4,9 +4,10 @@
 #include <QHBoxLayout>
 #include <QWidget>
 
+#include "pump_channel_view.h"
 #include "../utility.h"
 #include "../devices/device.h"
-#include "../widgets/buttons.h"
+#include "../widgets/button.h"
 
 class RegloIccView : public QWidget
 {
@@ -18,6 +19,8 @@ public:
                  MetParaList* para_list,
                  QWidget* parent = nullptr);
     virtual ~RegloIccView();
+    MetPumpChannel* channel_1;
+    MetPumpChannel* channel_2;
     MetButton* read_button;
     MetButton* write_button;
 
@@ -28,7 +31,7 @@ private:
     int w;
     int h;
     DeviceRegloIcc* reglo_icc;
-    QHBoxLayout* layout;
+    QVBoxLayout* layout;
     MetParaList* para_list;
 };
 

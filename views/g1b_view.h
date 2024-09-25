@@ -6,7 +6,7 @@
 
 #include "../utility.h"
 #include "../devices/device.h"
-#include "../widgets/buttons.h"
+#include "../widgets/button.h"
 
 class G1BView : public QWidget
 {

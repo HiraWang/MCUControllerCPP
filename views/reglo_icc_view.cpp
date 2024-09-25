@@ -41,16 +41,15 @@ void RegloIccView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
-	MetButtonStyle button_style;
-	read_button = new MetButton(button_style, "READ", "", 80, 80, "", "", this);
-	connect(read_button, &QPushButton::released, this, &RegloIccView::Read);
+	MetPumpChannelStyle pump_channel_style;
+	channel_1 = new MetPumpChannel(pump_channel_style, reglo_icc,
+		1, "Channel 1", this);
+	channel_2 = new MetPumpChannel(pump_channel_style, reglo_icc,
+		2, "Channel 2", this);
 
-	write_button = new MetButton(button_style, "WRITE", "", 80, 80, "", "", this);
-	connect(write_button, &QPushButton::released, this, &RegloIccView::Write);
-
-	layout = new QHBoxLayout(this);
-	layout->addWidget(read_button, 0, Qt::AlignCenter);
-	layout->addWidget(write_button, 0, Qt::AlignCenter);
+	layout = new QVBoxLayout(this);
+	layout->addWidget(channel_1, 0, Qt::AlignCenter);
+	layout->addWidget(channel_2, 0, Qt::AlignCenter);
 	setLayout(layout);
 }
 

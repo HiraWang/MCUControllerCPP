@@ -21,7 +21,7 @@ UpperView::~UpperView()
 
 void UpperView::SetupUi()
 {
-	MetLabelStyle label_style(FONT_SIZE, COLOR_LIGHT_GRAY);
+	MetLabelStyle label_style(COLOR_DEEP_GRAY, FONT_SIZE, COLOR_LIGHT_GRAY);
 	label = new MetLabel(label_style, "Device", 60, 25, this);
 
 	MetComboBoxStyle combo_box_style;

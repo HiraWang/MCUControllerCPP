@@ -6,7 +6,7 @@
 #include "color.h"
 #include "font.h"
 #include "../utility.h"
-#include "../widgets/buttons.h"
+#include "../widgets/button.h"
 
 extern std::string IMAGE_MET_ERROR;
 

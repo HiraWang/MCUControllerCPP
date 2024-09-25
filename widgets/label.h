@@ -10,9 +10,11 @@
 class MetLabelStyle
 {
 public:
-	MetLabelStyle(QString font_size = FONT_SIZE,
+	MetLabelStyle(QString bkg_color, 
+				  QString font_size = FONT_SIZE,
 				  QString font_color = FONT_COLOR);
 	virtual ~MetLabelStyle();
+	QString bkg_color;
 	QString font_size;
 	QString font_color;
 };
