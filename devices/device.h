@@ -48,4 +48,19 @@ public:
     virtual SerialCode Write() override;
 };
 
+class DeviceRegloIcc : public SerialPort
+{
+public:
+    DeviceRegloIcc(const wchar_t* port_name,
+                   DWORD baud_rate,
+                   BYTE byte_size,
+                   BYTE stop_bits,
+                   BYTE parity);
+    virtual ~DeviceRegloIcc();
+    virtual SerialCode Open() override;
+    virtual SerialCode Close() override;
+    virtual SerialCode Read() override;
+    virtual SerialCode Write() override;
+};
+
 #endif

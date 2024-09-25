@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 
 #include "../views/g1b_view.h"
+#include "../views/reglo_icc_view.h"
 #include "../widgets/tab.h"
 
 class BottomView : public QWidget
@@ -15,6 +16,7 @@ public:
     virtual ~BottomView();
     METTab* tab;
     G1BView* g1b_view;
+    RegloIccView* reglo_icc_view;
 
 private:
     void SetupUi();

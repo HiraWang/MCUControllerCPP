@@ -1,21 +1,21 @@
 #include "device.h"
 
-DeviceG1B::DeviceG1B(const wchar_t* port_name,
-					 DWORD baud_rate,
-				     BYTE byte_size,
-					 BYTE stop_bits,
-					 BYTE parity) :
-	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+DeviceRegloIcc::DeviceRegloIcc(const wchar_t* port_name,
+						       DWORD baud_rate,
+						       BYTE byte_size,
+						       BYTE stop_bits,
+						       BYTE parity) :
+						       SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
 {
 
 }
 
-DeviceG1B::~DeviceG1B()
+DeviceRegloIcc::~DeviceRegloIcc()
 {
 
 }
 
-SerialCode DeviceG1B::Open()
+SerialCode DeviceRegloIcc::Open()
 {
 	// open serial port
 	serial_handle = CreateFile(port_name,
@@ -72,7 +72,7 @@ SerialCode DeviceG1B::Open()
 	return SERIAL_OK;
 }
 
-SerialCode DeviceG1B::Close()
+SerialCode DeviceRegloIcc::Close()
 {
 	if (!CloseHandle(serial_handle)) {
 		return SERIAL_FAIL;
@@ -81,7 +81,7 @@ SerialCode DeviceG1B::Close()
 	}
 }
 
-SerialCode DeviceG1B::Read()
+SerialCode DeviceRegloIcc::Read()
 {
 	const int size = 5;
 	char buf[size + 1] = { 0 };
@@ -95,7 +95,7 @@ SerialCode DeviceG1B::Read()
 	}
 }
 
-SerialCode DeviceG1B::Write()
+SerialCode DeviceRegloIcc::Write()
 {
 	char buf[] = "go\r";
 	DWORD size = (DWORD)strlen(buf);

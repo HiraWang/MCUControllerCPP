@@ -17,12 +17,12 @@ G1BView::G1BView(int w,
 	std::wcout << port << " " << sizeof(port) << '\n';
 	std::wcout << L"COM4" << " " << sizeof(L"COM4") << '\n';
 
-	G1B = new DeviceG1B(port,
+	g1b = new DeviceG1B(port,
 				        CBR_9600,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
-	if (G1B->Open() != SERIAL_OK) {
+	if (g1b->Open() != SERIAL_OK) {
 		METMsgSubwindow("device G1B open failed");
 	}
 
@@ -31,7 +31,7 @@ G1BView::G1BView(int w,
 
 G1BView::~G1BView()
 {
-	if (G1B->Close() != SERIAL_OK) {
+	if (g1b->Close() != SERIAL_OK) {
 		METMsgSubwindow("device G1B close failed");
 	}
 }
@@ -56,14 +56,14 @@ void G1BView::SetupUi()
 
 void G1BView::Read()
 {
-	if (G1B->Read() != SERIAL_OK) {
+	if (g1b->Read() != SERIAL_OK) {
 		METMsgSubwindow("device G1B read failed");
 	}
 }
 
 void G1BView::Write()
 {
-	if (G1B->Write() != SERIAL_OK) {
+	if (g1b->Write() != SERIAL_OK) {
 		METMsgSubwindow("device G1B write failed");
 	}
 }
