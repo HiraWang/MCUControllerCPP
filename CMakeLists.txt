@@ -51,6 +51,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/menu.cpp"
 			   "widgets/msg_subwindow.h"
 			   "widgets/msg_subwindow.cpp"
+			   "widgets/pump_channel.h"
+			   "widgets/pump_channel.cpp"
 			   "widgets/tab.h"
 			   "widgets/tab.cpp")
 
