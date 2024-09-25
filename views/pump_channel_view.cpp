@@ -9,7 +9,7 @@
 
 MetPumpChannel::MetPumpChannel(MetPumpChannelStyle met_style,
 							   DeviceRegloIcc* reglo_icc,
-							   int channel,
+							   BYTE channel,
 							   QString name,
 							   QWidget* parent) :
 	met_style(met_style),

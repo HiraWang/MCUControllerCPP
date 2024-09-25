@@ -30,7 +30,7 @@ class MetPumpChannel : public QWidget
 public:
 	MetPumpChannel(MetPumpChannelStyle style,
 				   DeviceRegloIcc* reglo_icc,
-				   int channel,
+				   BYTE channel,
 				   QString name,
 				   QWidget* parent = nullptr);
 	virtual ~MetPumpChannel();
@@ -48,7 +48,7 @@ private:
 	void SetupUi();
 	void LoadStyleSheet();
 	void paintEvent(QPaintEvent* pe);
-	int channel;
+	BYTE channel;
 	MetPumpChannelStyle met_style;
 	QString style_sheet;
 	QString style_sheet_lcd;

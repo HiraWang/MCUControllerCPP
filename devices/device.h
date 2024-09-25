@@ -61,6 +61,11 @@ public:
     virtual SerialCode Close() override;
     virtual SerialCode Read() override;
     virtual SerialCode Write() override;
+    SerialCode SetRpm(BYTE channel, int rpm);
+    SerialCode SetCw(BYTE channel);
+    SerialCode SetCcw(BYTE channel);
+    SerialCode On(BYTE channel);
+    SerialCode Off(BYTE channel);
 };
 
 #endif

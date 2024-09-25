@@ -108,3 +108,28 @@ SerialCode DeviceRegloIcc::Write()
 		return SERIAL_OK;
 	}
 }
+
+SerialCode DeviceRegloIcc::SetRpm(BYTE channel, int rpm)
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::SetCw(BYTE channel)
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::On(BYTE channel)
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceRegloIcc::Off(BYTE channel)
+{
+	return SERIAL_OK;
+}
