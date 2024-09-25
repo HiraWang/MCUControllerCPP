@@ -124,22 +124,66 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, int rpm)
 
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 {
-	return SERIAL_OK;
+	std::string buf = std::to_string(channel) + 'J' + CR;
+	char* cmd = CopyStringToCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }
 
 SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 {
-	return SERIAL_OK;
+	std::string buf = std::to_string(channel) + 'K' + CR;
+	char* cmd = CopyStringToCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }
 
 SerialCode DeviceRegloIcc::On(BYTE channel)
 {
-	return SERIAL_OK;
+	std::string buf = std::to_string(channel) + 'H' + CR;
+	char* cmd = CopyStringToCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }
 
 SerialCode DeviceRegloIcc::Off(BYTE channel)
 {
-	return SERIAL_OK;
+	std::string buf = std::to_string(channel) + 'I' + CR;
+	char* cmd = CopyStringToCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }
 
 SerialCode DeviceRegloIcc::SetAddress()
