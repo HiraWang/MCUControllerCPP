@@ -6,8 +6,8 @@
 
 using json = nlohmann::json;
 
-std::string LF = "\r";
-std::string CR = "\n";
+std::string LF = "\n";
+std::string CR = "\r";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
 std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
