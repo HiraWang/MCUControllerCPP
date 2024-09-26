@@ -198,14 +198,18 @@ SerialCode DeviceRegloIcc::SetAddress()
 
 	if (!WriteFile(serial_handle, cmd_1, size_1, &dw_bytes_read, NULL)) {
 		delete[] cmd_1;
-		return SERIAL_FAIL_TO_WRITE;
-	}
-
-	if (!WriteFile(serial_handle, cmd_2, size_2, &dw_bytes_read, NULL)) {
 		delete[] cmd_2;
 		return SERIAL_FAIL_TO_WRITE;
 	}
 
+	if (!WriteFile(serial_handle, cmd_2, size_2, &dw_bytes_read, NULL)) {
+		delete[] cmd_1;
+		delete[] cmd_2;
+		return SERIAL_FAIL_TO_WRITE;
+	}
+
+	delete[] cmd_1;
+	delete[] cmd_2;
 	return SERIAL_OK;
 }
 
