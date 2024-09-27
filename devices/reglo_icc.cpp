@@ -1,4 +1,7 @@
-#include <string>
+#include <string>  
+#include <iomanip>
+#include <iostream> 
+#include <sstream>   
 
 #include "device.h"
 
@@ -120,9 +123,32 @@ SerialCode DeviceRegloIcc::Write()
 	}
 }
 
-SerialCode DeviceRegloIcc::SetRpm(BYTE channel, int rpm)
+SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 {
-	return SERIAL_OK;
+	int tmp = (int)roundf(rpm * 100.0f);
+	int rpm_i = (int)(rpm);
+	int rpm_f = (int)(tmp % 100);
+
+	std::stringstream rpm_i_stream;
+	rpm_i_stream << std::setw(4) << std::setfill('0') << std::to_string(rpm_i);
+	std::cout << rpm_i_stream.str() << '\n';
+
+	std::stringstream rpm_f_stream;
+	rpm_f_stream << std::setw(2) << std::setfill('0') << std::to_string(rpm_f);
+	std::cout << rpm_f_stream.str() << '\n';
+
+	std::string buf = std::to_string(channel) + 'S' + rpm_i_stream.str() + rpm_f_stream.str() + CR;
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
 }
 
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)

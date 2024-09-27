@@ -98,6 +98,9 @@ void MetPumpChannel::LoadStyleSheet()
 void MetPumpChannel::ToggleRpmButton()
 {
 	rpm_button->SetButtonDefault();
+	float rpm = rpm_edit->text().toFloat();
+	std::cout << "rpm " << rpm << '\n';
+	reglo_icc->SetRpm(channel, rpm);
 }
 
 void MetPumpChannel::ToggleDirButton()
