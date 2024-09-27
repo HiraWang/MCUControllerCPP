@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-char* CopyStringToCharArray(const std::string& str);
+char* CopyStringToNewedCharArray(const std::string& str);
 std::string GetSeparator();
 std::string GetCurrentPath();
 std::string GetAbsPath(std::string file_name);

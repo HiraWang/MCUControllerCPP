@@ -20,7 +20,7 @@ std::string IMAGE_MET_POWER = "\\images\\Power.png";
 
 std::string CONFIG_MET = "\\configuration\\config.json";
 
-char* CopyStringToCharArray(const std::string& str)
+char* CopyStringToNewedCharArray(const std::string& str)
 {
     const char* c_str = str.c_str();
     rsize_t size = str.length() + 1;

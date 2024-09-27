@@ -125,7 +125,7 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, int rpm)
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'J' + CR;
-	char* cmd = CopyStringToCharArray(buf);
+	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
 	DWORD dw_bytes_read = 0;
 
@@ -141,7 +141,7 @@ SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'K' + CR;
-	char* cmd = CopyStringToCharArray(buf);
+	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
 	DWORD dw_bytes_read = 0;
 
@@ -157,7 +157,7 @@ SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 SerialCode DeviceRegloIcc::On(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'H' + CR;
-	char* cmd = CopyStringToCharArray(buf);
+	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
 	DWORD dw_bytes_read = 0;
 
@@ -173,7 +173,7 @@ SerialCode DeviceRegloIcc::On(BYTE channel)
 SerialCode DeviceRegloIcc::Off(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'I' + CR;
-	char* cmd = CopyStringToCharArray(buf);
+	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
 	DWORD dw_bytes_read = 0;
 
@@ -190,8 +190,8 @@ SerialCode DeviceRegloIcc::SetAddress()
 {
 	std::string buf_1 = "@2" + CR;
 	std::string buf_2 = "2~1" + CR;
-	char* cmd_1 = CopyStringToCharArray(buf_1);
-	char* cmd_2 = CopyStringToCharArray(buf_2);
+	char* cmd_1 = CopyStringToNewedCharArray(buf_1);
+	char* cmd_2 = CopyStringToNewedCharArray(buf_2);
 	DWORD size_1 = (DWORD)strlen(cmd_1);
 	DWORD size_2 = (DWORD)strlen(cmd_2);
 	DWORD dw_bytes_read = 0;
@@ -216,7 +216,7 @@ SerialCode DeviceRegloIcc::SetAddress()
 SerialCode DeviceRegloIcc::SetRpmMode(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'L' + CR;
-	char* cmd = CopyStringToCharArray(buf);
+	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
 	DWORD dw_bytes_read = 0;
 
