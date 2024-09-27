@@ -72,6 +72,9 @@ SerialCode DeviceRegloIcc::Open()
 		std::cout << "error setting timeout" << '\n';
 		return SERIAL_FAIL_TO_SET_TIMEOUT;
 	}
+
+	// set address
+	SetAddress();
 	
 	// set rpm mode
 	SetRpmMode(1);
