@@ -109,8 +109,50 @@ SerialCode DeviceG1B::Write()
 	}
 }
 
+SerialCode DeviceG1B::Read(char* buf, const int size)
+{
+	DWORD dw_bytes_read = 0;
+
+	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
+		return SERIAL_FAIL_TO_READ;
+	} else {
+		std::cout << buf << '\n';
+		return SERIAL_OK;
+	}
+}
+
 SerialCode DeviceG1B::Login()
 {
-	std::cout << "Login" << '\n';
+	if (LoginStep1() == SERIAL_OK) {
+		if (LoginStep2() == SERIAL_OK) {
+			if (LoginStep3() == SERIAL_OK) {
+				std::cout << "login successful" << '\n';
+				return SERIAL_OK;
+			} else {
+				std::cout << "login step 3 failed" << '\n';
+				return SERIAL_FAIL;
+			}
+		} else {
+			std::cout << "login step 2 failed" << '\n';
+			return SERIAL_FAIL;
+		}
+	} else {
+		std::cout << "login step 1 failed" << '\n';
+		return SERIAL_FAIL;
+	}
+}
+
+SerialCode DeviceG1B::LoginStep1()
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceG1B::LoginStep2()
+{
+	return SERIAL_OK;
+}
+
+SerialCode DeviceG1B::LoginStep3()
+{
 	return SERIAL_OK;
 }

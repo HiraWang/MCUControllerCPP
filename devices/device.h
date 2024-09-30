@@ -48,6 +48,12 @@ public:
     virtual SerialCode Read() override;
     virtual SerialCode Write() override;
     virtual SerialCode Login() override;
+    SerialCode Read(char* buf, const int size);
+
+private:
+    SerialCode LoginStep1();
+    SerialCode LoginStep2();
+    SerialCode LoginStep3();
 };
 
 class DeviceRegloIcc : public SerialPort
