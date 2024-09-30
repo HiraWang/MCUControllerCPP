@@ -20,6 +20,7 @@ public:
     virtual ~G1BView();
     MetButton* read_button;
     MetButton* write_button;
+    SerialCode serial_status;
 
 private:
     void SetupUi();

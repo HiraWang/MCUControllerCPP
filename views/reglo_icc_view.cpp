@@ -1,15 +1,17 @@
 #include "reglo_icc_view.h"
 
+#include "widgets/login_subwindow.h"
 #include "widgets/msg_subwindow.h"
 
 RegloIccView::RegloIccView(int w,
 						   int h,
 						   MetParaList* para_list,
 						   QWidget* parent) :
-						   w(w),
-						   h(h),
-						   para_list(para_list),
-						   QWidget(parent)
+	w(w),
+	h(h),
+	para_list(para_list),
+	serial_status(SERIAL_OK),
+	QWidget(parent)
 {
 	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
@@ -22,11 +24,14 @@ RegloIccView::RegloIccView(int w,
 								   8,
 								   ONESTOPBIT,
 								   NOPARITY);
-	if (reglo_icc->Open() != SERIAL_OK) {
-		MetMsgSubwindow("device RegloIcc open failed");
-	}
 
-	SetupUi();
+	serial_status = reglo_icc->Open();
+	if (serial_status != SERIAL_OK) {
+		MetMsgSubwindow("device RegloIcc open failed");
+	} else {
+		std::cout << "device RegloIcc opened" << '\n';
+		SetupUi();
+	}
 }
 
 RegloIccView::~RegloIccView()

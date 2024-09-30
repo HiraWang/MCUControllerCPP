@@ -49,6 +49,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/label.cpp"
 			   "widgets/line_edit.h"
 			   "widgets/line_edit.cpp"
+			   "widgets/login_subwindow.h"
+			   "widgets/login_subwindow.cpp"
 			   "widgets/menu.h"
 			   "widgets/menu.cpp"
 			   "widgets/msg_subwindow.h"

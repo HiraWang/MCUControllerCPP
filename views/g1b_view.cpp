@@ -1,5 +1,6 @@
 #include "g1b_view.h"
 
+#include "widgets/login_subwindow.h"
 #include "widgets/msg_subwindow.h"
 
 G1BView::G1BView(int w,
@@ -9,6 +10,7 @@ G1BView::G1BView(int w,
 	w(w),
 	h(h),
 	para_list(para_list),
+	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
 	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
@@ -22,11 +24,16 @@ G1BView::G1BView(int w,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
-	if (g1b->Open() != SERIAL_OK) {
-		MetMsgSubwindow("device G1B open failed");
-	}
 
-	SetupUi();
+	serial_status = g1b->Open();
+	if (serial_status != SERIAL_OK) {
+		MetMsgSubwindow("device G1B open failed");
+	} else {
+		std::cout << "device G1B opened" << '\n';
+		MetLoginSubwindow(QString::fromStdString(para_list->list[PULSE_GEN_ID].str), 
+			QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str));
+		SetupUi();
+	}
 }
 
 G1BView::~G1BView()

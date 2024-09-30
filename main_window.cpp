@@ -102,8 +102,10 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->combo_box->setEnabled(true);
 		if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view->~G1BView();
+			ui->bottom_view->tab->removeTab(0);
 		} else if ((current_device == Device::REGLO_ICC)) {
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
+			ui->bottom_view->tab->removeTab(0);
 		}
 	} else {
 		button->SetButtonPressed();
@@ -123,12 +125,14 @@ void MainWindow::TogglePowerButton()
 			ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
 				device_list[current_device]);
-			ui->bottom_view->tab->show();
+			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK)
+				ui->bottom_view->tab->show();
 		} else if (current_device == Device::REGLO_ICC) {
 			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
 				device_list[current_device]);
-			ui->bottom_view->tab->show();
+			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
+				ui->bottom_view->tab->show();
 		}
 		
 		ui->upper_view->combo_box->setEnabled(false);

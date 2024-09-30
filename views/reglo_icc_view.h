@@ -23,6 +23,7 @@ public:
     MetPumpChannel* channel_2;
     MetButton* read_button;
     MetButton* write_button;
+    SerialCode serial_status;
 
 private:
     void SetupUi();
