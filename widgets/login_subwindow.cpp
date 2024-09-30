@@ -8,10 +8,13 @@
 #include "../utility.h"
 #include "../widgets/button.h"
 #include "../widgets/label.h"
+#include "../widgets/line_edit.h"
 
-MetLoginSubwindow::MetLoginSubwindow(QString account,
+MetLoginSubwindow::MetLoginSubwindow(SerialPort* device,
+									 QString account,
 							         QString password, 
 							         QWidget* parent) :
+	device(device),
 	account(account),
 	password(password),
 	QDialog(parent)
@@ -37,13 +40,15 @@ void MetLoginSubwindow::SetupUi()
 	MetLabel* password_label = new MetLabel(label_style, "Password:", 120, 25, this);
 
 	MetLineEditStyle line_edit_style;
-	account_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	MetLineEdit* account_edit = new MetLineEdit(line_edit_style, 100, 25, this);
 	account_edit->setText(account);
-	password_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	MetLineEdit* password_edit = new MetLineEdit(line_edit_style, 100, 25, this);
 	password_edit->setText(password);
 
 	MetButtonStyle button_style;
 	MetButton* login_button = new MetButton(button_style, "LOGIN", "LOGIN", 80, 25, "", "", this);
+	connect(login_button, &QPushButton::released, this, &MetLoginSubwindow::Login);
+
 	MetButton* close_button = new MetButton(button_style, "CLOSE", "CLOSE", 80, 25, "", "", this);
 	connect(close_button, &QPushButton::released, this, &QDialog::close);
 
@@ -79,3 +84,9 @@ void MetLoginSubwindow::LoadStyleSheet()
 		"}";
 }
 
+void MetLoginSubwindow::Login()
+{
+	if (device->Login() == SERIAL_OK) {
+		close();
+	}
+}

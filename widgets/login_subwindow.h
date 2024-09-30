@@ -5,14 +5,15 @@
 #include <QString>
 #include <QVBoxLayout>
 
-#include "../widgets/line_edit.h"
+#include "../devices/device.h"
 
 class MetLoginSubwindow : public QDialog
 {
 	Q_OBJECT // enable meta object abilities
 
 public:
-	MetLoginSubwindow(QString account,
+	MetLoginSubwindow(SerialPort* device,
+					  QString account,
 					  QString password,
 					  QWidget* parent = nullptr);
 	virtual ~MetLoginSubwindow();
@@ -20,11 +21,11 @@ public:
 private:
 	void SetupUi();
 	void LoadStyleSheet();
+	void Login();
 	QString account;
 	QString password;
 	QString style_sheet;
-	MetLineEdit* account_edit;
-	MetLineEdit* password_edit;
+	SerialPort* device;
 	QVBoxLayout* layout;
 };
 

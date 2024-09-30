@@ -25,6 +25,7 @@ public:
     virtual SerialCode Close() = 0;
     virtual SerialCode Read() = 0;
     virtual SerialCode Write() = 0;
+    virtual SerialCode Login() = 0;
     BYTE byte_size;
     BYTE stop_bits;
     BYTE parity;
@@ -46,6 +47,7 @@ public:
     virtual SerialCode Close() override;
     virtual SerialCode Read() override;
     virtual SerialCode Write() override;
+    virtual SerialCode Login() override;
 };
 
 class DeviceRegloIcc : public SerialPort
@@ -61,6 +63,7 @@ public:
     virtual SerialCode Close() override;
     virtual SerialCode Read() override;
     virtual SerialCode Write() override;
+    virtual SerialCode Login() override;
     SerialCode SetRpm(BYTE channel, float rpm);
     SerialCode SetCw(BYTE channel);
     SerialCode SetCcw(BYTE channel);

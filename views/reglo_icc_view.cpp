@@ -1,7 +1,7 @@
 #include "reglo_icc_view.h"
 
-#include "widgets/login_subwindow.h"
-#include "widgets/msg_subwindow.h"
+#include "../widgets/login_subwindow.h"
+#include "../widgets/msg_subwindow.h"
 
 RegloIccView::RegloIccView(int w,
 						   int h,

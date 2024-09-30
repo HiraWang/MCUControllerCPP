@@ -1,7 +1,7 @@
 #include "g1b_view.h"
 
-#include "widgets/login_subwindow.h"
-#include "widgets/msg_subwindow.h"
+#include "../widgets/login_subwindow.h"
+#include "../widgets/msg_subwindow.h"
 
 G1BView::G1BView(int w,
 				 int h,
@@ -30,8 +30,9 @@ G1BView::G1BView(int w,
 		MetMsgSubwindow("device G1B open failed");
 	} else {
 		std::cout << "device G1B opened" << '\n';
-		MetLoginSubwindow(QString::fromStdString(para_list->list[PULSE_GEN_ID].str), 
-			QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str));
+		QString account = QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
+		QString password = QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str);
+		MetLoginSubwindow(g1b, account, password, this);
 		SetupUi();
 	}
 }

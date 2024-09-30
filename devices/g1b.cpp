@@ -108,3 +108,9 @@ SerialCode DeviceG1B::Write()
 		return SERIAL_OK;
 	}
 }
+
+SerialCode DeviceG1B::Login()
+{
+	std::cout << "Login" << '\n';
+	return SERIAL_OK;
+}

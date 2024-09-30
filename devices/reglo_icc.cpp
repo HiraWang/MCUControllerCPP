@@ -123,6 +123,11 @@ SerialCode DeviceRegloIcc::Write()
 	}
 }
 
+SerialCode DeviceRegloIcc::Login()
+{
+	return SERIAL_OK;
+}
+
 SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 {
 	int tmp = (int)roundf(rpm * 100.0f);

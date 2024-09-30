@@ -6,7 +6,7 @@
 #include <QVBoxLayout>
 
 #include "utility.h"
-#include "widgets/line_edit.h"
+#include "../widgets/line_edit.h"
 
 class MetMenu : public QDialog
 {
