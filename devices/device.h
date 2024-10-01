@@ -51,9 +51,11 @@ public:
     SerialCode Read(char* buf, const int size);
     SerialCode Write(const char* buf);
 private:
-    SerialCode LoginStep1();
-    SerialCode LoginStep2();
-    SerialCode LoginStep3();
+    SerialCode LoginStepFunction(std::string name,
+                                 std::string input,
+                                 const char* keyword,
+                                 int max_cnt,
+                                 DWORD time_delay);
 };
 
 class DeviceRegloIcc : public SerialPort

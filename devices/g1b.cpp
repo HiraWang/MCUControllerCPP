@@ -116,7 +116,7 @@ SerialCode DeviceG1B::Read(char* buf, const int size)
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		std::cout << buf << '\n';
+		std::cout << "Read : " << buf;
 		return SERIAL_OK;
 	}
 }
@@ -129,16 +129,23 @@ SerialCode DeviceG1B::Write(const char* buf)
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		std::cout << buf << '\n';
+		std::cout << "Write : " << buf;
 		return SERIAL_OK;
 	}
 }
 
 SerialCode DeviceG1B::Login()
 {
-	if (LoginStep1() == SERIAL_OK) {
-		if (LoginStep2() == SERIAL_OK) {
-			if (LoginStep3() == SERIAL_OK) {
+	SerialCode ret = SERIAL_FAIL;
+	ret = LoginStepFunction("login step 1", std::string("\r\n"),
+		"avtech-f8369be5fff1", 5, 200);
+	if (ret == SERIAL_OK) {
+		ret = LoginStepFunction("login step 2", std::string("adminz\r\n"),
+			"Password", 5, 200);
+		if (ret == SERIAL_OK) {
+			ret = LoginStepFunction("login step 3", std::string("defaultz\r\n"),
+				"> ", 5, 200);
+			if (ret == SERIAL_OK) {
 				std::cout << "login successful" << '\n';
 				return SERIAL_OK;
 			} else {
@@ -155,70 +162,26 @@ SerialCode DeviceG1B::Login()
 	}
 }
 
-SerialCode DeviceG1B::LoginStep1()
+SerialCode DeviceG1B::LoginStepFunction(std::string name,
+										std::string input,
+										const char* keyword,
+										int max_cnt,
+										DWORD time_delay)
 {
 	int cnt = 0;
-	int max_cnt = 5;
 	char buf[MAXBYTE] = "";
-	
-	while (strstr(buf, "avtech-f8369be5fff1") == NULL && cnt < max_cnt) {
-		if (cnt == 0) {
-			Write("\r\n");
-			Sleep(100);
-		}
-		Read(buf, MAXBYTE);
-		Sleep(100);
-		cnt += 1;
+	char* cmd = CopyStringToNewedCharArray(input);
 
-		if (cnt == max_cnt) {
-			return SERIAL_FAIL;
-		}
-	}
-	return SERIAL_OK;
-}
+	while (strstr(buf, keyword) == NULL && cnt < max_cnt) {
+		std::cout << name << " try no." << cnt << '\n';
 
-SerialCode DeviceG1B::LoginStep2()
-{
-	int cnt = 0;
-	int max_cnt = 10;
-	char buf[MAXBYTE] = "";
-
-	std::string str("admin\r\n");
-	char* cmd = CopyStringToNewedCharArray(str);
-
-	while (strstr(buf, "Password") == NULL && cnt < max_cnt) {
 		if (cnt == 0) {
 			Write(cmd);
-			Sleep(100);
+			Sleep(time_delay);
 		}
+
 		Read(buf, MAXBYTE);
-		Sleep(100);
-		cnt += 1;
-
-		if (cnt == max_cnt) {
-			return SERIAL_FAIL;
-		}
-	}
-	return SERIAL_OK;
-}
-
-SerialCode DeviceG1B::LoginStep3()
-{
-	int cnt = 0;
-	int max_cnt = 10;
-	char buf[MAXBYTE] = "";
-
-	std::string str("default\r\n");
-	char* cmd = CopyStringToNewedCharArray(str);
-
-	while ((strstr(buf, "> ") == NULL ||
-			strstr(buf, "incorrect") != NULL) && cnt < max_cnt) {
-		if (cnt == 0) {
-			Write(cmd);
-			Sleep(100);
-		}
-		Read(buf, MAXBYTE);
-		Sleep(100);
+		Sleep(time_delay);
 		cnt += 1;
 
 		if (cnt == max_cnt) {

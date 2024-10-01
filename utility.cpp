@@ -26,7 +26,7 @@ char* CopyStringToNewedCharArray(const std::string& str)
     rsize_t size = str.length() + 1;
     char* arr = new char[size];
     strcpy_s(arr, size, c_str);
-    std::cout << arr << '\n';
+    //std::cout << arr << '\n';
 
     return arr;
 }
