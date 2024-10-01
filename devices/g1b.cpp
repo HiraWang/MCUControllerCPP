@@ -121,6 +121,19 @@ SerialCode DeviceG1B::Read(char* buf, const int size)
 	}
 }
 
+SerialCode DeviceG1B::Write(const char* buf)
+{
+	DWORD size = (DWORD)strlen(buf);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		std::cout << buf << '\n';
+		return SERIAL_OK;
+	}
+}
+
 SerialCode DeviceG1B::Login()
 {
 	if (LoginStep1() == SERIAL_OK) {
@@ -144,15 +157,73 @@ SerialCode DeviceG1B::Login()
 
 SerialCode DeviceG1B::LoginStep1()
 {
+	int cnt = 0;
+	int max_cnt = 5;
+	char buf[MAXBYTE] = "";
+	
+	while (strstr(buf, "avtech-f8369be5fff1") == NULL && cnt < max_cnt) {
+		if (cnt == 0) {
+			Write("\r\n");
+			Sleep(100);
+		}
+		Read(buf, MAXBYTE);
+		Sleep(100);
+		cnt += 1;
+
+		if (cnt == max_cnt) {
+			return SERIAL_FAIL;
+		}
+	}
 	return SERIAL_OK;
 }
 
 SerialCode DeviceG1B::LoginStep2()
 {
+	int cnt = 0;
+	int max_cnt = 10;
+	char buf[MAXBYTE] = "";
+
+	std::string str("admin\r\n");
+	char* cmd = CopyStringToNewedCharArray(str);
+
+	while (strstr(buf, "Password") == NULL && cnt < max_cnt) {
+		if (cnt == 0) {
+			Write(cmd);
+			Sleep(100);
+		}
+		Read(buf, MAXBYTE);
+		Sleep(100);
+		cnt += 1;
+
+		if (cnt == max_cnt) {
+			return SERIAL_FAIL;
+		}
+	}
 	return SERIAL_OK;
 }
 
 SerialCode DeviceG1B::LoginStep3()
 {
+	int cnt = 0;
+	int max_cnt = 10;
+	char buf[MAXBYTE] = "";
+
+	std::string str("default\r\n");
+	char* cmd = CopyStringToNewedCharArray(str);
+
+	while ((strstr(buf, "> ") == NULL ||
+			strstr(buf, "incorrect") != NULL) && cnt < max_cnt) {
+		if (cnt == 0) {
+			Write(cmd);
+			Sleep(100);
+		}
+		Read(buf, MAXBYTE);
+		Sleep(100);
+		cnt += 1;
+
+		if (cnt == max_cnt) {
+			return SERIAL_FAIL;
+		}
+	}
 	return SERIAL_OK;
 }

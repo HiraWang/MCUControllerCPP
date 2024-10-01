@@ -49,7 +49,7 @@ public:
     virtual SerialCode Write() override;
     virtual SerialCode Login() override;
     SerialCode Read(char* buf, const int size);
-
+    SerialCode Write(const char* buf);
 private:
     SerialCode LoginStep1();
     SerialCode LoginStep2();

@@ -5,5 +5,7 @@ void setup() {
 void loop() {
   if (Serial.readStringUntil('\r') == "go")
     Serial.println("name");
-  delay(10);
+  else
+    Serial.println("avtech-f8369be5fff1");
+  delay(100);
 }
