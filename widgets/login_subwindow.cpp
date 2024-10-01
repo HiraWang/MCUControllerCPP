@@ -1,5 +1,7 @@
 #include "login_subwindow.h"
 
+#include <queue>
+#include <thread>
 #include <QLabel>
 #include <QPixmap>
 
@@ -86,7 +88,13 @@ void MetLoginSubwindow::LoadStyleSheet()
 
 void MetLoginSubwindow::Login()
 {
-	if (device->Login() == SERIAL_OK) {
+	std::thread first(&SerialPort::Login, device);
+	first.join();
+
+	extern std::queue<SerialCode> q_login_ret;
+	SerialCode ret = q_login_ret.front();
+
+	if (ret == SERIAL_OK) {
 		close();
 	}
 }

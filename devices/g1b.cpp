@@ -1,5 +1,9 @@
 #include "device.h"
 
+#include <queue>
+
+std::queue<SerialCode> q_login_ret;
+
 DeviceG1B::DeviceG1B(const wchar_t* port_name,
 					 DWORD baud_rate,
 				     BYTE byte_size,
@@ -147,18 +151,22 @@ SerialCode DeviceG1B::Login()
 				"> ", 5, 200);
 			if (ret == SERIAL_OK) {
 				std::cout << "login successful" << '\n';
-				return SERIAL_OK;
+				q_login_ret.push(ret);
+				return ret;
 			} else {
 				std::cout << "login step 3 failed" << '\n';
-				return SERIAL_FAIL;
+				q_login_ret.push(ret);
+				return ret;
 			}
 		} else {
 			std::cout << "login step 2 failed" << '\n';
-			return SERIAL_FAIL;
+			q_login_ret.push(ret);
+			return ret;
 		}
 	} else {
 		std::cout << "login step 1 failed" << '\n';
-		return SERIAL_FAIL;
+		q_login_ret.push(ret);
+		return ret;
 	}
 }
 
