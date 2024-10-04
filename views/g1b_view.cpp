@@ -87,6 +87,17 @@ void G1BView::SetupUi()
 		ON_COLOR_2, OFF_COLOR_3, ON_COLOR_3);
 	out_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
 
+	connect(freq_button, &QPushButton::released, this,
+		&G1BView::ToggleFreqButton);
+	connect(pw_button, &QPushButton::released, this,
+		&G1BView::TogglePwButton);
+	connect(voltage_button, &QPushButton::released, this,
+		&G1BView::ToggleVoltageButton);
+	connect(offset_button, &QPushButton::released, this,
+		&G1BView::ToggleOffsetButton);
+	connect(out_button, &QPushButton::released, this,
+		&G1BView::ToggleOutButton);
+
 	QHBoxLayout* freq_layout = new QHBoxLayout();
 	freq_layout->addWidget(freq_label, 0, Qt::AlignLeft);
 	freq_layout->addWidget(freq_edit, 0, Qt::AlignCenter);
@@ -136,6 +147,35 @@ void G1BView::SetSerialStatusOk()
 void G1BView::SetSerialStatusFail()
 {
 	serial_status = SERIAL_FAIL;
+}
+
+void G1BView::ToggleFreqButton()
+{
+	freq_button->SetButtonDefault();
+}
+
+void G1BView::TogglePwButton()
+{
+	pw_button->SetButtonDefault();
+}
+
+void G1BView::ToggleVoltageButton()
+{
+	voltage_button->SetButtonDefault();
+}
+
+void G1BView::ToggleOffsetButton()
+{
+	offset_button->SetButtonDefault();
+}
+
+void G1BView::ToggleOutButton()
+{
+	if (out_button->status) {
+		out_button->SetButtonDefault();
+	} else {
+		out_button->SetButtonPressed();
+	}
 }
 
 void G1BView::Read()

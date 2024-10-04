@@ -36,6 +36,11 @@ private slots:
     void SetupUi();
     void SetSerialStatusOk();
     void SetSerialStatusFail();
+    void ToggleFreqButton();
+    void TogglePwButton();
+    void ToggleVoltageButton();
+    void ToggleOffsetButton();
+    void ToggleOutButton();
 
 private:
     void Read();
