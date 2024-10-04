@@ -57,6 +57,7 @@ public:
     SerialCode Write(const char* buf);
 
 signals:
+    void SignalLoginFailed(void);
     void SignalLoginFinished(void);
 
 private:

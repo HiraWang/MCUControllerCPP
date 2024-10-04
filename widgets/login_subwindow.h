@@ -18,10 +18,15 @@ public:
 					  QWidget* parent = nullptr);
 	virtual ~MetLoginSubwindow();
 
+signals:
+	void SignalLoginSubwindowFailed(void);
+	void SignalLoginSubwindowFinished(void);
+
 private:
 	void SetupUi();
 	void LoadStyleSheet();
 	void Login();
+	void Close();
 	QString account;
 	QString password;
 	QString style_sheet;

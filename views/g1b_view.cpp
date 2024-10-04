@@ -33,7 +33,6 @@ G1BView::G1BView(int w,
 		QString account = QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
 		QString password = QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str);
 		MetLoginSubwindow(g1b, account, password, this);
-		SetupUi();
 	}
 }
 
@@ -60,6 +59,16 @@ void G1BView::SetupUi()
 	layout->addWidget(read_button, 0, Qt::AlignCenter);
 	layout->addWidget(write_button, 0, Qt::AlignCenter);
 	setLayout(layout);
+}
+
+void G1BView::SetSerialStatusOk()
+{
+	serial_status = SERIAL_OK;
+}
+
+void G1BView::SetSerialStatusFail()
+{
+	serial_status = SERIAL_FAIL;
 }
 
 void G1BView::Read()

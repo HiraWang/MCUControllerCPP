@@ -140,7 +140,9 @@ SerialCode DeviceG1B::Write(const char* buf)
 
 SerialCode DeviceG1B::Login()
 {
+	q_login_ret = {};
 	SerialCode ret = SERIAL_FAIL;
+
 	ret = LoginStepFunction("login step 1", std::string("\r\n"),
 		"avtech-f8369be5fff1", 5, 200);
 	if (ret == SERIAL_OK) {
@@ -157,16 +159,19 @@ SerialCode DeviceG1B::Login()
 			} else {
 				std::cout << "login step 3 failed" << '\n';
 				q_login_ret.push(ret);
+				emit SignalLoginFailed();
 				return ret;
 			}
 		} else {
 			std::cout << "login step 2 failed" << '\n';
 			q_login_ret.push(ret);
+			emit SignalLoginFailed();
 			return ret;
 		}
 	} else {
 		std::cout << "login step 1 failed" << '\n';
 		q_login_ret.push(ret);
+		emit SignalLoginFailed();
 		return ret;
 	}
 }

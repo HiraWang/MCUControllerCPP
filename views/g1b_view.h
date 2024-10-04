@@ -22,8 +22,12 @@ public:
     MetButton* write_button;
     SerialCode serial_status;
 
-private:
+private slots:
     void SetupUi();
+    void SetSerialStatusOk();
+    void SetSerialStatusFail();
+
+private:
     void Read();
     void Write();
     int w;

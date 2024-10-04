@@ -12,6 +12,9 @@
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
 #include "../widgets/loading.h"
+#include "../widgets/msg_subwindow.h"
+
+extern std::string IMAGE_MET_ERROR;
 
 MetLoginSubwindow::MetLoginSubwindow(SerialPort* device,
 									 QString account,
@@ -22,6 +25,13 @@ MetLoginSubwindow::MetLoginSubwindow(SerialPort* device,
 	password(password),
 	QDialog(parent)
 {
+	connect(this, SIGNAL(SignalLoginSubwindowFailed()),
+		parent, SLOT(SetSerialStatusFail()));
+	connect(this, SIGNAL(SignalLoginSubwindowFinished()),
+		parent, SLOT(SetSerialStatusOk()));
+	connect(this, SIGNAL(SignalLoginSubwindowFinished()),
+		parent, SLOT(SetupUi()));
+
 	LoadStyleSheet();
 	SetupUi();
 }
@@ -53,7 +63,7 @@ void MetLoginSubwindow::SetupUi()
 	connect(login_button, &QPushButton::released, this, &MetLoginSubwindow::Login);
 
 	MetButton* close_button = new MetButton(button_style, "CLOSE", "CLOSE", 80, 25, "", "", this);
-	connect(close_button, &QPushButton::released, this, &QDialog::close);
+	connect(close_button, &QPushButton::released, this, &MetLoginSubwindow::Close);
 
 	QHBoxLayout* account_layout = new QHBoxLayout();
 	account_layout->addWidget(account_label, 0, Qt::AlignLeft);
@@ -90,16 +100,31 @@ void MetLoginSubwindow::LoadStyleSheet()
 void MetLoginSubwindow::Login()
 {
 	MetLoadingSubwindow loading;
+	// close loading gif
+	connect(device, SIGNAL(SignalLoginFailed()), &loading, SLOT(close()));
 	connect(device, SIGNAL(SignalLoginFinished()), &loading, SLOT(close()));
+
 	std::thread first(&SerialPort::Login, device);
 
 	loading.exec();
 	first.join();
 
+	// close login subwindow
+	close();
+
 	extern std::queue<SerialCode> q_login_ret;
 	SerialCode ret = q_login_ret.front();
 
 	if (ret == SERIAL_OK) {
-		close();
+		emit SignalLoginSubwindowFinished();
+	} else {
+		MetMsgSubwindow("login failed");
+		emit SignalLoginSubwindowFailed();
 	}
+}
+
+void MetLoginSubwindow::Close()
+{
+	close();
+	emit SignalLoginSubwindowFailed();
 }
