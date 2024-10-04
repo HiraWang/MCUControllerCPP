@@ -1,12 +1,13 @@
 #ifndef G1B_VIEW_H
 #define G1B_VIEW_H
 
-#include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include "../utility.h"
 #include "../devices/device.h"
 #include "../widgets/button.h"
+#include "../widgets/line_edit.h"
 
 class G1BView : public QWidget
 {
@@ -18,8 +19,17 @@ public:
             MetParaList* para_list,
             QWidget* parent = nullptr);
     virtual ~G1BView();
+    MetButton* freq_button;
+    MetButton* pw_button;
+    MetButton* voltage_button;
+    MetButton* offset_button;
+    MetButton* out_button;
     MetButton* read_button;
     MetButton* write_button;
+    MetLineEdit* freq_edit;
+    MetLineEdit* pw_edit;
+    MetLineEdit* voltage_edit;
+    MetLineEdit* offset_edit;
     SerialCode serial_status;
 
 private slots:
@@ -33,7 +43,7 @@ private:
     int w;
     int h;
     DeviceG1B* g1b;
-    QHBoxLayout* layout;
+    QVBoxLayout* layout;
     MetParaList* para_list;
 };
 
