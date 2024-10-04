@@ -2,6 +2,8 @@
 
 #include <queue>
 
+std::string g_g1b_account;
+std::string g_g1b_password;
 std::queue<SerialCode> q_login_ret;
 
 DeviceG1B::DeviceG1B(const wchar_t* port_name,
@@ -142,14 +144,15 @@ SerialCode DeviceG1B::Login()
 {
 	q_login_ret = {};
 	SerialCode ret = SERIAL_FAIL;
+	std::cout << g_g1b_account << " " << g_g1b_password << '\n';
 
 	ret = LoginStepFunction("login step 1", std::string("\r\n"),
 		"avtech-f8369be5fff1", 5, 200);
 	if (ret == SERIAL_OK) {
-		ret = LoginStepFunction("login step 2", std::string("adminz\r\n"),
+		ret = LoginStepFunction("login step 2", std::string(g_g1b_account),
 			"Password", 5, 200);
 		if (ret == SERIAL_OK) {
-			ret = LoginStepFunction("login step 3", std::string("defaultz\r\n"),
+			ret = LoginStepFunction("login step 3", std::string(g_g1b_password),
 				"> ", 5, 200);
 			if (ret == SERIAL_OK) {
 				std::cout << "login successful" << '\n';

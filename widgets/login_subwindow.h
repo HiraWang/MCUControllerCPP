@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 
 #include "../devices/device.h"
+#include "../widgets/line_edit.h"
 
 class MetLoginSubwindow : public QDialog
 {
@@ -32,6 +33,8 @@ private:
 	QString style_sheet;
 	SerialPort* device;
 	QVBoxLayout* layout;
+	MetLineEdit* account_edit;
+	MetLineEdit* password_edit;
 };
 
 #endif

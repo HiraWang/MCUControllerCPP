@@ -10,7 +10,6 @@
 #include "../utility.h"
 #include "../widgets/button.h"
 #include "../widgets/label.h"
-#include "../widgets/line_edit.h"
 #include "../widgets/loading.h"
 #include "../widgets/msg_subwindow.h"
 
@@ -53,9 +52,9 @@ void MetLoginSubwindow::SetupUi()
 	MetLabel* password_label = new MetLabel(label_style, "Password:", 120, 25, this);
 
 	MetLineEditStyle line_edit_style;
-	MetLineEdit* account_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	account_edit = new MetLineEdit(line_edit_style, 100, 25, this);
 	account_edit->setText(account);
-	MetLineEdit* password_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	password_edit = new MetLineEdit(line_edit_style, 100, 25, this);
 	password_edit->setText(password);
 
 	MetButtonStyle button_style;
@@ -99,6 +98,12 @@ void MetLoginSubwindow::LoadStyleSheet()
 
 void MetLoginSubwindow::Login()
 {
+	// set account and password
+	extern std::string g_g1b_account;
+	extern std::string g_g1b_password;
+	g_g1b_account = account_edit->text().toStdString() + std::string("\r\n");
+	g_g1b_password = password_edit->text().toStdString() + std::string("\r\n");
+
 	MetLoadingSubwindow loading;
 	// close loading gif
 	connect(device, SIGNAL(SignalLoginFailed()), &loading, SLOT(close()));
