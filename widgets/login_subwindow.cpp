@@ -11,6 +11,7 @@
 #include "../widgets/button.h"
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
+#include "../widgets/loading.h"
 
 MetLoginSubwindow::MetLoginSubwindow(SerialPort* device,
 									 QString account,
@@ -88,7 +89,11 @@ void MetLoginSubwindow::LoadStyleSheet()
 
 void MetLoginSubwindow::Login()
 {
+	MetLoadingSubwindow loading;
+	connect(device, SIGNAL(SignalLoginFinished()), &loading, SLOT(close()));
 	std::thread first(&SerialPort::Login, device);
+
+	loading.exec();
 	first.join();
 
 	extern std::queue<SerialCode> q_login_ret;

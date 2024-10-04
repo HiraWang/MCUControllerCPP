@@ -152,6 +152,7 @@ SerialCode DeviceG1B::Login()
 			if (ret == SERIAL_OK) {
 				std::cout << "login successful" << '\n';
 				q_login_ret.push(ret);
+				emit SignalLoginFinished();
 				return ret;
 			} else {
 				std::cout << "login step 3 failed" << '\n';

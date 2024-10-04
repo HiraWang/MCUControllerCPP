@@ -3,6 +3,7 @@
 
 #include <windows.h>
 #include <iostream>
+#include <QObject>
 
 #include "utility.h"
 
@@ -12,8 +13,10 @@ typedef enum {
     REGLO_ICC
 } Device;
 
-class SerialPort
+class SerialPort : public QObject
 {
+    Q_OBJECT
+
 public:
     SerialPort(const wchar_t* port_name,
                DWORD baud_rate,
@@ -36,6 +39,8 @@ public:
 
 class DeviceG1B : public SerialPort
 {
+    Q_OBJECT
+
 public:
     DeviceG1B(const wchar_t* port_name,
               DWORD baud_rate,
@@ -50,6 +55,10 @@ public:
     virtual SerialCode Login() override;
     SerialCode Read(char* buf, const int size);
     SerialCode Write(const char* buf);
+
+signals:
+    void SignalLoginFinished(void);
+
 private:
     SerialCode LoginStepFunction(std::string name,
                                  std::string input,
