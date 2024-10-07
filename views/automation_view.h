@@ -22,21 +22,23 @@ public:
                    QWidget* parent = nullptr);
     virtual ~AutomationView();
 
+private slots:
+    void ToggleSetButton();
+    void ToggleRunButton();
+
 private:
     void SetupUi();
     void LoadStyleSheet();
     int w;
     int h;
+    int unit_cnt;
+    int time_tot;
     QString style_sheet;
     QString style_sheet_lcd;
     QString style_sheet_status_on;
     QString style_sheet_status_off;
     QVBoxLayout* layout;
-    MetProcessUnit* process_unit_1;
-    MetProcessUnit* process_unit_2;
-    MetProcessUnit* process_unit_3;
-    MetProcessUnit* process_unit_4;
-    MetProcessUnit* process_unit_5;
+    MetProcessUnit** process_unit_list;
     MetProcessUnit* all_process;
     MetLabel* label_name;
     MetLabel* label_time;

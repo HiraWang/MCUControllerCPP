@@ -1,10 +1,14 @@
 #include "process_unit.h"
 
 MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
+							   int id,
 							   QString name,
 							   QString time,
 							   QWidget* parent) :
 	style(style),
+	id(id),
+	time(0),
+	time_tot(0),
 	QWidget(parent)
 {
 	LoadStyleSheet();
@@ -73,17 +77,21 @@ void MetProcessUnit::LoadStyleSheet()
 
 void MetProcessUnit::StatusOn()
 {
-
+	if (status == false) {
+		label_status->setStyleSheet(style_sheet_status_on);
+		status = true;
+	}
 }
 
 void MetProcessUnit::StatusOff()
 {
-
+	label_status->setStyleSheet(style_sheet_status_off);
+	status = false;
 }
 
-void MetProcessUnit::SetLcd()
+void MetProcessUnit::SetLcd(QString num)
 {
-
+	lcd->display(num);
 }
 
 MetProcessUnitStyle::MetProcessUnitStyle(QString bkg_color,

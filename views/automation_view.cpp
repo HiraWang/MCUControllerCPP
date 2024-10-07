@@ -16,7 +16,7 @@ AutomationView::AutomationView(int w,
 
 AutomationView::~AutomationView()
 {
-
+	delete[] process_unit_list;
 }
 
 void AutomationView::SetupUi()
@@ -26,27 +26,29 @@ void AutomationView::SetupUi()
 	LoadStyleSheet();
 
 	MetProcessUnitStyle process_unit_style;
-	process_unit_1 = new MetProcessUnit(process_unit_style,
-									    "Stop pump channel 2",
-										"Time 1:",
-										this);
-	process_unit_2 = new MetProcessUnit(process_unit_style,
-										"Start pulse generator",
-										"Time 2:",
-										this);
-	process_unit_3 = new MetProcessUnit(process_unit_style,
-										"Start pump channel 2",
-										"Time 3:",
-										this);
-	process_unit_4 = new MetProcessUnit(process_unit_style,
-										"Stop pulse generator",
-										"Time 4:",
-										this);
-	process_unit_5 = new MetProcessUnit(process_unit_style,
-										"Stop pump channel 1 and 2",
-										"Time 5:",
-										this);
-	all_process = new MetProcessUnit(process_unit_style,
+	unit_cnt = 5;
+	process_unit_list = new MetProcessUnit* [unit_cnt + 1];
+	process_unit_list[1] = new MetProcessUnit(process_unit_style, 1,
+											  "Stop pump channel 2",
+											  "Time 1:",
+											  this);
+	process_unit_list[2] = new MetProcessUnit(process_unit_style, 2,
+											  "Start pulse generator",
+											  "Time 2:",
+											  this);
+	process_unit_list[3] = new MetProcessUnit(process_unit_style, 3,
+											  "Start pump channel 2",
+											  "Time 3:",
+											  this);
+	process_unit_list[4] = new MetProcessUnit(process_unit_style, 4,
+											  "Stop pulse generator",
+											  "Time 4:",
+											  this);
+	process_unit_list[5] = new MetProcessUnit(process_unit_style, 5,
+											  "Stop pump channel 1 and 2",
+											  "Time 5:",
+											  this);
+	all_process = new MetProcessUnit(process_unit_style, 0,
 								     "All process",
 								     "Total time:",
 								     this);
@@ -70,6 +72,11 @@ void AutomationView::SetupUi()
 	MetButtonStyle button_style;
 	button_set = new MetButton(button_style, "SET", "", 80, 80, "", "", this);
 	button_run = new MetButton(button_style, "RUN", "STOP", 80, 80, "", "", this);
+	
+	connect(button_set, &QPushButton::released, this,
+		&AutomationView::ToggleSetButton);
+	connect(button_run, &QPushButton::released, this,
+		&AutomationView::ToggleRunButton);
 
 	QHBoxLayout* button_layout = new QHBoxLayout();
 	button_layout->addStretch(10);
@@ -79,11 +86,11 @@ void AutomationView::SetupUi()
 	button_layout->addStretch(10);
 
 	layout = new QVBoxLayout(this);
-	layout->addWidget(process_unit_1, 0, Qt::AlignCenter);
-	layout->addWidget(process_unit_2, 0, Qt::AlignCenter);
-	layout->addWidget(process_unit_3, 0, Qt::AlignCenter);
-	layout->addWidget(process_unit_4, 0, Qt::AlignCenter);
-	layout->addWidget(process_unit_5, 0, Qt::AlignCenter);
+	layout->addWidget(process_unit_list[1], 0, Qt::AlignCenter);
+	layout->addWidget(process_unit_list[2], 0, Qt::AlignCenter);
+	layout->addWidget(process_unit_list[3], 0, Qt::AlignCenter);
+	layout->addWidget(process_unit_list[4], 0, Qt::AlignCenter);
+	layout->addWidget(process_unit_list[5], 0, Qt::AlignCenter);
 	layout->addWidget(all_process, 0, Qt::AlignCenter);
 	layout->addItem(button_layout);
 	setLayout(layout);
@@ -112,4 +119,35 @@ void AutomationView::LoadStyleSheet()
 	style_sheet_status_off =
 		"background-color: " + QString(OFF_COLOR_1) + ";"
 		"border-radius: 2px;";
+}
+
+void AutomationView::ToggleSetButton()
+{
+	button_set->SetButtonDefault();
+	process_unit_list[1]->time = (int)(process_unit_list[1]->time_edit->text().toInt());
+	process_unit_list[2]->time = (int)(process_unit_list[2]->time_edit->text().toInt());
+	process_unit_list[3]->time = (int)(process_unit_list[3]->time_edit->text().toInt());
+	process_unit_list[4]->time = (int)(process_unit_list[4]->time_edit->text().toInt());
+	process_unit_list[5]->time = (int)(process_unit_list[5]->time_edit->text().toInt());
+	for (int i = 1; i <= unit_cnt; i++) {
+		process_unit_list[i]->time_tot = 0;
+		for (int j = 1; j <= process_unit_list[i]->id; j++) {
+			process_unit_list[i]->time_tot += process_unit_list[j]->time;
+		}
+		std::cout << "process unit " << i << " time_tot " << process_unit_list[i]->time_tot << '\n';
+		process_unit_list[i]->StatusOff();
+		process_unit_list[i]->SetLcd(process_unit_list[i]->time_edit->text());
+	}
+	time_tot = process_unit_list[unit_cnt]->time_tot;
+	all_process->time_edit->setText(QString::number(time_tot));
+	all_process->SetLcd("0");
+}
+
+void AutomationView::ToggleRunButton()
+{
+	if (button_run->status) {
+		button_run->SetButtonDefault();
+	} else {
+		button_run->SetButtonPressed();
+	}
 }

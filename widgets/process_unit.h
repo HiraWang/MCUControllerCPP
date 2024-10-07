@@ -33,13 +33,17 @@ class MetProcessUnit : public QWidget
 
 public:
 	MetProcessUnit(MetProcessUnitStyle style,
+				   int id,
 				   QString name,	
 				   QString time,	
 				   QWidget* parent = nullptr);
 	virtual ~MetProcessUnit();
 	void StatusOn();
 	void StatusOff();
-	void SetLcd();
+	void SetLcd(QString num);
+	int id;
+	int time;
+	int time_tot;
 	MetLabel* label_name;
 	MetLineEdit* time_edit;
 
