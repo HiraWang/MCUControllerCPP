@@ -115,7 +115,7 @@ void MainWindow::TogglePowerButton()
 		int h = 540;
 		if (current_device == Device::AUTOMATION) {
 			// automation
-			ui->bottom_view->automation_view = new AutomationView(w, h, para_list, ui->bottom_view);
+			ui->bottom_view->automation_view = new AutomationView(w, h, nullptr, nullptr, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->automation_view,
 				device_list[Device::AUTOMATION]);
 			ui->bottom_view->tab->show();

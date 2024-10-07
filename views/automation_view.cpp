@@ -4,11 +4,13 @@
 
 AutomationView::AutomationView(int w,
                                int h,
-                               MetParaList* para_list,
+							   DeviceG1B* g1b,
+							   DeviceRegloIcc* reglo_icc,
                                QWidget* parent) :
 	w(w),
 	h(h),
-	para_list(para_list),
+	g1b(g1b),
+	reglo_icc(reglo_icc),
 	QWidget(parent)
 {
 	SetupUi();
@@ -70,8 +72,11 @@ void AutomationView::SetupUi()
 										  "}");
 
 	MetButtonStyle button_style;
-	button_set = new MetButton(button_style, "SET", "", 80, 80, "", "", this);
-	button_run = new MetButton(button_style, "RUN", "STOP", 80, 80, "", "", this);
+	button_set = new MetButton(button_style, "SET", "SET", 80, 80, "", "", this);
+
+	MetButtonStyle two_state_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2,
+		ON_COLOR_2, OFF_COLOR_3, ON_COLOR_3);
+	button_run = new MetButton(two_state_button_style, "", "", 80, 80, "", "", this);
 	
 	connect(button_set, &QPushButton::released, this,
 		&AutomationView::ToggleSetButton);
@@ -147,7 +152,67 @@ void AutomationView::ToggleRunButton()
 {
 	if (button_run->status) {
 		button_run->SetButtonDefault();
+		StopProcess();
 	} else {
 		button_run->SetButtonPressed();
+		RunProcess();
 	}
+}
+
+void AutomationView::Update(int value)
+{
+	std::cout << value << '\n';
+}
+
+void AutomationView::RunProcess()
+{
+	thread = new QThread(this);
+	worker = new TimerWorker(this);
+	worker->moveToThread(thread);
+
+	connect(worker, &TimerWorker::TimeOut, this, &AutomationView::Update);
+	connect(thread, &QThread::started, worker, &TimerWorker::Start);
+	connect(thread, &QThread::finished, worker, &TimerWorker::Finish);
+
+	worker->Reset();
+	thread->start();
+}
+
+void AutomationView::StopProcess()
+{
+	thread->terminate();
+}
+
+TimerWorker::TimerWorker(QWidget* parent)
+{
+	count = 0;
+	timer = new QTimer(this);
+	timer->setInterval(1000);
+}
+
+TimerWorker::~TimerWorker()
+{
+
+}
+
+void TimerWorker::Reset()
+{
+	count = 0;
+}
+
+void TimerWorker::Start()
+{
+	connect(timer, &QTimer::timeout, this, &TimerWorker::Run);
+	timer->start();
+}
+
+void TimerWorker::Finish()
+{
+	timer->stop();
+}
+
+void TimerWorker::Run()
+{
+	count += 1;
+	emit TimeOut(count);
 }
