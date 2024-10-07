@@ -13,11 +13,11 @@ RegloIccView::RegloIccView(int w,
 	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
-	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
+	std::string str = para_list->list[PUMP_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
 	std::wcout << port << " " << sizeof(port) << '\n';
-	std::wcout << L"COM4" << " " << sizeof(L"COM4") << '\n';
+	//std::wcout << L"COM4" << " " << sizeof(L"COM4") << '\n';
 
 	reglo_icc = new DeviceRegloIcc(port,
 								   CBR_9600,
