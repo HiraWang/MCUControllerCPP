@@ -207,3 +207,121 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 	}
 	return SERIAL_OK;
 }
+
+SerialCode DeviceG1B::SetFreq(int freq)
+{
+	int period = (int)(1.0f / (float)freq * 1000000000.0f);
+	std::cout << period << '\n';
+	std::string node("source:");
+	std::string period_cmd = "pulse:period " + std::to_string(period) + "ns;";
+	std::string buf = node + period_cmd + "hold width;double off";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}
+
+SerialCode DeviceG1B::SetPulseWidth(float pw)
+{
+	int pw_ns = (int)((float)pw * 1000.0f);
+	std::cout << pw_ns << '\n';
+	std::string node("source:");
+	std::string pw_cmd = "pulse:width " + std::to_string(pw_ns) + "ns;";
+	std::string buf = node + pw_cmd + "hold width;double off";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}
+
+SerialCode DeviceG1B::SetVoltage(int v)
+{
+	std::string node("source:");
+	std::string buf = node + "voltage " + std::to_string(v) + "V";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}
+
+SerialCode DeviceG1B::SetOffset(int offset)
+{
+	std::string node("source:");
+	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}
+
+SerialCode DeviceG1B::On()
+{
+	std::string buf = "output on";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}
+
+SerialCode DeviceG1B::Off()
+{
+	std::string buf = "output off";
+	std::cout << buf << '\n';
+
+	char* cmd = CopyStringToNewedCharArray(buf);
+	DWORD size = (DWORD)strlen(cmd);
+	DWORD dw_bytes_read = 0;
+
+	if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+		delete[] cmd;
+		return SERIAL_FAIL_TO_WRITE;
+	} else {
+		delete[] cmd;
+		return SERIAL_OK;
+	}
+}

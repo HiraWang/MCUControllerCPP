@@ -152,29 +152,39 @@ void G1BView::SetSerialStatusFail()
 void G1BView::ToggleFreqButton()
 {
 	freq_button->SetButtonDefault();
+	int freq = freq_edit->text().toInt();
+	g1b->SetFreq(freq);
 }
 
 void G1BView::TogglePwButton()
 {
 	pw_button->SetButtonDefault();
+	float pw = pw_edit->text().toFloat();
+	g1b->SetPulseWidth(pw);
 }
 
 void G1BView::ToggleVoltageButton()
 {
 	voltage_button->SetButtonDefault();
+	int voltage = voltage_edit->text().toInt();
+	g1b->SetVoltage(voltage);
 }
 
 void G1BView::ToggleOffsetButton()
 {
 	offset_button->SetButtonDefault();
+	int offset = offset_edit->text().toInt();
+	g1b->SetOffset(offset);
 }
 
 void G1BView::ToggleOutButton()
 {
 	if (out_button->status) {
 		out_button->SetButtonDefault();
+		g1b->Off();
 	} else {
 		out_button->SetButtonPressed();
+		g1b->On();
 	}
 }
 

@@ -55,6 +55,12 @@ public:
     virtual SerialCode Login() override;
     SerialCode Read(char* buf, const int size);
     SerialCode Write(const char* buf);
+    SerialCode SetFreq(int freq);
+    SerialCode SetPulseWidth(float pw);
+    SerialCode SetVoltage(int v);
+    SerialCode SetOffset(int offset);
+    SerialCode On();
+    SerialCode Off();
 
 signals:
     void SignalLoginFailed(void);
