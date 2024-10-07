@@ -29,6 +29,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "devices/device.cpp"
 			   "devices/g1b.cpp"
 			   "devices/reglo_icc.cpp"
+			   "views/automation_view.h"
+			   "views/automation_view.cpp"
 			   "views/bottom_view.h"
 			   "views/bottom_view.cpp"
 			   "views/g1b_view.h"
@@ -57,6 +59,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/menu.cpp"
 			   "widgets/msg_subwindow.h"
 			   "widgets/msg_subwindow.cpp"
+			   "widgets/process_unit.h"
+			   "widgets/process_unit.cpp"
 			   "widgets/tab.h"
 			   "widgets/tab.cpp")
 

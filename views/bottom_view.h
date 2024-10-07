@@ -3,6 +3,7 @@
 
 #include <QHBoxLayout>
 
+#include "../views/automation_view.h"
 #include "../views/g1b_view.h"
 #include "../views/reglo_icc_view.h"
 #include "../widgets/tab.h"
@@ -15,6 +16,7 @@ public:
     BottomView(QWidget* parent = nullptr);
     virtual ~BottomView();
     MetTab* tab;
+    AutomationView* automation_view;
     G1BView* g1b_view;
     RegloIccView* reglo_icc_view;
 
