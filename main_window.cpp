@@ -113,14 +113,26 @@ void MainWindow::TogglePowerButton()
 		int w = 1230;
 		int h = 540;
 		if (current_device == Device::AUTOMATION) {
-			for (const auto& device : device_list)
-			{
-				QWidget* tab = new QWidget();
-				tab->setFixedWidth(w);
-				tab->setFixedHeight(h);
-				ui->bottom_view->tab->addTab(tab, device);
+			// automation
+			QWidget* tab = new QWidget();
+			tab->setFixedWidth(w);
+			tab->setFixedHeight(h);
+			ui->bottom_view->tab->addTab(tab, device_list[Device::AUTOMATION]);
+			ui->bottom_view->tab->show();
+
+			// g1b
+			ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
+			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
+				device_list[Device::G1B]);
+			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK)
 				ui->bottom_view->tab->show();
-			}
+
+			// reglo icc
+			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h, para_list, ui->bottom_view);
+			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
+				device_list[Device::REGLO_ICC]);
+			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
+				ui->bottom_view->tab->show();
 		} else if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
