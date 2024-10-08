@@ -71,13 +71,13 @@ std::string GetAbsPath(std::string file_name)
 
 void HideConsole()
 {
-    std::cout << "show console" << '\n';
+    std::cout << "hide console" << '\n';
     ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
 }
 
 void ShowConsole()
 {
-    std::cout << "hide console" << '\n';
+    std::cout << "show console" << '\n';
     ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
 }
 

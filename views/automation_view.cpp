@@ -205,7 +205,10 @@ void AutomationView::RunProcess()
 	connect(thread, &QThread::started, worker, &TimerWorker::Start);
 	connect(thread, &QThread::finished, worker, &TimerWorker::Finish);
 
+	(this->*process_function_list.front())();
+	process_function_list.pop_front();
 	process_unit_list[0]->StatusOn();
+	
 	worker->Reset();
 	thread->start();
 }
