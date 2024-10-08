@@ -1,14 +1,19 @@
 #include "utility.h"
 
 #include <direct.h>
+#include <Windows.h>
 #include <fstream>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
+bool g_normal = true;
+bool g_ui_test = !g_normal;
+
 std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
+std::string IMAGE_MET_CONSOLE = "\\images\\Console.png";
 std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
 std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
@@ -62,6 +67,23 @@ std::string GetAbsPath(std::string file_name)
         return std::string();
     std::cout << "get path : " << GetCurrentPath() + file_name << '\n';
     return GetCurrentPath() + file_name;
+}
+
+void HideConsole()
+{
+    std::cout << "show console" << '\n';
+    ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+}
+
+void ShowConsole()
+{
+    std::cout << "hide console" << '\n';
+    ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+}
+
+bool IsConsoleVisible()
+{
+    return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
 }
 
 MetPara::MetPara() : 

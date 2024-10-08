@@ -11,8 +11,7 @@ MetLabel::MetLabel(MetLabelStyle style,
 	QLabel(parent)
 {
 	setText(name);
-	setFixedWidth(w);
-	setFixedHeight(h);
+	setFixedSize(QSize(w, h));
 	LoadStyleSheet();
 	setStyleSheet(style_sheet);
 }
@@ -27,8 +26,6 @@ void MetLabel::LoadStyleSheet()
 	style_sheet =
 		"QLabel {"
 		"background-color: " + style.bkg_color + ";"
-		"min-width: 65px;"
-		"min-height: 25px;"
 		"font: bold " + style.font_size + ";"
 		"color: " + style.font_color + ";"
 		"}";

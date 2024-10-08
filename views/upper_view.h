@@ -23,6 +23,8 @@ public:
     MetButton* window_button;
     MetButton* load_config_button;
     MetButton* menu_button;
+    MetButton* console_button;
+    MetButton* ui_test_button;
     MetButton* power_button;
 
 private:

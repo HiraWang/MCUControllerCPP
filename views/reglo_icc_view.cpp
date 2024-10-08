@@ -3,6 +3,8 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
+extern bool g_ui_test;
+
 RegloIccView::RegloIccView(int w,
 						   int h,
 						   MetParaList* para_list,
@@ -13,6 +15,13 @@ RegloIccView::RegloIccView(int w,
 	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
+	if (g_ui_test) {
+		serial_status = SERIAL_OK;
+		reglo_icc = nullptr;
+		SetupUi();
+		return;
+	}
+
 	std::string str = para_list->list[PUMP_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
@@ -24,10 +33,12 @@ RegloIccView::RegloIccView(int w,
 								   8,
 								   ONESTOPBIT,
 								   NOPARITY);
-
 	serial_status = reglo_icc->Open();
+
 	if (serial_status != SERIAL_OK) {
 		MetMsgSubwindow("device RegloIcc open failed");
+		reglo_icc = nullptr;
+		return;
 	} else {
 		std::cout << "device RegloIcc opened" << '\n';
 		SetupUi();
@@ -36,7 +47,7 @@ RegloIccView::RegloIccView(int w,
 
 RegloIccView::~RegloIccView()
 {
-	if (reglo_icc->Close() != SERIAL_OK) {
+	if (reglo_icc && reglo_icc->Close() != SERIAL_OK) {
 		MetMsgSubwindow("device RegloIcc close failed");
 	}
 }

@@ -23,6 +23,7 @@ public:
     MetPumpChannel* channel_2;
     MetButton* read_button;
     MetButton* write_button;
+    DeviceRegloIcc* reglo_icc;
     SerialCode serial_status;
 
 private:
@@ -31,7 +32,6 @@ private:
     void Write();
     int w;
     int h;
-    DeviceRegloIcc* reglo_icc;
     QVBoxLayout* layout;
     MetParaList* para_list;
 };
