@@ -111,11 +111,7 @@ void AutomationView::SetupUi()
 
 	MetButtonStyle button_style;
 	button_set = new MetButton(button_style, "SET", "SET", 80, 80, "", "", this);
-
-	// process orientated button style
-	MetButtonStyle two_state_button_style(COLOR_ON_1, COLOR_OFF_1, COLOR_ON_2,
-		COLOR_OFF_2, COLOR_ON_3, COLOR_OFF_3);
-	button_run = new MetButton(two_state_button_style, "RUN", "STOP", 80, 80, "", "", this);
+	button_run = new MetButton(button_style, "RUN", "STOP", 80, 80, "", "", this);
 	
 	connect(button_set, &QPushButton::released, this,
 		&AutomationView::ToggleSetButton);
