@@ -13,6 +13,24 @@ AutomationView::AutomationView(int w,
 	reglo_icc(reglo_icc),
 	QWidget(parent)
 {
+	process_name_list = {
+		"Start pump channel 1 and 2",
+		"Stop pump channel 2",
+		"Start pulse generator",
+		"Start pump channel 2",
+		"Stop pulse generator",
+		"Stop pump channel 1 and 2"
+	};
+
+	process_function_list = {
+		&AutomationView::StartPumpAllChannel,
+		&AutomationView::StopPumpChannel2,
+		&AutomationView::StartPulseGenerator,
+		&AutomationView::StartPumpChannel2,
+		&AutomationView::StopPulseGenerator,
+		&AutomationView::StopPumpAllChannel
+	};
+
 	SetupUi();
 }
 
@@ -26,15 +44,6 @@ void AutomationView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 	LoadStyleSheet();
-
-	std::list<std::string> process_name_list = {
-		"Start pump channel 1 and 2",
-		"Stop pump channel 2",
-		"Start pulse generator",
-		"Start pump channel 2",
-		"Stop pulse generator",
-		"Stop pump channel 1 and 2"
-	};
 
 	// prepare process units
 	MetProcessUnitStyle process_unit_style;
@@ -169,6 +178,8 @@ void AutomationView::Update(int count)
 			list[i]->time -= 1;
 			list[i]->SetLcd(QString::number(list[i]->time));
 			if (count == list[i]->time_tot) {
+				(this->*process_function_list.front())();
+				process_function_list.pop_front();
 				list[i]->StatusOn();
 			}
 			if (count == time_tot) {
@@ -200,6 +211,36 @@ void AutomationView::RunProcess()
 void AutomationView::StopProcess()
 {
 	thread->terminate();
+}
+
+void AutomationView::StartPumpAllChannel()
+{	
+	std::cout << "StartPumpAllChannel\n";
+}
+
+void AutomationView::StopPumpChannel2()
+{
+	std::cout << "StopPumpChannel2\n";
+}
+
+void AutomationView::StartPulseGenerator()
+{
+	std::cout << "StartPulseGenerator\n";
+}
+
+void AutomationView::StartPumpChannel2()
+{
+	std::cout << "StartPumpChannel2\n";
+}
+
+void AutomationView::StopPulseGenerator()
+{
+	std::cout << "StopPulseGenerator\n";
+}
+
+void AutomationView::StopPumpAllChannel()
+{
+	std::cout << "StopPumpAllChannel\n";
 }
 
 TimerWorker::TimerWorker(QWidget* parent)

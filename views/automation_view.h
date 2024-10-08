@@ -61,6 +61,12 @@ private:
     void LoadStyleSheet();
     void RunProcess();
     void StopProcess();
+    void StartPumpAllChannel();
+    void StopPumpChannel2();
+    void StartPulseGenerator();
+    void StartPumpChannel2();
+    void StopPulseGenerator();
+    void StopPumpAllChannel();
     int w;
     int h;
     int unit_cnt;
@@ -85,6 +91,8 @@ private:
     MetButton* button_set;
     MetButton* button_run;
     MetParaList* para_list;
+    std::list<std::string> process_name_list;
+    std::list<void (AutomationView::*)()> process_function_list;
 };
 
 #endif
