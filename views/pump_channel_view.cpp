@@ -53,8 +53,8 @@ void MetPumpChannel::SetupUi()
 	rpm_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
 	
 	// status orientated button style
-	MetButtonStyle two_state_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2,
-		ON_COLOR_2, OFF_COLOR_3, ON_COLOR_3);
+	MetButtonStyle two_state_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2,
+		COLOR_ON_2, COLOR_OFF_3, COLOR_ON_3);
 	dir_button = new MetButton(two_state_button_style, "CCW", "CW", 80, 25, "", "", this);
 	out_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
 

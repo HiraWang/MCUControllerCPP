@@ -70,21 +70,6 @@ void MainWindow::ToggleWindowButton()
 	}
 }
 
-void MainWindow::ToggleUiTestButton()
-{
-	MetButton* button = ui->upper_view->ui_test_button;
-	extern bool g_normal;
-	extern bool g_ui_test;
-	if (button->status) {
-		button->SetButtonDefault();
-		g_ui_test = false;
-	} else {
-		button->SetButtonPressed();
-		g_ui_test = true;
-	}
-	g_normal = !g_ui_test;
-}
-
 void MainWindow::ToggleLoadConfigButton()
 {
 	MetButton* button = ui->upper_view->load_config_button;
@@ -105,6 +90,21 @@ void MainWindow::ToggleMenuButton()
 		button->SetButtonPressed();
 		ui->upper_view->menu->Show();
 	}
+}
+
+void MainWindow::ToggleUiTestButton()
+{
+	MetButton* button = ui->upper_view->ui_test_button;
+	extern bool g_normal;
+	extern bool g_ui_test;
+	if (button->status) {
+		button->SetButtonDefault();
+		g_ui_test = false;
+	} else {
+		button->SetButtonPressed();
+		g_ui_test = true;
+	}
+	g_normal = !g_ui_test;
 }
 
 void MainWindow::TogglePowerButton()

@@ -15,8 +15,8 @@ class MetProcessUnitStyle
 {
 public:
 	MetProcessUnitStyle(QString bkg_color = COLOR_BLACK,
-					    QString color_1 = ON_COLOR_1,
-					    QString color_2 = OFF_COLOR_1,
+					    QString color_1 = COLOR_ON_1,
+					    QString color_2 = COLOR_OFF_1,
 						QString font_size = FONT_SIZE,
 						QString font_color = COLOR_WHITE);
 	virtual ~MetProcessUnitStyle();

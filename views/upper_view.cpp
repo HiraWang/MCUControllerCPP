@@ -35,7 +35,6 @@ void UpperView::SetupUi()
 	window_button = new MetButton(button_style, "MAX", "FULL", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)), this);
-	ui_test_button = new MetButton(button_style, "UI TEST", "NORMAL", 80, 80, "", "", this);
 	load_config_button = new MetButton(button_style, "LOAD", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
@@ -43,8 +42,13 @@ void UpperView::SetupUi()
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
 
-	MetButtonStyle power_button_style(OFF_COLOR_1, ON_COLOR_1, OFF_COLOR_2, ON_COLOR_2,
-		OFF_COLOR_3, ON_COLOR_3);
+	MetButtonStyle debug_button_style(COLOR_ON_1, COLOR_DEBUG_1, COLOR_ON_2, COLOR_DEBUG_2,
+		COLOR_ON_3, COLOR_DEBUG_3);
+	ui_test_button = new MetButton(debug_button_style, "NORMAL", "UI TEST", 80, 80,
+		"", "", this);
+
+	MetButtonStyle power_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2, COLOR_ON_2,
+		COLOR_OFF_3, COLOR_ON_3);
 	power_button = new MetButton(power_button_style, "OFF", "ON", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
@@ -55,9 +59,9 @@ void UpperView::SetupUi()
 	layout->addStretch(10);
 	layout->addWidget(exit_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
-	layout->addWidget(ui_test_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(load_config_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(menu_button, 0, Qt::AlignTop | Qt::AlignRight);
+	layout->addWidget(ui_test_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);
 }

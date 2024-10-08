@@ -113,8 +113,8 @@ void AutomationView::SetupUi()
 	button_set = new MetButton(button_style, "SET", "SET", 80, 80, "", "", this);
 
 	// process orientated button style
-	MetButtonStyle two_state_button_style(ON_COLOR_1, OFF_COLOR_1, ON_COLOR_2,
-		OFF_COLOR_2, ON_COLOR_3, OFF_COLOR_3);
+	MetButtonStyle two_state_button_style(COLOR_ON_1, COLOR_OFF_1, COLOR_ON_2,
+		COLOR_OFF_2, COLOR_ON_3, COLOR_OFF_3);
 	button_run = new MetButton(two_state_button_style, "RUN", "STOP", 80, 80, "", "", this);
 	
 	connect(button_set, &QPushButton::released, this,
@@ -156,10 +156,10 @@ void AutomationView::LoadStyleSheet()
 		"font: " + QString(FONT_SIZE) + ";"
 		"}";
 	style_sheet_status_on =
-		"background-color: " + QString(ON_COLOR_1) + ";"
+		"background-color: " + QString(COLOR_ON_1) + ";"
 		"border-radius: 2px;";
 	style_sheet_status_off =
-		"background-color: " + QString(OFF_COLOR_1) + ";"
+		"background-color: " + QString(COLOR_OFF_1) + ";"
 		"border-radius: 2px;";
 }
 
