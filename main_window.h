@@ -18,6 +18,7 @@ public:
 private slots:
     void ToggleExitButton();
     void ToggleWindowButton();
+    void ToggleUiTestButton();
     void ToggleLoadConfigButton();
     void ToggleMenuButton();
     void TogglePowerButton();

@@ -21,6 +21,7 @@ public:
     MetComboBox* combo_box;
     MetButton* exit_button;
     MetButton* window_button;
+    MetButton* ui_test_button;
     MetButton* load_config_button;
     MetButton* menu_button;
     MetButton* power_button;

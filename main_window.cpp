@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::ToggleExitButton);
 	connect(ui->upper_view->window_button, &QPushButton::released,
 		this, &MainWindow::ToggleWindowButton);
+	connect(ui->upper_view->ui_test_button, &QPushButton::released,
+		this, &MainWindow::ToggleUiTestButton);
 	connect(ui->upper_view->load_config_button, &QPushButton::released,
 		this, &MainWindow::ToggleLoadConfigButton);
 	connect(ui->upper_view->menu_button, &QPushButton::released,
@@ -68,6 +70,21 @@ void MainWindow::ToggleWindowButton()
 	}
 }
 
+void MainWindow::ToggleUiTestButton()
+{
+	MetButton* button = ui->upper_view->ui_test_button;
+	extern bool g_normal;
+	extern bool g_ui_test;
+	if (button->status) {
+		button->SetButtonDefault();
+		g_ui_test = false;
+	} else {
+		button->SetButtonPressed();
+		g_ui_test = true;
+	}
+	g_normal = !g_ui_test;
+}
+
 void MainWindow::ToggleLoadConfigButton()
 {
 	MetButton* button = ui->upper_view->load_config_button;
@@ -101,7 +118,14 @@ void MainWindow::TogglePowerButton()
 		ui->bottom_view->tab->hide();
 		ui->bottom_view->tab->clear();
 		ui->upper_view->combo_box->setEnabled(true);
-		if (current_device == Device::G1B) {
+		if (current_device == Device::AUTOMATION) {
+			ui->bottom_view->automation_view->~AutomationView();
+			ui->bottom_view->g1b_view->~G1BView();
+			ui->bottom_view->reglo_icc_view->~RegloIccView();
+			for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
+				ui->bottom_view->tab->removeTab(i);
+			}
+		} else if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view->~G1BView();
 			ui->bottom_view->tab->removeTab(0);
 		} else if ((current_device == Device::REGLO_ICC)) {
@@ -114,25 +138,25 @@ void MainWindow::TogglePowerButton()
 		int w = 1230;
 		int h = 540;
 		if (current_device == Device::AUTOMATION) {
-			// automation
-			ui->bottom_view->automation_view = new AutomationView(w, h, nullptr, nullptr, ui->bottom_view);
+			ui->bottom_view->g1b_view = new G1BView(w, h,
+				para_list, ui->bottom_view);
+			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h,
+				para_list, ui->bottom_view);
+			ui->bottom_view->automation_view = new AutomationView(w, h,
+				ui->bottom_view->g1b_view->g1b, ui->bottom_view->reglo_icc_view->reglo_icc, ui->bottom_view);
+
 			ui->bottom_view->tab->addTab(ui->bottom_view->automation_view,
 				device_list[Device::AUTOMATION]);
-			ui->bottom_view->tab->show();
-
-			// g1b
-			/*ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
 				device_list[Device::G1B]);
-			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK)
-				ui->bottom_view->tab->show();*/
-
-			// reglo icc
-			/*ui->bottom_view->reglo_icc_view = new RegloIccView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
 				device_list[Device::REGLO_ICC]);
-			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
-				ui->bottom_view->tab->show();*/
+
+			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK &&
+				ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK &&
+				ui->bottom_view->automation_view->serial_status == SERIAL_OK) {
+				ui->bottom_view->tab->show();
+			}
 		} else if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,

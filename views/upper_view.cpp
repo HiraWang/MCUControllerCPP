@@ -35,6 +35,7 @@ void UpperView::SetupUi()
 	window_button = new MetButton(button_style, "MAX", "FULL", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)), this);
+	ui_test_button = new MetButton(button_style, "UI TEST", "NORMAL", 80, 80, "", "", this);
 	load_config_button = new MetButton(button_style, "LOAD", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
@@ -54,6 +55,7 @@ void UpperView::SetupUi()
 	layout->addStretch(10);
 	layout->addWidget(exit_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
+	layout->addWidget(ui_test_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(load_config_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(menu_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);

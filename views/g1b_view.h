@@ -30,6 +30,7 @@ public:
     MetLineEdit* pw_edit;
     MetLineEdit* voltage_edit;
     MetLineEdit* offset_edit;
+    DeviceG1B* g1b;
     SerialCode serial_status;
 
 private slots:
@@ -47,7 +48,6 @@ private:
     void Write();
     int w;
     int h;
-    DeviceG1B* g1b;
     QVBoxLayout* layout;
     MetParaList* para_list;
 };

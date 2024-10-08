@@ -48,6 +48,7 @@ public:
                    DeviceRegloIcc* reglo_icc,
                    QWidget* parent = nullptr);
     virtual ~AutomationView();
+    SerialCode serial_status;
 
 public slots:
     void Update(int);
@@ -57,14 +58,15 @@ private slots:
     void ToggleRunButton();
 
 private:
+    void InitLists();
     void SetupUi();
     void LoadStyleSheet();
     void RunProcess();
     void StopProcess();
     void StartPumpAllChannel();
-    void StopPumpChannel2();
+    void StopPumpChannelNo2();
     void StartPulseGenerator();
-    void StartPumpChannel2();
+    void StartPumpChannelNo2();
     void StopPulseGenerator();
     void StopPumpAllChannel();
     int w;

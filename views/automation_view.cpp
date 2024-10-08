@@ -2,6 +2,11 @@
 
 #include <QHBoxLayout>
 
+#include "../widgets/msg_subwindow.h"
+
+extern bool g_normal;
+extern bool g_ui_test;
+
 AutomationView::AutomationView(int w,
                                int h,
 							   DeviceG1B* g1b,
@@ -9,9 +14,38 @@ AutomationView::AutomationView(int w,
                                QWidget* parent) :
 	w(w),
 	h(h),
+	serial_status(SERIAL_FAIL),
 	g1b(g1b),
 	reglo_icc(reglo_icc),
 	QWidget(parent)
+{
+	InitLists();
+
+	if (g_ui_test) {
+		serial_status = SERIAL_OK;
+		SetupUi();
+		return;
+	}
+
+	if (!g1b || !reglo_icc) {
+		serial_status = SERIAL_FAIL;
+		MetMsgSubwindow("device G1B and RegloIcc not found");
+		return;
+	} else {
+		serial_status = SERIAL_OK;
+		std::cout << "found device G1B and RegloIcc" << '\n';
+		SetupUi();
+	}
+}
+
+AutomationView::~AutomationView()
+{
+	if (g1b && reglo_icc) {
+		delete[] process_unit_list;
+	}
+}
+
+void AutomationView::InitLists()
 {
 	process_name_list = {
 		"Start pump channel 1 and 2",
@@ -24,19 +58,12 @@ AutomationView::AutomationView(int w,
 
 	process_function_list = {
 		&AutomationView::StartPumpAllChannel,
-		&AutomationView::StopPumpChannel2,
+		&AutomationView::StopPumpChannelNo2,
 		&AutomationView::StartPulseGenerator,
-		&AutomationView::StartPumpChannel2,
+		&AutomationView::StartPumpChannelNo2,
 		&AutomationView::StopPulseGenerator,
 		&AutomationView::StopPumpAllChannel
 	};
-
-	SetupUi();
-}
-
-AutomationView::~AutomationView()
-{
-	delete[] process_unit_list;
 }
 
 void AutomationView::SetupUi()
@@ -138,6 +165,7 @@ void AutomationView::LoadStyleSheet()
 
 void AutomationView::ToggleSetButton()
 {
+	InitLists();
 	button_set->SetButtonDefault();
 	for (int i = 0; i < unit_cnt; i++) {
 		MetProcessUnit* unit_anchor = process_unit_list[i];
@@ -216,31 +244,51 @@ void AutomationView::Update(int count)
 void AutomationView::StartPumpAllChannel()
 {	
 	std::cout << "StartPumpAllChannel\n";
+	if (g_normal) {
+		reglo_icc->On(1);
+		reglo_icc->On(2);
+	}
 }
 
-void AutomationView::StopPumpChannel2()
+void AutomationView::StopPumpChannelNo2()
 {
-	std::cout << "StopPumpChannel2\n";
+	std::cout << "StopPumpChannelNo2\n";
+	if (g_normal) {
+		reglo_icc->Off(2);
+	}
 }
 
 void AutomationView::StartPulseGenerator()
 {
 	std::cout << "StartPulseGenerator\n";
+	if (g_normal) {
+		g1b->On();
+	}
 }
 
-void AutomationView::StartPumpChannel2()
+void AutomationView::StartPumpChannelNo2()
 {
-	std::cout << "StartPumpChannel2\n";
+	std::cout << "StartPumpChannelNo2\n";
+	if (g_normal) {
+		reglo_icc->On(2);
+	}
 }
 
 void AutomationView::StopPulseGenerator()
 {
 	std::cout << "StopPulseGenerator\n";
+	if (g_normal) {
+		g1b->Off();
+	}
 }
 
 void AutomationView::StopPumpAllChannel()
 {
 	std::cout << "StopPumpAllChannel\n";
+	if (g_normal) {
+		reglo_icc->Off(1);
+		reglo_icc->Off(2);
+	}
 }
 
 TimerWorker::TimerWorker(QWidget* parent)

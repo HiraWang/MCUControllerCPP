@@ -5,6 +5,8 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
+extern bool g_ui_test;
+
 G1BView::G1BView(int w,
 				 int h,
 				 MetParaList* para_list,
@@ -15,6 +17,13 @@ G1BView::G1BView(int w,
 	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
+	if (g_ui_test) {
+		serial_status = SERIAL_OK;
+		g1b = nullptr;
+		SetupUi();
+		return;
+	}
+
 	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
@@ -26,10 +35,12 @@ G1BView::G1BView(int w,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
-
 	serial_status = g1b->Open();
+
 	if (serial_status != SERIAL_OK) {
 		MetMsgSubwindow("device G1B open failed");
+		g1b = nullptr;
+		return;
 	} else {
 		std::cout << "device G1B opened" << '\n';
 		QString account = QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
@@ -40,7 +51,7 @@ G1BView::G1BView(int w,
 
 G1BView::~G1BView()
 {
-	if (g1b->Close() != SERIAL_OK) {
+	if (g1b && g1b->Close() != SERIAL_OK) {
 		MetMsgSubwindow("device G1B close failed");
 	}
 }

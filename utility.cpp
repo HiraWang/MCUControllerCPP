@@ -6,6 +6,9 @@
 
 using json = nlohmann::json;
 
+bool g_normal = true;
+bool g_ui_test = !g_normal;
+
 std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
