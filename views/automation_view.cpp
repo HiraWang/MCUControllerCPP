@@ -167,6 +167,26 @@ void AutomationView::ToggleRunButton()
 	}
 }
 
+void AutomationView::RunProcess()
+{
+	thread = new QThread(this);
+	worker = new TimerWorker(this);
+	worker->moveToThread(thread);
+
+	connect(worker, &TimerWorker::TimeOut, this, &AutomationView::Update);
+	connect(thread, &QThread::started, worker, &TimerWorker::Start);
+	connect(thread, &QThread::finished, worker, &TimerWorker::Finish);
+
+	process_unit_list[0]->StatusOn();
+	worker->Reset();
+	thread->start();
+}
+
+void AutomationView::StopProcess()
+{
+	thread->terminate();
+}
+
 void AutomationView::Update(int count)
 {
 	all_process->SetLcd(QString::number(count));
@@ -191,26 +211,6 @@ void AutomationView::Update(int count)
 			}
 		}
 	}
-}
-
-void AutomationView::RunProcess()
-{
-	thread = new QThread(this);
-	worker = new TimerWorker(this);
-	worker->moveToThread(thread);
-
-	connect(worker, &TimerWorker::TimeOut, this, &AutomationView::Update);
-	connect(thread, &QThread::started, worker, &TimerWorker::Start);
-	connect(thread, &QThread::finished, worker, &TimerWorker::Finish);
-
-	process_unit_list[0]->StatusOn();
-	worker->Reset();
-	thread->start();
-}
-
-void AutomationView::StopProcess()
-{
-	thread->terminate();
 }
 
 void AutomationView::StartPumpAllChannel()
