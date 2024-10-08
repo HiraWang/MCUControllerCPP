@@ -6,6 +6,7 @@
 #include <QWidget>
 #include <QString>
 
+#include "button.h"
 #include "color.h"
 #include "font.h"
 #include "label.h"
@@ -35,17 +36,25 @@ public:
 	MetProcessUnit(MetProcessUnitStyle style,
 				   int id,
 				   QString name,	
-				   QString time,	
+				   QString time,
+				   bool is_normal_unit = true,
 				   QWidget* parent = nullptr);
 	virtual ~MetProcessUnit();
 	void StatusOn();
 	void StatusOff();
 	void SetLcd(QString num);
+	bool is_normal_unit;
 	int id;
 	int time;
 	int time_tot;
 	MetLabel* label_name;
 	MetLineEdit* time_edit;
+	MetButton* button_plus_one;
+	MetButton* button_minus_one;
+
+private slots:
+	void ToggleMinusOneButton();
+	void TogglePlusOneButton();
 
 private:
 	void LoadStyleSheet();

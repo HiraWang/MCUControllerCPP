@@ -1,14 +1,21 @@
 #include "process_unit.h"
 
+#include "utility.h"
+
+extern std::string IMAGE_MET_MINUS;
+extern std::string IMAGE_MET_PLUS;
+
 MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 							   int id,
 							   QString name,
 							   QString time,
+							   bool is_normal_unit,
 							   QWidget* parent) :
 	style(style),
 	id(id),
 	time(0),
 	time_tot(0),
+	is_normal_unit(is_normal_unit),
 	QWidget(parent)
 {
 	LoadStyleSheet();
@@ -32,6 +39,30 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	MetLineEditStyle line_edit_style;
 	time_edit = new MetLineEdit(line_edit_style, 100, 25, this);
 
+	MetButtonStyle button_style;
+	button_minus_one = new MetButton(button_style, "MINUS", "MINUS", 25, 25,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)), this);
+	button_plus_one = new MetButton(button_style, "PLUS", "PLUS", 25, 25,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)), this);
+	
+	if (is_normal_unit) {
+		connect(button_minus_one, &QPushButton::released, this,
+			&MetProcessUnit::ToggleMinusOneButton);
+		connect(button_plus_one, &QPushButton::released, this,
+			&MetProcessUnit::TogglePlusOneButton);
+	} else {
+		button_minus_one->setEnabled(false);
+		button_minus_one->setIcon(QIcon());
+		button_minus_one->setStyleSheet("background-color: transparent;"
+										"border-radius: 0px;");
+		button_plus_one->setEnabled(false);
+		button_plus_one->setIcon(QIcon());
+		button_plus_one->setStyleSheet("background-color: transparent;"
+								       "border-radius: 0px;");
+	}
+
 	lcd = new QLCDNumber();
 	lcd->setFixedWidth(80);
 	lcd->setFixedHeight(25);
@@ -46,6 +77,8 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	layout->addWidget(label_time, 0, Qt::AlignCenter);
 	layout->addWidget(time_edit, 0, Qt::AlignCenter);
 	layout->addWidget(label_unit, 0, Qt::AlignCenter);
+	layout->addWidget(button_minus_one, 0, Qt::AlignCenter);
+	layout->addWidget(button_plus_one, 0, Qt::AlignCenter);
 	layout->addWidget(lcd, 0, Qt::AlignCenter);
 	layout->addWidget(label_status, 0, Qt::AlignRight);
 	setLayout(layout);
@@ -73,6 +106,18 @@ void MetProcessUnit::LoadStyleSheet()
 	style_sheet_status_off =
 		"background-color: " + style.color_2 + ";"
 		"border-radius: 2px;";
+}
+
+void MetProcessUnit::ToggleMinusOneButton()
+{
+	time = time_edit->text().toInt();
+	time_edit->setText(QString::number(--time));
+}
+
+void MetProcessUnit::TogglePlusOneButton()
+{
+	time = time_edit->text().toInt();
+	time_edit->setText(QString::number(++time));
 }
 
 void MetProcessUnit::StatusOn()

@@ -80,7 +80,13 @@ void AutomationView::SetupUi()
 		QString name = QString::fromStdString(process_name_list.front());
 		process_name_list.pop_front();
 		QString time = QString("Time ") + QString::number(i) + QString(":");
-		process_unit_list[i] = new MetProcessUnit(process_unit_style, i, name, time, this);
+		bool is_normal_unit = (i == 0) ? false : true;
+		process_unit_list[i] = new MetProcessUnit(process_unit_style,
+												  i,
+												  name,
+												  time,
+											      is_normal_unit,
+												  this);
 	}
 	process_unit_list[0]->time = 0;
 	process_unit_list[0]->time_tot = 0;
@@ -91,6 +97,7 @@ void AutomationView::SetupUi()
 	all_process = new MetProcessUnit(process_unit_style, 0,
 								     "All process",
 								     "Total time:",
+								     false,
 								     this);
 	all_process->time_edit->setText("");
 	all_process->time_edit->setEnabled(false);

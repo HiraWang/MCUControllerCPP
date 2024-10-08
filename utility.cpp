@@ -22,6 +22,8 @@ std::string IMAGE_MET_LOAD = "\\images\\Load.png";
 std::string IMAGE_MET_LOADING = "\\images\\Loading.gif";
 std::string IMAGE_MET_MAX_SIZE = "\\images\\MaxSize.png";
 std::string IMAGE_MET_MENU = "\\images\\Menu.png";
+std::string IMAGE_MET_MINUS = "\\images\\Minus.png";
+std::string IMAGE_MET_PLUS = "\\images\\Plus.png";
 std::string IMAGE_MET_POWER = "\\images\\Power.png";
 
 std::string CONFIG_MET = "\\configuration\\config.json";
