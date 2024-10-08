@@ -27,43 +27,35 @@ void AutomationView::SetupUi()
 	setFixedHeight(h);
 	LoadStyleSheet();
 
+	std::list<std::string> process_name_list = {
+		"Start pump channel 1 and 2",
+		"Stop pump channel 2",
+		"Start pulse generator",
+		"Start pump channel 2",
+		"Stop pulse generator",
+		"Stop pump channel 1 and 2"
+	};
+
+	// prepare process units
 	MetProcessUnitStyle process_unit_style;
 	unit_cnt = 6;
 	process_unit_list = new MetProcessUnit* [unit_cnt];
-	process_unit_list[0] = new MetProcessUnit(process_unit_style, 0,
-										      "Start pump channel 1 amd 2",
-										      "Time 0:",
-										      this);
-	process_unit_list[1] = new MetProcessUnit(process_unit_style, 1,
-											  "Stop pump channel 2",
-											  "Time 1:",
-											  this);
-	process_unit_list[2] = new MetProcessUnit(process_unit_style, 2,
-											  "Start pulse generator",
-											  "Time 2:",
-											  this);
-	process_unit_list[3] = new MetProcessUnit(process_unit_style, 3,
-											  "Start pump channel 2",
-											  "Time 3:",
-											  this);
-	process_unit_list[4] = new MetProcessUnit(process_unit_style, 4,
-											  "Stop pulse generator",
-											  "Time 4:",
-											  this);
-	process_unit_list[5] = new MetProcessUnit(process_unit_style, 5,
-											  "Stop pump channel 1 and 2",
-											  "Time 5:",
-											  this);
-	all_process = new MetProcessUnit(process_unit_style, 0,
-								     "All process",
-								     "Total time:",
-								     this);
-
+	for (int i = 0; i < unit_cnt; i++) {
+		QString name = QString::fromStdString(process_name_list.front());
+		process_name_list.pop_front();
+		QString time = QString("Time ") + QString::number(i) + QString(":");
+		process_unit_list[i] = new MetProcessUnit(process_unit_style, i, name, time, this);
+	}
 	process_unit_list[0]->time = 0;
 	process_unit_list[0]->time_tot = 0;
 	process_unit_list[0]->time_edit->setText("0");
 	process_unit_list[0]->time_edit->setEnabled(false);
-
+	
+	// prepare all process unit
+	all_process = new MetProcessUnit(process_unit_style, 0,
+								     "All process",
+								     "Total time:",
+								     this);
 	all_process->time_edit->setText("");
 	all_process->time_edit->setEnabled(false);
 	all_process->label_name->setObjectName("all_process_name");
