@@ -27,13 +27,14 @@ void UpperView::SetupUi()
 	MetComboBoxStyle combo_box_style;
 	combo_box = new MetComboBox(combo_box_style, 250, 20, this);
 
+	// process orientated button style
 	MetButtonStyle button_style;
 	exit_button = new MetButton(button_style, "EXIT", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)), this);
-	window_button = new MetButton(button_style, "FULL", "MAX", 80, 80,
-		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)),
-		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)), this);
+	window_button = new MetButton(button_style, "MAX", "FULL", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)), this);
 	load_config_button = new MetButton(button_style, "LOAD", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
