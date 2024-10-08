@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new MainWindowUI()),
 	para_list(new MetParaList())
 {
+	// hide console
+	HideConsole();
+
 	// set main window ui
     ui->SetupUi(this);
 
@@ -22,12 +25,14 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::ToggleExitButton);
 	connect(ui->upper_view->window_button, &QPushButton::released,
 		this, &MainWindow::ToggleWindowButton);
-	connect(ui->upper_view->ui_test_button, &QPushButton::released,
-		this, &MainWindow::ToggleUiTestButton);
 	connect(ui->upper_view->load_config_button, &QPushButton::released,
 		this, &MainWindow::ToggleLoadConfigButton);
 	connect(ui->upper_view->menu_button, &QPushButton::released,
 		this, &MainWindow::ToggleMenuButton);
+	connect(ui->upper_view->console_button, &QPushButton::released,
+		this, &MainWindow::ToggleConsoleButton);
+	connect(ui->upper_view->ui_test_button, &QPushButton::released,
+		this, &MainWindow::ToggleUiTestButton);
 	connect(ui->upper_view->power_button, &QPushButton::released,
 		this, &MainWindow::TogglePowerButton);
 
@@ -55,6 +60,7 @@ void MainWindow::ToggleExitButton()
 {
 	MetButton* button = ui->upper_view->exit_button;
 	button->SetButtonDefault();
+	HideConsole();
 	exit(PROGRAM_OK);
 }
 
@@ -89,6 +95,19 @@ void MainWindow::ToggleMenuButton()
 	} else {
 		button->SetButtonPressed();
 		ui->upper_view->menu->Show();
+	}
+}
+
+void MainWindow::ToggleConsoleButton()
+{
+	MetButton* button = ui->upper_view->console_button;
+	std::cout << IsConsoleVisible() << '\n';
+	if (button->status) {
+		button->SetButtonDefault();
+		HideConsole();
+	} else {
+		button->SetButtonPressed();
+		ShowConsole();
 	}
 }
 
