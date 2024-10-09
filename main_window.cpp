@@ -14,10 +14,8 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new MainWindowUI()),
 	para_list(new MetParaList())
 {
-	// optimize console
-#ifdef WIN32
+	// resize console
 	ResizeConsole(1520, 680);
-#endif
 
 	// set main window ui
     ui->SetupUi(this);
