@@ -3,14 +3,6 @@
 
 #include <iostream>
 
-char* CopyStringToNewedCharArray(const std::string& str);
-std::string GetSeparator();
-std::string GetCurrentPath();
-std::string GetAbsPath(std::string file_name);
-void HideConsole();
-void ShowConsole();
-void ResizeConsole(int w, int h);
-
 typedef enum {
     BUTTON_DEFAULT = false,
     BUTTON_PRESSED = true
@@ -47,6 +39,16 @@ typedef enum {
     STOPBITS,
     TIMER_PERIOD
 } ParaID;
+
+char* CopyStringToNewedCharArray(const std::string& str);
+std::string GetSeparator();
+std::string GetCurrentPath();
+std::string GetAbsPath(std::string file_name);
+std::string GetSerialCodeInfo(SerialCode code);
+void HideConsole();
+void ShowConsole();
+void ResizeConsole(int w, int h);
+void ShowSerialCodeInfo(SerialCode code);
 
 class MetPara
 {

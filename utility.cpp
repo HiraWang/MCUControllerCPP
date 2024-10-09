@@ -92,6 +92,15 @@ void ResizeConsole(int w, int h)
     SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
 }
 
+void ShowSerialCodeInfo(SerialCode code)
+{
+    if (code == SERIAL_OK) {
+        std::cout << "OK\n";
+    } else {
+        std::cout << "FAIL\n";
+    }
+}
+
 MetPara::MetPara() : 
     is_editable(false),
     num(0),

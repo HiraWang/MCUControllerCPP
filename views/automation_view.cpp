@@ -251,50 +251,56 @@ void AutomationView::StartPumpAllChannel()
 {	
 	std::cout << "StartPumpAllChannel\n";
 	if (g_normal) {
-		reglo_icc->On(1);
-		reglo_icc->On(2);
+		ShowSerialCodeInfo(reglo_icc->On(1));
+		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
+	std::cout << '\n';
 }
 
 void AutomationView::StopPumpChannelNo2()
 {
 	std::cout << "StopPumpChannelNo2\n";
 	if (g_normal) {
-		reglo_icc->Off(2);
+		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
+	std::cout << '\n';
 }
 
 void AutomationView::StartPulseGenerator()
 {
 	std::cout << "StartPulseGenerator\n";
 	if (g_normal) {
-		g1b->On();
+		ShowSerialCodeInfo(g1b->On());
 	}
+	std::cout << '\n';
 }
 
 void AutomationView::StartPumpChannelNo2()
 {
 	std::cout << "StartPumpChannelNo2\n";
 	if (g_normal) {
-		reglo_icc->On(2);
+		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
+	std::cout << '\n';
 }
 
 void AutomationView::StopPulseGenerator()
 {
 	std::cout << "StopPulseGenerator\n";
 	if (g_normal) {
-		g1b->Off();
+		ShowSerialCodeInfo(g1b->Off());
 	}
+	std::cout << '\n';
 }
 
 void AutomationView::StopPumpAllChannel()
 {
 	std::cout << "StopPumpAllChannel\n";
 	if (g_normal) {
-		reglo_icc->Off(1);
-		reglo_icc->Off(2);
+		ShowSerialCodeInfo(reglo_icc->Off(1));
+		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
+	std::cout << '\n';
 }
 
 TimerWorker::TimerWorker(QWidget* parent)
