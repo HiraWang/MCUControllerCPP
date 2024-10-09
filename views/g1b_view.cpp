@@ -1,5 +1,8 @@
 #include "g1b_view.h"
 
+#include <QTimer>
+
+#include "../widgets/canvas.h"
 #include "../widgets/color.h"
 #include "../widgets/label.h"
 #include "../widgets/login_subwindow.h"
@@ -110,6 +113,12 @@ void G1BView::SetupUi()
 	connect(out_button, &QPushButton::released, this,
 		&G1BView::ToggleOutButton);
 
+	//Helper* painter = new Helper();
+	//MetCanvas* canvas = new MetCanvas(painter, this);
+	//QTimer* timer = new QTimer(this);
+	//connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
+	//timer->start(50);
+
 	QHBoxLayout* freq_layout = new QHBoxLayout();
 	freq_layout->addWidget(freq_label, 0, Qt::AlignLeft);
 	freq_layout->addWidget(freq_edit, 0, Qt::AlignCenter);
@@ -148,6 +157,7 @@ void G1BView::SetupUi()
 
 	layout = new QVBoxLayout(this);
 	layout->addWidget(container, 0, Qt::AlignCenter);
+	//layout->addWidget(canvas, 0, Qt::AlignCenter);
 	setLayout(layout);
 }
 
