@@ -13,7 +13,7 @@ class MetLoginSubwindow : public QDialog
 	Q_OBJECT // enable meta object abilities
 
 public:
-	MetLoginSubwindow(SerialPort* device,
+	MetLoginSubwindow(SerialPort* device, // polymorphism
 					  QString account,
 					  QString password,
 					  QWidget* parent = nullptr);

@@ -48,13 +48,13 @@ public:
               BYTE stop_bits,
               BYTE parity);
     virtual ~DeviceG1B();
-    virtual SerialCode Open() override;
-    virtual SerialCode Close() override;
-    virtual SerialCode Read() override;
-    virtual SerialCode Write() override;
-    virtual SerialCode Login() override;
-    SerialCode Read(char* buf, const int size);
-    SerialCode Write(const char* buf);
+    virtual SerialCode Open() override;  // override
+    virtual SerialCode Close() override; // override
+    virtual SerialCode Read() override;  // override
+    virtual SerialCode Write() override; // override
+    virtual SerialCode Login() override; // override
+    SerialCode Read(char* buf, const int size); // overload
+    SerialCode Write(const char* buf);          // overload
     SerialCode SetFreq(int freq);
     SerialCode SetPulseWidth(float pw);
     SerialCode SetVoltage(int v);
@@ -83,11 +83,11 @@ public:
                    BYTE stop_bits,
                    BYTE parity);
     virtual ~DeviceRegloIcc();
-    virtual SerialCode Open() override;
-    virtual SerialCode Close() override;
-    virtual SerialCode Read() override;
-    virtual SerialCode Write() override;
-    virtual SerialCode Login() override;
+    virtual SerialCode Open() override;  // override
+    virtual SerialCode Close() override; // override
+    virtual SerialCode Read() override;  // override
+    virtual SerialCode Write() override; // override
+    virtual SerialCode Login() override; // override
     SerialCode SetRpm(BYTE channel, float rpm);
     SerialCode SetCw(BYTE channel);
     SerialCode SetCcw(BYTE channel);
