@@ -9,7 +9,7 @@ std::string GetCurrentPath();
 std::string GetAbsPath(std::string file_name);
 void HideConsole();
 void ShowConsole();
-bool IsConsoleVisible();
+void ResizeConsole(int w, int h);
 
 typedef enum {
     BUTTON_DEFAULT = false,

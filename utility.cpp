@@ -74,18 +74,22 @@ std::string GetAbsPath(std::string file_name)
 void HideConsole()
 {
     std::cout << "hide console" << '\n';
-    ::ShowWindow(::GetConsoleWindow(), SW_HIDE);
+    ShowWindow(GetConsoleWindow(), SW_HIDE);
 }
 
 void ShowConsole()
 {
     std::cout << "show console" << '\n';
-    ::ShowWindow(::GetConsoleWindow(), SW_SHOW);
+    ShowWindow(GetConsoleWindow(), SW_SHOW);
 }
 
-bool IsConsoleVisible()
+void ResizeConsole(int w, int h)
 {
-    return ::IsWindowVisible(::GetConsoleWindow()) != FALSE;
+    if (w <= 100 || h <= 100) {
+        return;
+    }
+    std::cout << "resize console" << '\n';
+    SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
 }
 
 MetPara::MetPara() : 
