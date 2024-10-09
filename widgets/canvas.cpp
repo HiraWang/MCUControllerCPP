@@ -13,6 +13,11 @@ MetCanvas::MetCanvas(Helper* helper, QWidget* parent) :
     setAutoFillBackground(false);
 }
 
+MetCanvas::~MetCanvas()
+{
+
+}
+
 void MetCanvas::animate()
 {
     elapsed = (elapsed + qobject_cast<QTimer*>(sender())->interval()) % 1000;

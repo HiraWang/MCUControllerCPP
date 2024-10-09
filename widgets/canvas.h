@@ -8,6 +8,7 @@ class MetCanvas : public QOpenGLWidget
 
 public:
     MetCanvas(Helper* helper, QWidget* parent);
+    virtual ~MetCanvas();
 
 public slots:
     void animate();
