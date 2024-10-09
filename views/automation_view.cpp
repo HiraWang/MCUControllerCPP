@@ -219,6 +219,8 @@ void AutomationView::RunProcess()
 void AutomationView::StopProcess()
 {
 	thread->terminate();
+	StopPulseGenerator();
+	StopPumpAllChannel();
 }
 
 void AutomationView::Update(int count)
