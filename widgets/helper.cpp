@@ -1,4 +1,4 @@
-#include "painter.h"
+#include "helper.h"
 
 Helper::Helper()
 {
