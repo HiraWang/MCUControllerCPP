@@ -2,11 +2,11 @@
 
 #include <QTimer>
 
-MetCanvas::MetCanvas(Helper* helper, QWidget* parent) :
+MetCanvas::MetCanvas(Helper* helper, int w, int h, QWidget* parent) :
     QWidget(parent),
     helper(helper)
 {
-    setFixedSize(200, 200);
+    setFixedSize(w, h);
     setAutoFillBackground(false);
 }
 

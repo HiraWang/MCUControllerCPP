@@ -1,5 +1,7 @@
 #include "monitor_view.h"
 
+#include <QTimer>
+
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
@@ -41,6 +43,16 @@ void MonitorView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
+	helper = new Helper(HelperType::OSCILLOSCOPE);
+	helper->Init(0, 0, 0, 0);
+	canvas = new MetCanvas(helper, width() - 100, height() - 100, this);
+
+	QTimer* timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
+	timer->start(50);
+
 	layout = new QVBoxLayout(this);
+	layout->addWidget(canvas, 0, Qt::AlignCenter);
+	layout->setContentsMargins(15, 15, 15, 15);
 	setLayout(layout);
 }

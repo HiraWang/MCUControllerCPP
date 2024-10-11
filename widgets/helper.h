@@ -9,6 +9,7 @@
 
 typedef enum {
     PULSE_CHART = 0,
+    OSCILLOSCOPE,
     EXAMPLE
 } HelperType;
 
@@ -24,6 +25,7 @@ public:
     void paint(QPainter* painter, QPaintEvent* event, int elapsed);
     void paint(QPainter* painter, QPaintEvent* event, int period, int pulse_width,
         int voltage, int offset);
+    void paint(QPainter* painter, QPaintEvent* event, float scale_x, float scale_y);
 
 private:
     HelperType type;

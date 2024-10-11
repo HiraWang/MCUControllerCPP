@@ -10,7 +10,7 @@ class MetCanvas : public QWidget
     Q_OBJECT
 
 public:
-    MetCanvas(Helper* helper, QWidget* parent);
+    MetCanvas(Helper* helper, int w, int h, QWidget* parent);
     virtual ~MetCanvas();
 
 public slots:

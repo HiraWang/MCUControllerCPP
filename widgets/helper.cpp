@@ -43,6 +43,8 @@ void Helper::paint(QPainter* painter, QPaintEvent* event)
 {
     if (type == HelperType::PULSE_CHART) {
         paint(painter, event, period, pulse_width, voltage, offset);
+    } else if (type == HelperType::OSCILLOSCOPE) {
+        paint(painter, event, 1.0f, 1.0f);
     } else if (type == HelperType::EXAMPLE) {
         paint(painter, event, elapsed);
     }
@@ -113,6 +115,74 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
     painter->drawLine(0, voltage_t, (int)pulse_width_f, voltage_t);
     painter->drawLine((int)pulse_width_f, voltage_t, (int)pulse_width_f, voltage_max);
     painter->drawLine((int)pulse_width_f, voltage_max, width, voltage_max);
+
+    // draw text
+    painter->setPen(text_pen);
+    painter->setFont(text_font);
+    for (int i = 0; i < info_count; i++) {
+        QString info = QString::fromStdString(info_list.front());
+        info_list.pop_front();
+        painter->drawText(QRect(5, i * text_box_h + 3, 150, (i + 1) * text_box_h),
+            Qt::AlignLeft, info);
+    }
+
+    // draw border
+    QPen border_pen = QPen(QColor(0, 0, 0));
+    border_pen.setWidth(4);
+    painter->setPen(border_pen);
+    painter->drawLine(0, 0, width, 0);
+    painter->drawLine(0, 0, 0, height);
+    painter->drawLine(width, 0, width, height);
+    painter->drawLine(0, height, width, height);
+}
+
+void Helper::paint(QPainter* painter, QPaintEvent* event, float scale_x, float scale_y)
+{
+    std::list<std::string> info_list = {
+        "period : " + std::to_string(period) + " ns",
+        "pulse width : " + std::to_string(pulse_width) + " ns",
+        "voltage : " + std::to_string(voltage) + " V",
+        "offset : " + std::to_string(offset) + " V"
+    };
+
+    int info_count = 4;
+    int text_box_h = 15;
+    int width = event->rect().width();
+    int height = event->rect().height();
+    const int buffer_len = 1000;
+    float data_count = buffer_len / scale_x;
+    float data_interval = (float)(width) / data_count;
+    float grid_x_count = 500.0f / scale_x;
+    float grid_y_count = 10.0f / scale_y;
+    float width_interval = (float)(width) / grid_x_count;
+    float height_interval = (float)(height) / grid_y_count;
+
+    // draw background
+    painter->fillRect(event->rect(), QBrush(QColor(60, 60, 60)));
+    painter->translate(0, 0);
+
+    // draw grid
+    painter->setPen(QPen(QColor(100, 100, 100)));
+    for (float i = 0; i < (float)width; i += width_interval) {
+        painter->drawLine(i, 0, i, height);
+    }
+    for (float i = 0; i < (float)height; i += height_interval) {
+        painter->drawLine(0, i, width, i);
+    }
+
+    // draw data
+    unsigned char data[buffer_len];
+    painter->setBrush(line_brush);
+    painter->setPen(line_pen);
+
+    if (scale_x < 1.0f) {
+        scale_x = 1.0f;
+    }
+
+    for (int i = 0; i < (int)(data_count); i++) {
+        data[i] = (rand() + 30) % height;
+        painter->drawPoint(i * data_interval, data[i] * scale_y);
+    }
 
     // draw text
     painter->setPen(text_pen);

@@ -27,6 +27,8 @@ private:
     int h;
     QVBoxLayout* layout;
     MetParaList* para_list;
+    Helper* helper;
+    MetCanvas* canvas;
 };
 
 #endif

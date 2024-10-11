@@ -108,11 +108,7 @@ void G1BView::SetupUi()
 
 	helper = new Helper(HelperType::PULSE_CHART);
 	helper->Init(0, 0, 0, 0);
-	canvas = new MetCanvas(helper, this);
-
-	/*QTimer* timer = new QTimer(this);
-	connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
-	timer->start(50);*/
+	canvas = new MetCanvas(helper, 200, 200, this);
 
 	QWidget* space = new QWidget(this);
 	space->setFixedWidth(20);
