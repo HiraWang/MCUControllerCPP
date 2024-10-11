@@ -2,7 +2,6 @@
 
 #include <QTimer>
 
-#include "../widgets/canvas.h"
 #include "../widgets/color.h"
 #include "../widgets/label.h"
 #include "../widgets/login_subwindow.h"
@@ -64,15 +63,6 @@ void G1BView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
-	QWidget* container = new QWidget(this);
-	container->setFixedWidth(600);
-	container->setObjectName("g1b_container");
-	container->setStyleSheet("QWidget#g1b_container {"
-						     "background-color: " + QString(COLOR_GRAY) + ";"
-						     "border: 2px solid black;"
-						     "border-radius: 10px;"
-						     "}");
-
 	MetLabelStyle label_style(FONT_SIZE, FONT_COLOR);
 	MetLabel* freq_label = new MetLabel(label_style, "Freq:", 200, 25, this);
 	MetLabel* pw_label = new MetLabel(label_style, "Pulse Width:", 200, 25, this);
@@ -96,6 +86,7 @@ void G1BView::SetupUi()
 	pw_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
 	voltage_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
 	offset_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
+	img_button = new MetButton(button_style, "IMG", "IMG", 80, 25, "", "", this);
 
 	// status orientated button style
 	MetButtonStyle two_state_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2,
@@ -112,34 +103,45 @@ void G1BView::SetupUi()
 		&G1BView::ToggleOffsetButton);
 	connect(out_button, &QPushButton::released, this,
 		&G1BView::ToggleOutButton);
+	connect(img_button, &QPushButton::released, this,
+		&G1BView::ToggleImgButton);
 
-	//Helper* painter = new Helper();
-	//MetCanvas* canvas = new MetCanvas(painter, this);
-	//QTimer* timer = new QTimer(this);
-	//connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
-	//timer->start(50);
+	helper = new Helper(HelperType::PULSE_CHART);
+	helper->Init(0, 0, 0, 0);
+	canvas = new MetCanvas(helper, this);
+
+	/*QTimer* timer = new QTimer(this);
+	connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
+	timer->start(50);*/
+
+	QWidget* space = new QWidget(this);
+	space->setFixedWidth(20);
 
 	QHBoxLayout* freq_layout = new QHBoxLayout();
 	freq_layout->addWidget(freq_label, 0, Qt::AlignLeft);
 	freq_layout->addWidget(freq_edit, 0, Qt::AlignCenter);
+	freq_layout->addWidget(space, 0, Qt::AlignCenter);
 	freq_layout->addWidget(freq_unit, 0, Qt::AlignLeft);
 	freq_layout->addWidget(freq_button, 0, Qt::AlignRight);
 
 	QHBoxLayout* pw_layout = new QHBoxLayout();
 	pw_layout->addWidget(pw_label, 0, Qt::AlignLeft);
 	pw_layout->addWidget(pw_edit, 0, Qt::AlignCenter);
+	pw_layout->addWidget(space, 0, Qt::AlignCenter);
 	pw_layout->addWidget(pw_unit, 0, Qt::AlignLeft);
 	pw_layout->addWidget(pw_button, 0, Qt::AlignRight);
 
 	QHBoxLayout* voltage_layout = new QHBoxLayout();
 	voltage_layout->addWidget(voltage_label, 0, Qt::AlignLeft);
 	voltage_layout->addWidget(voltage_edit, 0, Qt::AlignCenter);
+	voltage_layout->addWidget(space, 0, Qt::AlignCenter);
 	voltage_layout->addWidget(voltage_unit, 0, Qt::AlignLeft);
 	voltage_layout->addWidget(voltage_button, 0, Qt::AlignRight);
 
 	QHBoxLayout* offset_layout = new QHBoxLayout();
 	offset_layout->addWidget(offset_label, 0, Qt::AlignLeft);
 	offset_layout->addWidget(offset_edit, 0, Qt::AlignCenter);
+	offset_layout->addWidget(space, 0, Qt::AlignCenter);
 	offset_layout->addWidget(offset_unit, 0, Qt::AlignLeft);
 	offset_layout->addWidget(offset_button, 0, Qt::AlignRight);
 
@@ -147,17 +149,35 @@ void G1BView::SetupUi()
 	out_layout->addWidget(out_label, 0, Qt::AlignLeft);
 	out_layout->addWidget(out_button, 0, Qt::AlignRight);
 
-	QVBoxLayout* container_layout = new QVBoxLayout();
-	container_layout->addItem(freq_layout);
-	container_layout->addItem(pw_layout);
-	container_layout->addItem(voltage_layout);
-	container_layout->addItem(offset_layout);
-	container_layout->addItem(out_layout);
+	QWidget* container = new QWidget(this);
+	container->setFixedWidth(700);
+	container->setObjectName("g1b_container");
+	container->setStyleSheet("QWidget#g1b_container {"
+							 "background-color: " + QString(COLOR_GRAY) + ";"
+							 "border: 2px solid black;"
+							 "border-radius: 10px;"
+							 "}");
+	QWidget* container_1 = new QWidget(this);
+	QWidget* container_2 = new QWidget(this);
+	QHBoxLayout* container_layout = new QHBoxLayout();
+	QVBoxLayout* container_layout_1 = new QVBoxLayout();
+	QVBoxLayout* container_layout_2 = new QVBoxLayout();
+
+	container_layout_1->addItem(freq_layout);
+	container_layout_1->addItem(pw_layout);
+	container_layout_1->addItem(voltage_layout);
+	container_layout_1->addItem(offset_layout);
+	container_layout_1->addItem(out_layout);
+	container_layout_1->addWidget(img_button, 0, Qt::AlignRight);
+	container_layout_2->addWidget(canvas, 0, Qt::AlignCenter);
+	container_1->setLayout(container_layout_1);
+	container_2->setLayout(container_layout_2);
+	container_layout->addWidget(container_1, 0, Qt::AlignCenter);
+	container_layout->addWidget(container_2, 0, Qt::AlignCenter);
 	container->setLayout(container_layout);
 
 	layout = new QVBoxLayout(this);
 	layout->addWidget(container, 0, Qt::AlignCenter);
-	//layout->addWidget(canvas, 0, Qt::AlignCenter);
 	setLayout(layout);
 }
 
@@ -208,6 +228,22 @@ void G1BView::ToggleOutButton()
 		out_button->SetButtonPressed();
 		g1b->On();
 	}
+}
+
+void G1BView::ToggleImgButton()
+{
+	if (freq_edit->text().isEmpty() ||
+		pw_edit->text().isEmpty() ||
+		voltage_edit->text().isEmpty() ||
+		offset_edit->text().isEmpty()) {
+		return;
+	}
+	int period = 1.0f / freq_edit->text().toFloat() * 1000000000.0f;
+	int pulse_width = pw_edit->text().toFloat() * 1000.0f;
+	int voltage = voltage_edit->text().toInt();
+	int offset = offset_edit->text().toInt();
+	helper->Init(period, pulse_width, voltage, offset);
+	canvas->repaint();
 }
 
 void G1BView::Read()

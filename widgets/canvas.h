@@ -1,3 +1,6 @@
+#ifndef CANVAS_H
+#define CANVAS_H
+
 #include "helper.h"
 
 #include <QtOpenGLWidgets/QOpenGLWidget>
@@ -18,7 +21,6 @@ protected:
 
 private:
     Helper* helper;
-    int elapsed;
 };
 
 class MetGlCanvas : public QOpenGLWidget
@@ -37,5 +39,6 @@ protected:
 
 private:
     Helper* helper;
-    int elapsed;
 };
+
+#endif
