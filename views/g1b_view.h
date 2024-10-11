@@ -7,6 +7,7 @@
 #include "../utility.h"
 #include "../devices/device.h"
 #include "../widgets/button.h"
+#include "../widgets/canvas.h"
 #include "../widgets/line_edit.h"
 
 class G1BView : public QWidget
@@ -24,6 +25,7 @@ public:
     MetButton* voltage_button;
     MetButton* offset_button;
     MetButton* out_button;
+    MetButton* img_button;
     MetButton* read_button;
     MetButton* write_button;
     MetLineEdit* freq_edit;
@@ -42,6 +44,7 @@ private slots:
     void ToggleVoltageButton();
     void ToggleOffsetButton();
     void ToggleOutButton();
+    void ToggleImgButton();
 
 private:
     void Read();
@@ -50,6 +53,8 @@ private:
     int h;
     QVBoxLayout* layout;
     MetParaList* para_list;
+    Helper* helper;
+    MetCanvas* canvas;
 };
 
 #endif

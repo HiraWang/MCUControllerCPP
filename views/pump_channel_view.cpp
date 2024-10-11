@@ -83,6 +83,7 @@ void MetPumpChannel::SetupUi()
 	layout->addItem(rpm_layout);
 	layout->addItem(dir_layout);
 	layout->addItem(out_layout);
+	layout->setContentsMargins(15, 15, 15, 15);
 	setLayout(layout);
 }
 

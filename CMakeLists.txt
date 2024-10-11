@@ -13,7 +13,8 @@ project("MCUControllerCPP")
 set(CMAKE_PREFIX_PATH $ENV{QTDIR})
 # set(QT6_DIR C:/Qt/6.5.3/msvc2019_64/lib/cmake/Qt6)
 
-find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
+FIND_PACKAGE(OpenGL REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Core Gui OpenGL OpenGLWidgets REQUIRED)
 
 add_executable(MCUControllerCPP)
 
@@ -43,10 +44,14 @@ target_sources(MCUControllerCPP PRIVATE
 			   "views/upper_view.cpp"
 			   "widgets/button.h" 
 			   "widgets/button.cpp"
+			   "widgets/canvas.h"
+			   "widgets/canvas.cpp"
 			   "widgets/color.h"
 			   "widgets/combo_box.h" 
 			   "widgets/combo_box.cpp"
 			   "widgets/font.h" 
+			   "widgets/helper.h"
+			   "widgets/helper.cpp"
 			   "widgets/label.h"
 			   "widgets/label.cpp"
 			   "widgets/line_edit.h"
@@ -65,12 +70,16 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/tab.cpp")
 
 set(MET_IMAGES ${./images/})
+
 target_include_directories(MCUControllerCPP PRIVATE MET_IMAGES)
 
-target_link_libraries(MCUControllerCPP
+target_link_libraries(MCUControllerCPP PRIVATE
 					  Qt6::Widgets
 					  Qt6::Core
-					  Qt6::Gui)
+					  Qt6::Gui
+					  Qt6::OpenGL
+					  Qt6::OpenGLWidgets
+					  ${OPENGL_LIBRARIES})
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET MCUControllerCPP PROPERTY CXX_STANDARD 20)
