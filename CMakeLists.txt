@@ -36,6 +36,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "views/bottom_view.cpp"
 			   "views/g1b_view.h"
 			   "views/g1b_view.cpp"
+			   "views/monitor_view.h"
+			   "views/monitor_view.cpp"
 			   "views/pump_channel_view.h"
 			   "views/pump_channel_view.cpp"
 			   "views/reglo_icc_view.h"

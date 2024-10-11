@@ -10,7 +10,8 @@
 typedef enum {
     AUTOMATION,
     G1B,
-    REGLO_ICC
+    REGLO_ICC,
+    MONITOR
 } Device;
 
 class SerialPort : public QObject

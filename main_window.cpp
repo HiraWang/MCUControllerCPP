@@ -6,6 +6,7 @@
 #include "devices/device.h"
 #include "views/automation_view.h"
 #include "views/g1b_view.h"
+#include "views/monitor_view.h"
 #include "views/reglo_icc_view.h"
 #include "widgets/msg_subwindow.h"
 
@@ -37,7 +38,7 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::TogglePowerButton);
 
 	// set device list to combo box
-	device_list = { "Automation", "G1B", "Reglo ICC" };
+	device_list = { "Automation", "G1B", "Reglo ICC", "Monitor" };
 	ui->upper_view->combo_box->addItems(device_list);
 
 	// load data to para list
@@ -150,6 +151,9 @@ void MainWindow::TogglePowerButton()
 		} else if ((current_device == Device::REGLO_ICC)) {
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
 			ui->bottom_view->tab->removeTab(0);
+		} else if ((current_device == Device::MONITOR)) {
+			ui->bottom_view->monitor_view->~MonitorView();
+			ui->bottom_view->tab->removeTab(0);
 		}
 	} else {
 		button->SetButtonPressed();
@@ -187,6 +191,12 @@ void MainWindow::TogglePowerButton()
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
 				device_list[current_device]);
 			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
+				ui->bottom_view->tab->show();
+		} else if (current_device == Device::MONITOR) {
+			ui->bottom_view->monitor_view = new MonitorView(w, h, para_list, ui->bottom_view);
+			ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
+				device_list[current_device]);
+			if (ui->bottom_view->monitor_view->serial_status == SERIAL_OK)
 				ui->bottom_view->tab->show();
 		}
 		
