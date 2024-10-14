@@ -44,6 +44,7 @@ public:
 	void StatusOff();
 	void SetLcd(QString num);
 	bool is_normal_unit;
+	bool status;
 	int id;
 	int time;
 	int time_tot;
@@ -58,7 +59,6 @@ private slots:
 
 private:
 	void LoadStyleSheet();
-	bool status;
 	MetProcessUnitStyle style;
 	QString style_sheet_lcd;
 	QString style_sheet_status_on;

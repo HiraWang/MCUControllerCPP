@@ -189,6 +189,9 @@ void AutomationView::ToggleSetButton()
 
 void AutomationView::ToggleRunButton()
 {
+	if (all_process->status == true) {
+		return;
+	}
 	if (button_run->status) {
 		button_run->SetButtonDefault();
 		StopProcess();
