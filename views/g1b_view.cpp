@@ -30,7 +30,6 @@ G1BView::G1BView(int w,
 	std::wstring wstring = std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
 	std::wcout << port << " " << sizeof(port) << '\n';
-	//std::wcout << L"COM4" << " " << sizeof(L"COM4") << '\n';
 
 	g1b = new DeviceG1B(port,
 				        CBR_9600,

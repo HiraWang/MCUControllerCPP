@@ -20,20 +20,8 @@ public:
             MetParaList* para_list,
             QWidget* parent = nullptr);
     virtual ~G1BView();
-    MetButton* freq_button;
-    MetButton* pw_button;
-    MetButton* voltage_button;
-    MetButton* offset_button;
-    MetButton* out_button;
-    MetButton* img_button;
-    MetButton* read_button;
-    MetButton* write_button;
-    MetLineEdit* freq_edit;
-    MetLineEdit* pw_edit;
-    MetLineEdit* voltage_edit;
-    MetLineEdit* offset_edit;
-    DeviceG1B* g1b;
     SerialCode serial_status;
+    DeviceG1B* g1b;
 
 private slots:
     void SetupUi();
@@ -55,6 +43,18 @@ private:
     MetParaList* para_list;
     Helper* helper;
     MetCanvas* canvas;
+    MetButton* freq_button;
+    MetButton* pw_button;
+    MetButton* voltage_button;
+    MetButton* offset_button;
+    MetButton* out_button;
+    MetButton* img_button;
+    MetButton* read_button;
+    MetButton* write_button;
+    MetLineEdit* freq_edit;
+    MetLineEdit* pw_edit;
+    MetLineEdit* voltage_edit;
+    MetLineEdit* offset_edit;
 };
 
 #endif

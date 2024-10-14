@@ -28,6 +28,7 @@ target_sources(MCUControllerCPP PRIVATE
 			   "utility.cpp" 
 			   "devices/device.h"
 			   "devices/device.cpp"
+			   "devices/due.cpp"
 			   "devices/g1b.cpp"
 			   "devices/reglo_icc.cpp"
 			   "views/automation_view.h"

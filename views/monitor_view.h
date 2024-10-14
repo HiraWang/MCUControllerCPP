@@ -21,6 +21,7 @@ public:
                 QWidget* parent = nullptr);
     virtual ~MonitorView();
     SerialCode serial_status;
+    DeviceArduinoDue* due;
 
 private slots:
     void ToggleScanButton();

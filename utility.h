@@ -29,6 +29,7 @@ typedef enum {
     BUFFER_SIZE,
     BYTESIZE,
     CHUNKS_PER_SCENE,
+    MONITOR_KEYWORD,
     OFFSET,
     PARITY,
     PERIOD_MAX,

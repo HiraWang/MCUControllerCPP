@@ -29,15 +29,28 @@ MonitorView::MonitorView(int w,
 {
 	if (g_ui_test) {
 		serial_status = SERIAL_OK;
+		due = nullptr;
 		SetupUi();
 		return;
 	}
 
+	std::string str = para_list->list[MONITOR_KEYWORD].str;
+	std::wstring wstring = std::wstring(str.begin(), str.end());
+	LPCWSTR port = wstring.data();
+	std::wcout << port << " " << sizeof(port) << '\n';
+
+	due = new DeviceArduinoDue(port,
+							   CBR_9600,
+							   8,
+							   ONESTOPBIT,
+							   NOPARITY);
+	serial_status = due->Open();
+
 	if (serial_status != SERIAL_OK) {
 		MetMsgSubwindow("monitor open failed");
+		due = nullptr;
 		return;
-	}
-	else {
+	} else {
 		std::cout << "monitor opened" << '\n';
 		SetupUi();
 	}

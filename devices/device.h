@@ -100,4 +100,20 @@ private:
     SerialCode SetRpmMode(BYTE channel);
 };
 
+class DeviceArduinoDue : public SerialPort
+{
+public:
+    DeviceArduinoDue(const wchar_t* port_name,
+                     DWORD baud_rate,
+                     BYTE byte_size,
+                     BYTE stop_bits,
+                     BYTE parity);
+    virtual ~DeviceArduinoDue();
+    virtual SerialCode Open() override;  // override
+    virtual SerialCode Close() override; // override
+    virtual SerialCode Read() override;  // override
+    virtual SerialCode Write() override; // override
+    virtual SerialCode Login() override; // override
+};
+
 #endif

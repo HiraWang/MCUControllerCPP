@@ -8,8 +8,9 @@
     "chunks per scene": 5,
     "offset": 64,
     "buffer size": 4096,
-    "pump keyword": "Uno",
-    "pulse gen keyword": "Due",
+    "pump keyword": "COM3",
+    "pulse gen keyword": "COM4",
     "pulse gen id": "admin",
-    "pulse gen password": "default"
+    "pulse gen password": "default",
+    "monitor keyword": "Due"
 }
