@@ -84,9 +84,9 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
         "voltage : " + std::to_string(voltage) + " V",
         "offset : " + std::to_string(offset) + " V"
     };
+    size_t info_count = info_list.size();
 
-    int info_count = 4;
-    int text_box_h = 15;
+    int text_box_height = 15;
     int width = event->rect().width();
     int height = event->rect().height();
     int interval = width / 10;
@@ -122,8 +122,8 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
     for (int i = 0; i < info_count; i++) {
         QString info = QString::fromStdString(info_list.front());
         info_list.pop_front();
-        painter->drawText(QRect(5, i * text_box_h + 3, 150, (i + 1) * text_box_h),
-            Qt::AlignLeft, info);
+        painter->drawText(QRect(5, i * text_box_height + 3, 150,
+            (i + 1) * text_box_height), Qt::AlignLeft, info);
     }
 
     // draw border
@@ -139,16 +139,17 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
 void Helper::paint(QPainter* painter, QPaintEvent* event, float scale_x, float scale_y)
 {
     std::list<std::string> info_list = {
-        "period : " + std::to_string(period) + " ns",
-        "pulse width : " + std::to_string(pulse_width) + " ns",
-        "voltage : " + std::to_string(voltage) + " V",
-        "offset : " + std::to_string(offset) + " V"
+        "scale_x : " + std::to_string(scale_x),
+        "scale_y : " + std::to_string(scale_y),
     };
+    size_t info_count = info_list.size();
 
-    int info_count = 4;
-    int text_box_h = 15;
+    int text_box_height = 15;
     int width = event->rect().width();
     int height = event->rect().height();
+    float width_f = (float)width;
+    float height_f = (float)height;
+
     const int buffer_len = 1000;
     float data_count = buffer_len / scale_x;
     float data_interval = (float)(width) / data_count;
@@ -163,10 +164,10 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, float scale_x, float s
 
     // draw grid
     painter->setPen(QPen(QColor(100, 100, 100)));
-    for (float i = 0; i < (float)width; i += width_interval) {
+    for (float i = 0; i < width_f; i += width_interval) {
         painter->drawLine(i, 0, i, height);
     }
-    for (float i = 0; i < (float)height; i += height_interval) {
+    for (float i = 0; i < height_f; i += height_interval) {
         painter->drawLine(0, i, width, i);
     }
 
@@ -190,8 +191,8 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, float scale_x, float s
     for (int i = 0; i < info_count; i++) {
         QString info = QString::fromStdString(info_list.front());
         info_list.pop_front();
-        painter->drawText(QRect(5, i * text_box_h + 3, 150, (i + 1) * text_box_h),
-            Qt::AlignLeft, info);
+        painter->drawText(QRect(5, i * text_box_height + 3, 150,
+            (i + 1) * text_box_height), Qt::AlignLeft, info);
     }
 
     // draw border
