@@ -192,7 +192,7 @@ void MonitorView::ToggleScaleYMinusButton()
 	float scale_y = helper->GetScaleY();
 	scale_y -= scale_y_interval;
 
-	if (0.0f < scale_y && scale_y < 10.0f) {
+	if (scale_y_interval <= scale_y && scale_y < 10.0f) {
 		helper->SetScaleY(scale_y);
 		canvas->update();
 	}

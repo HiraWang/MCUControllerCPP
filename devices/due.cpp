@@ -81,8 +81,7 @@ SerialCode DeviceArduinoDue::Close()
 {
 	if (!CloseHandle(serial_handle)) {
 		return SERIAL_FAIL;
-	}
-	else {
+	} else {
 		return SERIAL_OK;
 	}
 }
@@ -95,8 +94,7 @@ SerialCode DeviceArduinoDue::Read()
 
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
-	}
-	else {
+	} else {
 		std::cout << buf << '\n';
 		return SERIAL_OK;
 	}
@@ -110,8 +108,7 @@ SerialCode DeviceArduinoDue::Write()
 
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
-	}
-	else {
+	} else {
 		std::cout << buf << '\n';
 		return SERIAL_OK;
 	}
