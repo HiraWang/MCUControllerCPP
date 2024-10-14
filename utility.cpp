@@ -28,6 +28,8 @@ std::string IMAGE_MET_MINUS = "\\images\\Minus.png";
 std::string IMAGE_MET_PLUS = "\\images\\Plus.png";
 std::string IMAGE_MET_POWER = "\\images\\Power.png";
 std::string IMAGE_MET_RIGHT = "\\images\\Right.png";
+std::string IMAGE_MET_SCAN = "\\images\\Scan.png";
+std::string IMAGE_MET_STOP = "\\images\\Stop.png";
 std::string IMAGE_MET_UP = "\\images\\Up.png";
 
 std::string CONFIG_MET = "\\configuration\\config.json";

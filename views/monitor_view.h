@@ -3,6 +3,7 @@
 
 #include <QHBoxLayout>
 #include <QWidget>
+#include <QTimer>
 
 #include "../utility.h"
 #include "../devices/device.h"
@@ -22,6 +23,7 @@ public:
     SerialCode serial_status;
 
 private slots:
+    void ToggleScanButton();
     void ToggleScaleResetButton();
     void ToggleScaleXPlusButton();
     void ToggleScaleYPlusButton();
@@ -36,13 +38,15 @@ private:
     float scale_y_interval;
     QVBoxLayout* layout;
     MetParaList* para_list;
+    QTimer* timer;
     Helper* helper;
     MetCanvas* canvas;
-    MetButton* scale_reset;
-    MetButton* scale_x_plus;
-    MetButton* scale_y_plus;
-    MetButton* scale_x_minus;
-    MetButton* scale_y_minus;
+    MetButton* scan_button;
+    MetButton* scale_reset_button;
+    MetButton* scale_x_plus_button;
+    MetButton* scale_y_plus_button;
+    MetButton* scale_x_minus_button;
+    MetButton* scale_y_minus_button;
 };
 
 #endif

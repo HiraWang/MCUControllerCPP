@@ -1,6 +1,5 @@
 #include "monitor_view.h"
 
-#include <QTimer>
 #include <QGridLayout>
 
 #include "../widgets/button.h"
@@ -13,6 +12,8 @@ extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
 extern std::string IMAGE_MET_DOWN;
+extern std::string IMAGE_MET_SCAN;
+extern std::string IMAGE_MET_STOP;
 
 MonitorView::MonitorView(int w,
 					     int h,
@@ -57,36 +58,40 @@ void MonitorView::SetupUi()
 	helper->SetScaleY(1.0f);
 	canvas = new MetCanvas(helper, width(), height() - 100, this);
 
-	QTimer* timer = new QTimer(this);
+	timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
-	timer->start(50);
 
 	MetButtonStyle button_style;
-	scale_reset = new MetButton(button_style, "", "", 25, 25,
+	scan_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_SCAN)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)), this);
+	scale_reset_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
-	scale_x_plus = new MetButton(button_style, "", "", 25, 25,
+	scale_x_plus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)), this);
-	scale_y_plus = new MetButton(button_style, "", "", 25, 25,
+	scale_y_plus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)), this);
-	scale_x_minus = new MetButton(button_style, "", "", 25, 25,
+	scale_x_minus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)), this);
-	scale_y_minus = new MetButton(button_style, "", "", 25, 25,
+	scale_y_minus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)), this);
 
-	connect(scale_reset, &QPushButton::released, this,
+	connect(scan_button, &QPushButton::released, this,
+		&MonitorView::ToggleScanButton);
+	connect(scale_reset_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleResetButton);
-	connect(scale_x_plus, &QPushButton::released, this,
+	connect(scale_x_plus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleXPlusButton);
-	connect(scale_y_plus, &QPushButton::released, this,
+	connect(scale_y_plus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleYPlusButton);
-	connect(scale_x_minus, &QPushButton::released, this,
+	connect(scale_x_minus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleXMinusButton);
-	connect(scale_y_minus, &QPushButton::released, this,
+	connect(scale_y_minus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleYMinusButton);
 
 	QWidget* scale_buttons = new QWidget(this);
@@ -94,15 +99,17 @@ void MonitorView::SetupUi()
 	scale_buttons->setFixedHeight(100);
 
 	QGridLayout* scale_layout = new QGridLayout();
-	scale_layout->addWidget(scale_x_minus, 1, 0, Qt::AlignCenter);
-	scale_layout->addWidget(scale_x_plus, 1, 2, Qt::AlignCenter);
-	scale_layout->addWidget(scale_reset, 1, 1, Qt::AlignCenter);
-	scale_layout->addWidget(scale_y_minus, 2, 1, Qt::AlignCenter);
-	scale_layout->addWidget(scale_y_plus, 0, 1, Qt::AlignCenter);
+	scale_layout->addWidget(scale_x_minus_button, 1, 0, Qt::AlignCenter);
+	scale_layout->addWidget(scale_x_plus_button, 1, 2, Qt::AlignCenter);
+	scale_layout->addWidget(scale_reset_button, 1, 1, Qt::AlignCenter);
+	scale_layout->addWidget(scale_y_minus_button, 2, 1, Qt::AlignCenter);
+	scale_layout->addWidget(scale_y_plus_button, 0, 1, Qt::AlignCenter);
 	scale_buttons->setLayout(scale_layout);
 
 	QHBoxLayout* upper_layout = new QHBoxLayout();
-	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
+	upper_layout->addWidget(scan_button, 0, Qt::AlignCenter);
+	upper_layout->addWidget(scale_buttons, 0, Qt::AlignCenter);
+	upper_layout->addStretch(10);
 
 	layout = new QVBoxLayout(this);
 	layout->addItem(upper_layout);
@@ -111,9 +118,20 @@ void MonitorView::SetupUi()
 	setLayout(layout);
 }
 
+void MonitorView::ToggleScanButton()
+{
+	if (scan_button->status) {
+		scan_button->SetButtonDefault();
+		timer->stop();
+	} else {
+		scan_button->SetButtonPressed();
+		timer->start(50);
+	}
+}
+
 void MonitorView::ToggleScaleResetButton()
 {
-	scale_reset->SetButtonDefault();
+	scale_reset_button->SetButtonDefault();
 	helper->SetScaleX(1.0f);
 	helper->SetScaleY(1.0f);
 	canvas->update();
@@ -121,7 +139,7 @@ void MonitorView::ToggleScaleResetButton()
 
 void MonitorView::ToggleScaleXPlusButton()
 {
-	scale_x_plus->SetButtonDefault();
+	scale_x_plus_button->SetButtonDefault();
 	float scale_x = helper->GetScaleX();
 	scale_x += scale_x_interval;
 
@@ -133,7 +151,7 @@ void MonitorView::ToggleScaleXPlusButton()
 
 void MonitorView::ToggleScaleYPlusButton()
 {
-	scale_y_plus->SetButtonDefault();
+	scale_y_plus_button->SetButtonDefault();
 	float scale_y = helper->GetScaleY();
 	scale_y += scale_y_interval;
 
@@ -145,7 +163,7 @@ void MonitorView::ToggleScaleYPlusButton()
 
 void MonitorView::ToggleScaleXMinusButton()
 {
-	scale_x_plus->SetButtonDefault();
+	scale_x_plus_button->SetButtonDefault();
 	float scale_x = helper->GetScaleX();
 	scale_x -= scale_x_interval;
 
@@ -157,7 +175,7 @@ void MonitorView::ToggleScaleXMinusButton()
 
 void MonitorView::ToggleScaleYMinusButton()
 {
-	scale_y_plus->SetButtonDefault();
+	scale_y_plus_button->SetButtonDefault();
 	float scale_y = helper->GetScaleY();
 	scale_y -= scale_y_interval;
 
