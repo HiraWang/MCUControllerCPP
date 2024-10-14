@@ -1,6 +1,7 @@
 #include "helper.h"
 
 #include <iostream>
+#include <fstream>
 
 Helper::Helper(HelperType type) : 
     type(type)
@@ -39,6 +40,11 @@ void Helper::SetPulseChartInfo(int period, int pulse_width, int voltage, int off
     this->offset = offset;
 }
 
+void Helper::SetCount(size_t count)
+{
+    this->count = count;
+}
+
 void Helper::SetScaleX(float scale_x)
 {
     this->scale_x = scale_x;
@@ -64,7 +70,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event)
     if (type == HelperType::PULSE_CHART) {
         paint(painter, event, period, pulse_width, voltage, offset);
     } else if (type == HelperType::OSCILLOSCOPE) {
-        paint(painter, event, true);
+        paint(painter, event, count);
     } else if (type == HelperType::EXAMPLE) {
         paint(painter, event, elapsed);
     }
@@ -156,8 +162,16 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
     painter->drawLine(0, height, width, height);
 }
 
-void Helper::paint(QPainter* painter, QPaintEvent* event, bool flag)
+void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
 {
+    std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
+    std::ifstream input(name, std::ios::binary);
+
+    const int chunk_size = 4096;
+    const int buffer_size = 8192;
+    unsigned char buf[buffer_size];
+    float data[chunk_size];
+
     std::list<std::string> info_list = {
         "scale_x : " + std::to_string(scale_x),
         "scale_y : " + std::to_string(scale_y),
@@ -170,9 +184,9 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, bool flag)
     float width_f = (float)width;
     float height_f = (float)height;
 
-    const int buffer_len = 1000;
-    float data_count = buffer_len / scale_x;
-    float data_interval = (float)(width) / data_count;
+    float data_count = (float)(chunk_size) / scale_x;
+    float data_interval = width_f / data_count;
+    float voltage_interval = height_f / 5.0f;
     float grid_x_count = 500.0f / scale_x;
     float grid_y_count = 10.0f / scale_y;
     float width_interval = (float)(width) / grid_x_count;
@@ -192,7 +206,6 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, bool flag)
     }
 
     // draw data
-    unsigned char data[buffer_len];
     painter->setBrush(line_brush);
     painter->setPen(line_pen);
 
@@ -200,9 +213,24 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, bool flag)
         scale_x = 1.0f;
     }
 
-    for (int i = 0; i < (int)(data_count); i++) {
-        data[i] = (rand() + 30) % height;
-        painter->drawPoint(i * data_interval, data[i] * scale_y);
+    if (input.good()) {
+        for (int i = 0; i < buffer_size; i++) {
+            input.read(reinterpret_cast<char*>(&buf[i]), buffer_size);
+        }
+
+        for (int i = 0, j = 0; i < buffer_size; i += 2, j++) {
+            data[j] = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
+            //std::cout << data[j] << '\n';
+        }
+
+        for (int i = 1; i < (int)(data_count); i++) {
+            //painter->drawPoint(i * data_interval, data[i] * scale_y);
+            int x1 = i * data_interval - data_interval;
+            int x2 = i * data_interval;
+            float y1 = height_f - (data[i - 1] * voltage_interval * scale_y);
+            float y2 = height_f - (data[i] * voltage_interval * scale_y);
+            painter->drawLine(x1, y1, x2, y2);
+        }
     }
 
     // draw text

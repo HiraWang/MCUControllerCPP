@@ -58,7 +58,9 @@ MonitorView::MonitorView(int w,
 
 MonitorView::~MonitorView()
 {
-
+	if (due && due->Close() != SERIAL_OK) {
+		MetMsgSubwindow("device Due close failed");
+	}
 }
 
 void MonitorView::SetupUi()
@@ -72,7 +74,7 @@ void MonitorView::SetupUi()
 	canvas = new MetCanvas(helper, width(), height() - 100, this);
 
 	timer = new QTimer(this);
-	connect(timer, &QTimer::timeout, canvas, &MetCanvas::animate);
+	connect(timer, &QTimer::timeout, this, &MonitorView::Update);
 
 	MetButtonStyle button_style;
 	scan_button = new MetButton(button_style, "", "", 80, 80,
@@ -131,14 +133,22 @@ void MonitorView::SetupUi()
 	setLayout(layout);
 }
 
+void MonitorView::Update()
+{
+	helper->SetCount(due->count);
+	canvas->update();
+}
+
 void MonitorView::ToggleScanButton()
 {
 	if (scan_button->status) {
 		scan_button->SetButtonDefault();
+		thread->join();
 		timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
-		timer->start(50);
+		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
+		timer->start(10);
 	}
 }
 
@@ -168,7 +178,7 @@ void MonitorView::ToggleScaleYPlusButton()
 	float scale_y = helper->GetScaleY();
 	scale_y += scale_y_interval;
 
-	if (0.0f < scale_y && scale_y < 10.0f) {
+	if (0.0f < scale_y && scale_y < 100.0f) {
 		helper->SetScaleY(scale_y);
 		canvas->update();
 	}
@@ -192,7 +202,7 @@ void MonitorView::ToggleScaleYMinusButton()
 	float scale_y = helper->GetScaleY();
 	scale_y -= scale_y_interval;
 
-	if (scale_y_interval <= scale_y && scale_y < 10.0f) {
+	if (scale_y_interval <= scale_y && scale_y < 100.0f) {
 		helper->SetScaleY(scale_y);
 		canvas->update();
 	}

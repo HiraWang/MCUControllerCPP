@@ -7,6 +7,9 @@
 
 #include "utility.h"
 
+#define CHUNK_SIZE (4096)
+#define BUFFER_SIZE (CHUNK_SIZE * 2) 
+
 typedef enum {
     AUTOMATION,
     G1B,
@@ -114,6 +117,10 @@ public:
     virtual SerialCode Read() override;  // override
     virtual SerialCode Write() override; // override
     virtual SerialCode Login() override; // override
+    SerialCode ReadBufferAndSave();
+    size_t count;
+    const int chunk_size = CHUNK_SIZE;
+    const int buffer_size = BUFFER_SIZE;
 };
 
 #endif

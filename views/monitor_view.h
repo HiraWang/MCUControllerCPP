@@ -33,12 +33,15 @@ private slots:
 
 private:
     void SetupUi();
+    void Update();
     int w;
     int h;
     float scale_x_interval;
     float scale_y_interval;
     QVBoxLayout* layout;
     MetParaList* para_list;
+    std::thread* thread;
+    size_t count;
     QTimer* timer;
     Helper* helper;
     MetCanvas* canvas;

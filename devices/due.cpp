@@ -2,6 +2,8 @@
 #include <iomanip>
 #include <iostream> 
 #include <sstream>   
+#include <fstream>
+#include <direct.h>
 
 #include "device.h"
 
@@ -116,5 +118,25 @@ SerialCode DeviceArduinoDue::Write()
 
 SerialCode DeviceArduinoDue::Login()
 {
+	return SERIAL_OK;
+}
+
+SerialCode DeviceArduinoDue::ReadBufferAndSave()
+{
+	count = 0;
+	_mkdir("buf");
+	BYTE buf[BUFFER_SIZE];
+	DWORD dw_bytes_read = 0;
+
+	while (true) {
+		if (!ReadFile(serial_handle, buf, BUFFER_SIZE, &dw_bytes_read, NULL)) {
+			return SERIAL_FAIL_TO_READ;
+		} else {
+			std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
+			std::ofstream(name, std::ios::binary).write(reinterpret_cast<char*>(buf), BUFFER_SIZE);
+			count++;
+		}
+	}
+
 	return SERIAL_OK;
 }

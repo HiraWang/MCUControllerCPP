@@ -19,6 +19,7 @@ public:
     Helper(HelperType type);
     void SetExampleInfo(int elapsed);
     void SetPulseChartInfo(int period, int pulse_width, int voltage, int offset);
+    void SetCount(size_t count);
     void SetScaleX(float scale_x);
     void SetScaleY(float scale_y);
     float GetScaleX();
@@ -29,7 +30,7 @@ public:
     void paint(QPainter* painter, QPaintEvent* event, int elapsed);
     void paint(QPainter* painter, QPaintEvent* event, int period, int pulse_width,
         int voltage, int offset);
-    void paint(QPainter* painter, QPaintEvent* event, bool flag);
+    void paint(QPainter* painter, QPaintEvent* event, size_t count);
 
 private:
     HelperType type;
@@ -51,6 +52,8 @@ private:
     int offset;
 
     // oscilloscope
+    size_t count;
+    int buffer_size;
     float scale_x;
     float scale_y;
 };

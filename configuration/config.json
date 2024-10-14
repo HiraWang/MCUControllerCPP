@@ -12,5 +12,5 @@
     "pulse gen keyword": "COM4",
     "pulse gen id": "admin",
     "pulse gen password": "default",
-    "monitor keyword": "Due"
+    "monitor keyword": "COM3"
 }
