@@ -14,10 +14,12 @@ std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
 std::string IMAGE_MET_CONSOLE = "\\images\\Console.png";
+std::string IMAGE_MET_DOWN = "\\images\\Down.png";
 std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
 std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
+std::string IMAGE_MET_LEFT = "\\images\\Left.png";
 std::string IMAGE_MET_LOAD = "\\images\\Load.png";
 std::string IMAGE_MET_LOADING = "\\images\\Loading.gif";
 std::string IMAGE_MET_MAX_SIZE = "\\images\\MaxSize.png";
@@ -25,6 +27,8 @@ std::string IMAGE_MET_MENU = "\\images\\Menu.png";
 std::string IMAGE_MET_MINUS = "\\images\\Minus.png";
 std::string IMAGE_MET_PLUS = "\\images\\Plus.png";
 std::string IMAGE_MET_POWER = "\\images\\Power.png";
+std::string IMAGE_MET_RIGHT = "\\images\\Right.png";
+std::string IMAGE_MET_UP = "\\images\\Up.png";
 
 std::string CONFIG_MET = "\\configuration\\config.json";
 

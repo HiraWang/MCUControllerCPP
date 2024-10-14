@@ -17,15 +17,19 @@ class Helper
 {
 public:
     Helper(HelperType type);
-    void Init(int elapsed);
-    void Init(int period, int pulse_width, int voltage, int offset);
+    void SetExampleInfo(int elapsed);
+    void SetPulseChartInfo(int period, int pulse_width, int voltage, int offset);
+    void SetScaleX(float scale_x);
+    void SetScaleY(float scale_y);
+    float GetScaleX();
+    float GetScaleY();
 
 public:
     void paint(QPainter* painter, QPaintEvent* event);
     void paint(QPainter* painter, QPaintEvent* event, int elapsed);
     void paint(QPainter* painter, QPaintEvent* event, int period, int pulse_width,
         int voltage, int offset);
-    void paint(QPainter* painter, QPaintEvent* event, float scale_x, float scale_y);
+    void paint(QPainter* painter, QPaintEvent* event, bool flag);
 
 private:
     HelperType type;
@@ -36,11 +40,19 @@ private:
     QPen circle_pen;
     QPen line_pen;
     QPen text_pen;
+
+    // example
     int elapsed;
+
+    // pulse chart
     int period;
     int pulse_width;
     int voltage;
     int offset;
+
+    // oscilloscope
+    float scale_x;
+    float scale_y;
 };
 
 #endif

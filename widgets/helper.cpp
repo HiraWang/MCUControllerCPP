@@ -26,12 +26,12 @@ Helper::Helper(HelperType type) :
     offset = 0;
 }
 
-void Helper::Init(int elapsed) 
+void Helper::SetExampleInfo(int elapsed)
 {
     this->elapsed = elapsed;
 }
 
-void Helper::Init(int period, int pulse_width, int voltage, int offset)
+void Helper::SetPulseChartInfo(int period, int pulse_width, int voltage, int offset)
 {
     this->period = period;
     this->pulse_width = pulse_width;
@@ -39,12 +39,32 @@ void Helper::Init(int period, int pulse_width, int voltage, int offset)
     this->offset = offset;
 }
 
+void Helper::SetScaleX(float scale_x)
+{
+    this->scale_x = scale_x;
+}
+
+void Helper::SetScaleY(float scale_y)
+{
+    this->scale_y = scale_y;
+}
+
+float Helper::GetScaleX()
+{
+    return scale_x;
+}
+
+float Helper::GetScaleY()
+{
+    return scale_y;
+}
+
 void Helper::paint(QPainter* painter, QPaintEvent* event)
 {
     if (type == HelperType::PULSE_CHART) {
         paint(painter, event, period, pulse_width, voltage, offset);
     } else if (type == HelperType::OSCILLOSCOPE) {
-        paint(painter, event, 1.0f, 1.0f);
+        paint(painter, event, true);
     } else if (type == HelperType::EXAMPLE) {
         paint(painter, event, elapsed);
     }
@@ -136,7 +156,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
     painter->drawLine(0, height, width, height);
 }
 
-void Helper::paint(QPainter* painter, QPaintEvent* event, float scale_x, float scale_y)
+void Helper::paint(QPainter* painter, QPaintEvent* event, bool flag)
 {
     std::list<std::string> info_list = {
         "scale_x : " + std::to_string(scale_x),

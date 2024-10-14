@@ -107,7 +107,7 @@ void G1BView::SetupUi()
 		&G1BView::ToggleImgButton);
 
 	helper = new Helper(HelperType::PULSE_CHART);
-	helper->Init(0, 0, 0, 0);
+	helper->SetPulseChartInfo(0, 0, 0, 0);
 	canvas = new MetCanvas(helper, 200, 200, this);
 
 	QWidget* space = new QWidget(this);
@@ -238,7 +238,7 @@ void G1BView::ToggleImgButton()
 	int pulse_width = pw_edit->text().toFloat() * 1000.0f;
 	int voltage = voltage_edit->text().toInt();
 	int offset = offset_edit->text().toInt();
-	helper->Init(period, pulse_width, voltage, offset);
+	helper->SetPulseChartInfo(period, pulse_width, voltage, offset);
 	canvas->repaint();
 }
 
