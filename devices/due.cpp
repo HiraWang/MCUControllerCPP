@@ -4,6 +4,7 @@
 #include <sstream>   
 #include <fstream>
 #include <direct.h>
+#include <QDir>
 
 #include "device.h"
 
@@ -124,8 +125,17 @@ SerialCode DeviceArduinoDue::Login()
 
 SerialCode DeviceArduinoDue::ReadBufferAndSave()
 {
-	count = 0;
 	_mkdir("buf");
+	QString path = "buf";
+	QDir dir(path);
+	dir.setNameFilters(QStringList() << "*.*");
+	dir.setFilter(QDir::Files);
+	foreach(QString dirFile, dir.entryList())
+	{
+		dir.remove(dirFile);
+	}
+
+	count = 0;
 	BYTE buf[MONITOR_BUFFER_SIZE];
 	DWORD dw_bytes_read = 0;
 
