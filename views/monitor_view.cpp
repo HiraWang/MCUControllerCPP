@@ -55,6 +55,7 @@ MonitorView::MonitorView(int w,
 		return;
 	} else {
 		std::cout << "monitor opened" << '\n';
+		due->activate = false;
 		SetupUi();
 	}
 }
@@ -71,7 +72,6 @@ void MonitorView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
-	due->activate = false;
 	helper = new Helper(HelperType::OSCILLOSCOPE);
 	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
 	canvas = new MetCanvas(helper, width(), height() - upper_widget_h, this);
