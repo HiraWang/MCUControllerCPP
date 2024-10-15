@@ -71,11 +71,13 @@ void MainWindow::ToggleWindowButton()
 	if (button->status) {
 		button->SetButtonDefault();
 		showFullScreen();
-		ui->bottom_view->monitor_view->ScaleUpCanvasSize();
+		if (ui->bottom_view->monitor_view)
+			ui->bottom_view->monitor_view->ScaleUpCanvasSize();
 	} else {
 		button->SetButtonPressed();
 		showMaximized();
-		ui->bottom_view->monitor_view->ScaleDownCanvasSize();
+		if (ui->bottom_view->monitor_view)
+			ui->bottom_view->monitor_view->ScaleDownCanvasSize();
 	}
 }
 
@@ -147,15 +149,21 @@ void MainWindow::TogglePowerButton()
 			for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
 				ui->bottom_view->tab->removeTab(i);
 			}
+			ui->bottom_view->automation_view = nullptr;
+			ui->bottom_view->g1b_view = nullptr;
+			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view->~G1BView();
 			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->g1b_view = nullptr;
 		} else if ((current_device == Device::REGLO_ICC)) {
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
 			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if ((current_device == Device::MONITOR)) {
 			ui->bottom_view->monitor_view->~MonitorView();
 			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->monitor_view = nullptr;
 		}
 	} else {
 		button->SetButtonPressed();
