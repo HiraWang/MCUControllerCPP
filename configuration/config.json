@@ -7,7 +7,7 @@
     "timer period": 25,
     "chunks per scene": 5,
     "offset": 64,
-    "buffer size": 4096,
+    "chunk size": 4096,
     "pump keyword": "COM3",
     "pulse gen keyword": "COM4",
     "pulse gen id": "admin",

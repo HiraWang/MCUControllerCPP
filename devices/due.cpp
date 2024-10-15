@@ -12,7 +12,8 @@ DeviceArduinoDue::DeviceArduinoDue(const wchar_t* port_name,
 								   BYTE byte_size,
 								   BYTE stop_bits,
 								   BYTE parity) :
-	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity),
+	activate(true)
 {
 
 }
@@ -125,15 +126,15 @@ SerialCode DeviceArduinoDue::ReadBufferAndSave()
 {
 	count = 0;
 	_mkdir("buf");
-	BYTE buf[BUFFER_SIZE];
+	BYTE buf[MONITOR_BUFFER_SIZE];
 	DWORD dw_bytes_read = 0;
 
-	while (true) {
-		if (!ReadFile(serial_handle, buf, BUFFER_SIZE, &dw_bytes_read, NULL)) {
+	while (activate) {
+		if (!ReadFile(serial_handle, buf, MONITOR_BUFFER_SIZE, &dw_bytes_read, NULL)) {
 			return SERIAL_FAIL_TO_READ;
 		} else {
 			std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
-			std::ofstream(name, std::ios::binary).write(reinterpret_cast<char*>(buf), BUFFER_SIZE);
+			std::ofstream(name, std::ios::binary).write(reinterpret_cast<char*>(buf), MONITOR_BUFFER_SIZE);
 			count++;
 		}
 	}

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "utility.h"
+
 Helper::Helper(HelperType type) : 
     type(type)
 {
@@ -164,14 +166,6 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
 
 void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
 {
-    std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
-    std::ifstream input(name, std::ios::binary);
-
-    const int chunk_size = 4096;
-    const int buffer_size = 8192;
-    unsigned char buf[buffer_size];
-    float data[chunk_size];
-
     std::list<std::string> info_list = {
         "scale_x : " + std::to_string(scale_x),
         "scale_y : " + std::to_string(scale_y),
@@ -184,13 +178,18 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     float width_f = (float)width;
     float height_f = (float)height;
 
+    const int buf_size = MONITOR_BUFFER_SIZE;
+    const int chunk_size = MONITOR_CHUNK_SIZE;
+    unsigned char buf[MONITOR_BUFFER_SIZE];
+    float data[MONITOR_CHUNK_SIZE];
     float data_count = (float)(chunk_size) / scale_x;
     float data_interval = width_f / data_count;
     float voltage_interval = height_f / 5.0f;
+
     float grid_x_count = 500.0f / scale_x;
     float grid_y_count = 10.0f / scale_y;
-    float width_interval = (float)(width) / grid_x_count;
-    float height_interval = (float)(height) / grid_y_count;
+    float width_interval = width_f / grid_x_count;
+    float height_interval = height_f / grid_y_count;
 
     // draw background
     painter->fillRect(event->rect(), QBrush(QColor(60, 60, 60)));
@@ -198,10 +197,10 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
 
     // draw grid
     painter->setPen(QPen(QColor(100, 100, 100)));
-    for (float i = 0; i < width_f; i += width_interval) {
+    for (float i = 0.0f; i < width_f; i += width_interval) {
         painter->drawLine(i, 0, i, height);
     }
-    for (float i = 0; i < height_f; i += height_interval) {
+    for (float i = 0.0f; i < height_f; i += height_interval) {
         painter->drawLine(0, i, width, i);
     }
 
@@ -209,22 +208,19 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     painter->setBrush(line_brush);
     painter->setPen(line_pen);
 
-    if (scale_x < 1.0f) {
-        scale_x = 1.0f;
-    }
+    std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
+    std::ifstream input(name, std::ios::binary);
 
     if (input.good()) {
-        for (int i = 0; i < buffer_size; i++) {
-            input.read(reinterpret_cast<char*>(&buf[i]), buffer_size);
+        for (int i = 0; i < buf_size; i++) {
+            input.read(reinterpret_cast<char*>(&buf[i]), buf_size);
         }
 
-        for (int i = 0, j = 0; i < buffer_size; i += 2, j++) {
+        for (int i = 0, j = 0; i < buf_size; i += 2, j++) {
             data[j] = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
-            //std::cout << data[j] << '\n';
         }
 
         for (int i = 1; i < (int)(data_count); i++) {
-            //painter->drawPoint(i * data_interval, data[i] * scale_y);
             int x1 = i * data_interval - data_interval;
             int x2 = i * data_interval;
             float y1 = height_f - (data[i - 1] * voltage_interval * scale_y);

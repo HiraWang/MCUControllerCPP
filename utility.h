@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+#define MONITOR_CHUNK_SIZE (4096)
+#define MONITOR_BUFFER_SIZE (MONITOR_CHUNK_SIZE * 2) 
+
 typedef enum {
     BUTTON_DEFAULT = false,
     BUTTON_PRESSED = true

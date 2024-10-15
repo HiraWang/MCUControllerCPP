@@ -143,10 +143,12 @@ void MonitorView::ToggleScanButton()
 {
 	if (scan_button->status) {
 		scan_button->SetButtonDefault();
+		due->activate = false;
 		thread->join();
 		timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
+		due->activate = true;
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
 		timer->start(10);
 	}
