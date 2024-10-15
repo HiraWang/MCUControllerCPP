@@ -128,7 +128,7 @@ void MonitorView::SetupUi()
 	data_offset_slider->setValue(para_list->list[OFFSET].num);
 	data_offset_slider->setSliderPosition(para_list->list[OFFSET].num);
 
-	connect(data_offset_slider, &QSlider::sliderReleased, this,
+	connect(data_offset_slider, &QSlider::valueChanged, this,
 		&MonitorView::ToggleDataOffsetSlider);
 	
 	QWidget* scale_buttons = new QWidget(this);
