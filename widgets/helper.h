@@ -20,6 +20,7 @@ public:
     void SetExampleInfo(int elapsed);
     void SetPulseChartInfo(int period, int pulse_width, int voltage, int offset);
     void SetCount(size_t count);
+    void SetDataOffset(int data_offset);
     void SetScaleX(float scale_x);
     void SetScaleY(float scale_y);
     float GetScaleX();
@@ -54,6 +55,7 @@ private:
     // oscilloscope
     size_t count;
     int buffer_size;
+    int data_offset;
     float scale_x;
     float scale_y;
 };

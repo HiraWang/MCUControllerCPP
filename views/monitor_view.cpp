@@ -69,6 +69,7 @@ void MonitorView::SetupUi()
 	setFixedHeight(h);
 
 	helper = new Helper(HelperType::OSCILLOSCOPE);
+	helper->SetDataOffset(para_list->list[OFFSET].num);
 	helper->SetScaleX(1.0f);
 	helper->SetScaleY(1.0f);
 	canvas = new MetCanvas(helper, width(), height() - 100, this);

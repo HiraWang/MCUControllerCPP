@@ -47,6 +47,11 @@ void Helper::SetCount(size_t count)
     this->count = count;
 }
 
+void Helper::SetDataOffset(int data_offset)
+{
+    this->data_offset = data_offset;
+}
+
 void Helper::SetScaleX(float scale_x)
 {
     this->scale_x = scale_x;
@@ -178,11 +183,12 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     float width_f = (float)width;
     float height_f = (float)height;
 
+    unsigned char buf[MONITOR_BUFFER_SIZE];
     const int buf_size = MONITOR_BUFFER_SIZE;
     const int chunk_size = MONITOR_CHUNK_SIZE;
-    unsigned char buf[MONITOR_BUFFER_SIZE];
+    int buf_offset = 2 * data_offset;
     float data[MONITOR_CHUNK_SIZE];
-    float data_count = (float)(chunk_size) / scale_x;
+    float data_count = (float)(chunk_size) / ((float)(data_offset) * scale_x);
     float data_interval = width_f / data_count;
     float voltage_interval = height_f / 5.0f;
 
@@ -216,7 +222,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
             input.read(reinterpret_cast<char*>(&buf[i]), buf_size);
         }
 
-        for (int i = 0, j = 0; i < buf_size; i += 2, j++) {
+        for (int i = 0, j = 0; i < buf_size; i += buf_offset, j++) {
             data[j] = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
         }
 
