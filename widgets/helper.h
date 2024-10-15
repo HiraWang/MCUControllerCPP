@@ -19,8 +19,11 @@ public:
     Helper(HelperType type);
     void SetExampleInfo(int elapsed);
     void SetPulseChartInfo(int period, int pulse_width, int voltage, int offset);
+    void InitOscilloscopeInfo(int data_offset, float min, float max);
     void SetCount(size_t count);
     void SetDataOffset(int data_offset);
+    void SetDataMinAndMax(float min, float max);
+    void SetFirstRoundFlag(bool status);
     void SetScaleX(float scale_x);
     void SetScaleY(float scale_y);
     float GetScaleX();
@@ -56,8 +59,12 @@ private:
     size_t count;
     int buffer_size;
     int data_offset;
+    float data_first;
+    float data_max;
+    float data_min;
     float scale_x;
     float scale_y;
+    bool is_first_round;
 };
 
 #endif

@@ -70,10 +70,9 @@ void MonitorView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
+	due->activate = false;
 	helper = new Helper(HelperType::OSCILLOSCOPE);
-	helper->SetDataOffset(para_list->list[OFFSET].num);
-	helper->SetScaleX(1.0f);
-	helper->SetScaleY(1.0f);
+	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
 	canvas = new MetCanvas(helper, width(), height() - upper_widget_h, this);
 
 	timer = new QTimer(this);
@@ -173,6 +172,8 @@ void MonitorView::ToggleScanButton()
 		timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
+		helper->SetDataMinAndMax(1000.0f, 0.0f);
+		helper->SetFirstRoundFlag(true);
 		due->activate = true;
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
 		timer->start(10);

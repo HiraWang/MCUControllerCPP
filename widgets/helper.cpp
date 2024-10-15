@@ -42,6 +42,15 @@ void Helper::SetPulseChartInfo(int period, int pulse_width, int voltage, int off
     this->offset = offset;
 }
 
+void Helper::InitOscilloscopeInfo(int data_offset, float min, float max)
+{
+    SetDataOffset(data_offset);
+    SetScaleX(1.0f);
+    SetScaleY(1.0f);
+    SetDataMinAndMax(1000.0f, 0.0f);
+    SetFirstRoundFlag(true);
+}
+
 void Helper::SetCount(size_t count)
 {
     this->count = count;
@@ -50,6 +59,17 @@ void Helper::SetCount(size_t count)
 void Helper::SetDataOffset(int data_offset)
 {
     this->data_offset = data_offset;
+}
+
+void Helper::SetDataMinAndMax(float min, float max)
+{
+    this->data_min = min;
+    this->data_max = max;
+}
+
+void Helper::SetFirstRoundFlag(bool status)
+{
+    this->is_first_round = status;
 }
 
 void Helper::SetScaleX(float scale_x)
@@ -177,25 +197,34 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     };
     size_t info_count = info_list.size();
 
+    // geometry
     int text_box_height = 15;
     int width = event->rect().width();
     int height = event->rect().height();
     float width_f = (float)width;
     float height_f = (float)height;
-
-    unsigned char buf[MONITOR_BUFFER_SIZE];
-    const int buf_size = MONITOR_BUFFER_SIZE;
-    const int chunk_size = MONITOR_CHUNK_SIZE;
-    int buf_offset = 2 * data_offset;
-    float data[MONITOR_CHUNK_SIZE];
-    float data_count = (float)(chunk_size) / ((float)(data_offset) * scale_x);
-    float data_interval = width_f / data_count;
-    float voltage_interval = height_f / 5.0f;
-
     float grid_x_count = 500.0f / scale_x;
     float grid_y_count = 10.0f / scale_y;
     float width_interval = width_f / grid_x_count;
     float height_interval = height_f / grid_y_count;
+
+    // ui optimization
+    bool skip = true;
+    bool skip_step_1 = true;
+    bool skip_step_2 = true;
+    bool skip_type = 0;
+    float accuracy = 0.1f;
+    float data_first_current_round = 0.0f;
+
+    // buffer and data
+    unsigned char buf[MONITOR_BUFFER_SIZE];
+    const int buf_offset = 2 * data_offset;
+    const int buf_size = MONITOR_BUFFER_SIZE;
+    const int chunk_size = MONITOR_CHUNK_SIZE;
+    float data[MONITOR_CHUNK_SIZE];
+    float data_count = (float)(chunk_size) / ((float)(data_offset) * scale_x);
+    float data_interval = width_f / data_count;
+    float voltage_interval = height_f / 5.0f;
 
     // draw background
     painter->fillRect(event->rect(), QBrush(QColor(60, 60, 60)));
@@ -210,22 +239,65 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
         painter->drawLine(0, i, width, i);
     }
 
-    // draw data
+    // prepare painter and buffer
     painter->setBrush(line_brush);
     painter->setPen(line_pen);
-
     std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
     std::ifstream input(name, std::ios::binary);
 
     if (input.good()) {
+        // read buffer from file
         for (int i = 0; i < buf_size; i++) {
             input.read(reinterpret_cast<char*>(&buf[i]), buf_size);
         }
 
-        for (int i = 0, j = 0; i < buf_size; i += buf_offset, j++) {
-            data[j] = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
+        // get first data
+        if (is_first_round == true) {
+            data_first = (float)((buf[1] << 8) | buf[0]) / 4096.0f * 3.3f;
+            is_first_round = false;
+        }
+        data_first_current_round = (float)((buf[1] << 8) | buf[0]) / 4096.0f * 3.3f;
+        
+        // select skipping flow
+        if (abs(data_first_current_round - data_first) < accuracy) {
+            skip_type = 0;
+        } else {
+            skip_type = 1;
         }
 
+        // optimize data
+        for (int i = 0, j = 0; i < buf_size; i += buf_offset) {
+            float value = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
+            if (value < data_min) {
+                data_min = value;
+            }
+            if (value > data_max) {
+                data_max = value;
+            }
+
+            if (skip_type == 0) {
+                if (skip && (abs(value - data_first) < accuracy)) {
+                    data_count -= 1.0f;
+                } else {
+                    skip = false;
+                    data[j++] = value;
+                }
+            } else {
+                if (skip_step_1 && (abs(value - data_first_current_round) < accuracy)) {
+                    data_count -= 1.0f;
+                } else {
+                    skip_step_1 = false;
+                    if (skip_step_2 && (abs(value - data_first) < accuracy)) {
+                        data_count -= 1.0f;
+                    } else {
+                        skip_step_2 = false;
+                        data[j++] = value;
+                    }
+                }
+            }
+        }
+
+        // draw data
         for (int i = 1; i < (int)(data_count); i++) {
             int x1 = i * data_interval - data_interval;
             int x2 = i * data_interval;
