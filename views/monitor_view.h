@@ -9,6 +9,7 @@
 #include "../devices/device.h"
 #include "../widgets/button.h"
 #include "../widgets/canvas.h"
+#include "../widgets/slider.h"
 
 class MonitorView : public QWidget
 {
@@ -34,6 +35,7 @@ private slots:
     void ToggleScaleYMinusButton();
     void TogglePlotInfoButton();
     void ToggleBinDirButton();
+    void ToggleDataOffsetSlider();
 
 private:
     void SetupUi();
@@ -58,6 +60,7 @@ private:
     MetButton* scale_y_minus_button;
     MetButton* plot_info_button;
     MetButton* bin_dir_button;
+    MetSlider* data_offset_slider;
 };
 
 #endif

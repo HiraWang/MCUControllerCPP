@@ -69,6 +69,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/msg_subwindow.cpp"
 			   "widgets/process_unit.h"
 			   "widgets/process_unit.cpp"
+			   "widgets/slider.h"
+			   "widgets/slider.cpp"
 			   "widgets/tab.h"
 			   "widgets/tab.cpp")
 

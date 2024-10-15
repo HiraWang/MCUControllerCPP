@@ -122,6 +122,15 @@ void MonitorView::SetupUi()
 	connect(bin_dir_button, &QPushButton::released, this,
 		&MonitorView::ToggleBinDirButton);
 
+	MetSliderStyle slider_style(COLOR_WHITE, COLOR_BLACK);
+	data_offset_slider = new MetSlider(slider_style,Qt::Vertical,
+		10, 76, 0, 24, 4, this);
+	data_offset_slider->setValue(para_list->list[OFFSET].num);
+	data_offset_slider->setSliderPosition(para_list->list[OFFSET].num);
+
+	connect(data_offset_slider, &QSlider::sliderReleased, this,
+		&MonitorView::ToggleDataOffsetSlider);
+	
 	QWidget* scale_buttons = new QWidget(this);
 	scale_buttons->setFixedWidth(100);
 	scale_buttons->setFixedHeight(100);
@@ -140,6 +149,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(bin_dir_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
 	upper_layout->setContentsMargins(0, 0, 0, 0);
@@ -258,4 +268,13 @@ void MonitorView::ToggleBinDirButton()
 {
 	bin_dir_button->SetButtonDefault();
 	ShellExecute(nullptr, L"open", nullptr, nullptr, L"buf", SW_SHOWNORMAL);
+}
+
+void MonitorView::ToggleDataOffsetSlider()
+{
+	if (data_offset_slider->value() == 0) {
+		helper->SetDataOffset(1);
+	} else {
+		helper->SetDataOffset(data_offset_slider->value());
+	}
 }
