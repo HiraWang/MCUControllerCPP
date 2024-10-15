@@ -7,12 +7,13 @@
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_ui_test;
-extern std::string IMAGE_MET_ATTACHED_FILES;
-extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
 extern std::string IMAGE_MET_DOWN;
+extern std::string IMAGE_MET_ATTACHED_FILES;
+extern std::string IMAGE_MET_LOAD;
+extern std::string IMAGE_MET_MENU;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
 
@@ -97,6 +98,9 @@ void MonitorView::SetupUi()
 	scale_y_minus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)), this);
+	plot_info_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)), this);
 	bin_dir_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
@@ -113,6 +117,8 @@ void MonitorView::SetupUi()
 		&MonitorView::ToggleScaleXMinusButton);
 	connect(scale_y_minus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleYMinusButton);
+	connect(plot_info_button, &QPushButton::released, this,
+		&MonitorView::TogglePlotInfoButton);
 	connect(bin_dir_button, &QPushButton::released, this,
 		&MonitorView::ToggleBinDirButton);
 
@@ -132,6 +138,7 @@ void MonitorView::SetupUi()
 	upper_widgets->setFixedHeight(upper_widget_h - 20);
 	QHBoxLayout* upper_layout = new QHBoxLayout();
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(bin_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
@@ -236,8 +243,19 @@ void MonitorView::ToggleScaleYMinusButton()
 	}
 }
 
+void MonitorView::TogglePlotInfoButton()
+{
+	if (plot_info_button->status) {
+		plot_info_button->SetButtonDefault();
+		helper->SetPlotInfoFlag(true);
+	} else {
+		plot_info_button->SetButtonPressed();
+		helper->SetPlotInfoFlag(false);
+	}
+}
+
 void MonitorView::ToggleBinDirButton()
 {
-	scan_button->SetButtonDefault();
+	bin_dir_button->SetButtonDefault();
 	ShellExecute(nullptr, L"open", nullptr, nullptr, L"buf", SW_SHOWNORMAL);
 }

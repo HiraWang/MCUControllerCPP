@@ -27,6 +27,7 @@ Helper::Helper(HelperType type) :
     pulse_width = 0;
     voltage = 0;
     offset = 0;
+    show_plot_info = true;
 }
 
 void Helper::SetExampleInfo(int elapsed)
@@ -70,6 +71,11 @@ void Helper::SetDataMinAndMax(float min, float max)
 void Helper::SetFirstRoundFlag(bool status)
 {
     this->is_first_round = status;
+}
+
+void Helper::SetPlotInfoFlag(bool status)
+{
+    this->show_plot_info = status;
 }
 
 void Helper::SetScaleX(float scale_x)
@@ -191,12 +197,6 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, int period,
 
 void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
 {
-    std::list<std::string> info_list = {
-        "scale_x : " + std::to_string(scale_x),
-        "scale_y : " + std::to_string(scale_y),
-    };
-    size_t info_count = info_list.size();
-
     // geometry
     int text_box_height = 15;
     int width = event->rect().width();
@@ -308,13 +308,25 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     }
 
     // draw text
+    std::list<std::string> info_list = {
+        "scale_x : " + std::to_string(scale_x),
+        "scale_y : " + std::to_string(scale_y),
+        "offset : " + std::to_string(data_offset),
+        "min : " + std::to_string(data_min),
+        "max : " + std::to_string(data_max),
+    };
+    size_t info_count = info_list.size();
+
     painter->setPen(text_pen);
     painter->setFont(text_font);
-    for (int i = 0; i < info_count; i++) {
-        QString info = QString::fromStdString(info_list.front());
-        info_list.pop_front();
-        painter->drawText(QRect(5, i * text_box_height + 3, 150,
-            (i + 1) * text_box_height), Qt::AlignLeft, info);
+
+    if (show_plot_info) {
+        for (int i = 0; i < info_count; i++) {
+            QString info = QString::fromStdString(info_list.front());
+            info_list.pop_front();
+            painter->drawText(QRect(5, i * text_box_height + 3, 150,
+                (i + 1) * text_box_height), Qt::AlignLeft, info);
+        }
     }
 
     // draw border

@@ -24,6 +24,7 @@ public:
     void SetDataOffset(int data_offset);
     void SetDataMinAndMax(float min, float max);
     void SetFirstRoundFlag(bool status);
+    void SetPlotInfoFlag(bool status);
     void SetScaleX(float scale_x);
     void SetScaleY(float scale_y);
     float GetScaleX();
@@ -65,6 +66,7 @@ private:
     float scale_x;
     float scale_y;
     bool is_first_round;
+    bool show_plot_info;
 };
 
 #endif

@@ -32,6 +32,7 @@ private slots:
     void ToggleScaleYPlusButton();
     void ToggleScaleXMinusButton();
     void ToggleScaleYMinusButton();
+    void TogglePlotInfoButton();
     void ToggleBinDirButton();
 
 private:
@@ -55,6 +56,7 @@ private:
     MetButton* scale_y_plus_button;
     MetButton* scale_x_minus_button;
     MetButton* scale_y_minus_button;
+    MetButton* plot_info_button;
     MetButton* bin_dir_button;
 };
 
