@@ -124,7 +124,7 @@ void MonitorView::SetupUi()
 
 	MetSliderStyle slider_style(COLOR_WHITE, COLOR_BLACK);
 	data_offset_slider = new MetSlider(slider_style,Qt::Vertical,
-		10, 76, 0, 24, 4, this);
+		10, 76, 0, 24, 1, this);
 	data_offset_slider->setValue(para_list->list[OFFSET].num);
 	data_offset_slider->setSliderPosition(para_list->list[OFFSET].num);
 
