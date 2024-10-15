@@ -12,6 +12,7 @@ bool g_ui_test = !g_normal;
 
 std::string LF = "\n";
 std::string CR = "\r";
+std::string IMAGE_MET_ATTACHED_FILES = "\\images\\AttachedFiles.png";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
 std::string IMAGE_MET_CONSOLE = "\\images\\Console.png";
 std::string IMAGE_MET_DOWN = "\\images\\Down.png";

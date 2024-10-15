@@ -71,9 +71,11 @@ void MainWindow::ToggleWindowButton()
 	if (button->status) {
 		button->SetButtonDefault();
 		showFullScreen();
+		ui->bottom_view->monitor_view->ScaleUpCanvasSize();
 	} else {
 		button->SetButtonPressed();
 		showMaximized();
+		ui->bottom_view->monitor_view->ScaleDownCanvasSize();
 	}
 }
 

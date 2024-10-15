@@ -20,6 +20,8 @@ public:
                 MetParaList* para_list,
                 QWidget* parent = nullptr);
     virtual ~MonitorView();
+    void ScaleUpCanvasSize();
+    void ScaleDownCanvasSize();
     SerialCode serial_status;
     DeviceArduinoDue* due;
 
@@ -30,12 +32,14 @@ private slots:
     void ToggleScaleYPlusButton();
     void ToggleScaleXMinusButton();
     void ToggleScaleYMinusButton();
+    void ToggleBinDirButton();
 
 private:
     void SetupUi();
     void Update();
     int w;
     int h;
+    int upper_widget_h;
     float scale_x_interval;
     float scale_y_interval;
     QVBoxLayout* layout;
@@ -51,6 +55,7 @@ private:
     MetButton* scale_y_plus_button;
     MetButton* scale_x_minus_button;
     MetButton* scale_y_minus_button;
+    MetButton* bin_dir_button;
 };
 
 #endif

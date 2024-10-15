@@ -7,6 +7,7 @@
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_ui_test;
+extern std::string IMAGE_MET_ATTACHED_FILES;
 extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
@@ -21,6 +22,7 @@ MonitorView::MonitorView(int w,
 					     QWidget* parent) :
 	w(w),
 	h(h),
+	upper_widget_h(120),
 	scale_x_interval(0.5f),
 	scale_y_interval(0.2f),
 	para_list(para_list),
@@ -72,7 +74,7 @@ void MonitorView::SetupUi()
 	helper->SetDataOffset(para_list->list[OFFSET].num);
 	helper->SetScaleX(1.0f);
 	helper->SetScaleY(1.0f);
-	canvas = new MetCanvas(helper, width(), height() - 100, this);
+	canvas = new MetCanvas(helper, width(), height() - upper_widget_h, this);
 
 	timer = new QTimer(this);
 	connect(timer, &QTimer::timeout, this, &MonitorView::Update);
@@ -96,6 +98,9 @@ void MonitorView::SetupUi()
 	scale_y_minus_button = new MetButton(button_style, "", "", 25, 25,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)), this);
+	bin_dir_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
 
 	connect(scan_button, &QPushButton::released, this,
 		&MonitorView::ToggleScanButton);
@@ -109,34 +114,53 @@ void MonitorView::SetupUi()
 		&MonitorView::ToggleScaleXMinusButton);
 	connect(scale_y_minus_button, &QPushButton::released, this,
 		&MonitorView::ToggleScaleYMinusButton);
+	connect(bin_dir_button, &QPushButton::released, this,
+		&MonitorView::ToggleBinDirButton);
 
 	QWidget* scale_buttons = new QWidget(this);
 	scale_buttons->setFixedWidth(100);
 	scale_buttons->setFixedHeight(100);
-
 	QGridLayout* scale_layout = new QGridLayout();
 	scale_layout->addWidget(scale_x_minus_button, 1, 0, Qt::AlignCenter);
 	scale_layout->addWidget(scale_x_plus_button, 1, 2, Qt::AlignCenter);
 	scale_layout->addWidget(scale_reset_button, 1, 1, Qt::AlignCenter);
 	scale_layout->addWidget(scale_y_minus_button, 2, 1, Qt::AlignCenter);
 	scale_layout->addWidget(scale_y_plus_button, 0, 1, Qt::AlignCenter);
+	scale_layout->setContentsMargins(11, 9, 11, 11);
 	scale_buttons->setLayout(scale_layout);
 
+	QWidget* upper_widgets = new QWidget(this);
+	upper_widgets->setFixedHeight(upper_widget_h - 20);
 	QHBoxLayout* upper_layout = new QHBoxLayout();
-	upper_layout->addWidget(scan_button, 0, Qt::AlignCenter);
-	upper_layout->addWidget(scale_buttons, 0, Qt::AlignCenter);
+	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(bin_dir_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
+	upper_layout->setContentsMargins(0, 0, 0, 0);
+	upper_widgets->setLayout(upper_layout);
 
 	layout = new QVBoxLayout(this);
-	layout->addItem(upper_layout);
+	layout->addWidget(upper_widgets, 0, Qt::AlignTop);
 	layout->addWidget(canvas, 0, Qt::AlignBottom);
-	layout->setContentsMargins(6, 0, 0, 0);
+	layout->addStretch(1);
 	setLayout(layout);
 }
 
 void MonitorView::Update()
 {
 	helper->SetCount(due->count);
+	canvas->update();
+}
+
+void MonitorView::ScaleUpCanvasSize()
+{
+	canvas->setFixedSize(QSize(width(), height() - upper_widget_h));
+	canvas->update();
+}
+
+void MonitorView::ScaleDownCanvasSize()
+{
+	canvas->setFixedSize(QSize(width(), height() - upper_widget_h - 23));
 	canvas->update();
 }
 
@@ -209,4 +233,10 @@ void MonitorView::ToggleScaleYMinusButton()
 		helper->SetScaleY(scale_y);
 		canvas->update();
 	}
+}
+
+void MonitorView::ToggleBinDirButton()
+{
+	scan_button->SetButtonDefault();
+	ShellExecute(nullptr, L"open", nullptr, nullptr, L"buf", SW_SHOWNORMAL);
 }
