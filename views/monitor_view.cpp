@@ -147,19 +147,10 @@ void MonitorView::SetupUi()
 	connect(data_offset_slider, &QSlider::valueChanged, this,
 		&MonitorView::ToggleDataOffsetSlider);
 
-	lcd = new QLCDNumber();
-	lcd->setFixedWidth(80);
-	lcd->setFixedHeight(35);
-	lcd->setStyleSheet("QLCDNumber {"
-					   "background-color: " + QString(COLOR_BLACK) + ";"
-					   "border: 2px solid rgb(113, 113, 113);"
-					   "border-width: 3px;"
-					   "border-radius: 5px;"
-					   "color: " + QString(COLOR_WHITE) + ";"
-					   "font: " + QString(FONT_SIZE) + ";"
-					   "}");
-	lcd->display(0);
-	
+	MetLcdStyle lcd_style(COLOR_BLACK, "rgb(113, 113, 113)", COLOR_WHITE, FONT_SIZE);
+	timer_lcd = new MetLcd(lcd_style, "Time", "s", 60, 35, 120, 35, this);
+	signal_lcd = new MetLcd(lcd_style, "Count", "M", 60, 35, 120, 35, this);
+
 	QWidget* scale_buttons = new QWidget(this);
 	scale_buttons->setFixedWidth(100);
 	scale_buttons->setFixedHeight(100);
@@ -172,6 +163,15 @@ void MonitorView::SetupUi()
 	scale_layout->setContentsMargins(11, 9, 11, 11);
 	scale_buttons->setLayout(scale_layout);
 
+	QWidget* lcds = new QWidget(this);
+	lcds->setFixedWidth(180);
+	lcds->setFixedHeight(100);
+	QVBoxLayout* lcd_layout = new QVBoxLayout();
+	lcd_layout->addWidget(timer_lcd, 0, { Qt::AlignRight, Qt::AlignTop });
+	lcd_layout->addWidget(signal_lcd, 0, { Qt::AlignRight, Qt::AlignTop });
+	lcd_layout->setContentsMargins(0, 11, 0, 11);
+	lcds->setLayout(lcd_layout);
+
 	QWidget* upper_widgets = new QWidget(this);
 	upper_widgets->setFixedHeight(upper_widget_h - 20);
 	QHBoxLayout* upper_layout = new QHBoxLayout();
@@ -183,7 +183,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
-	upper_layout->addWidget(lcd, 0, Qt::AlignRight);
+	upper_layout->addWidget(lcds, 0, Qt::AlignRight);
 	upper_layout->setContentsMargins(0, 0, 0, 0);
 	upper_widgets->setLayout(upper_layout);
 
@@ -200,7 +200,13 @@ void MonitorView::Update()
 	size_t elapsed_time = elapsed_time_ms / 1000;
 	size_t minute = elapsed_time / 60;
 	size_t second = elapsed_time % 60;
-	lcd->display(QString::number(minute) + ":" + QString::number(second));
+	timer_lcd->display(QString::number(minute) + ":" + QString::number(second));
+
+	size_t count = due->count;
+	size_t signal_count = count * MONITOR_BUFFER_SIZE;
+	size_t signal_count_m = signal_count / 1000000;
+	signal_lcd->display(QString::number(signal_count_m));
+
 	helper->SetCount(due->count);
 	canvas->update();
 }
@@ -222,6 +228,7 @@ void MonitorView::ToggleScanButton()
 	if (scan_button->status) {
 		scan_button->SetButtonDefault();
 		due->activate = false;
+		due->count = 0;
 		thread->join();
 		ui_timer->stop();
 	} else {
@@ -231,6 +238,7 @@ void MonitorView::ToggleScanButton()
 		helper->SetDataMinAndMax(1000.0f, 0.0f);
 		helper->SetFirstRoundFlag(true);
 		due->activate = true;
+		due->count = 0;
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
 		timer->start();
 		ui_timer->start(10);

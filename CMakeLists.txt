@@ -57,6 +57,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/helper.cpp"
 			   "widgets/label.h"
 			   "widgets/label.cpp"
+			   "widgets/lcd.h"
+			   "widgets/lcd.cpp"
 			   "widgets/line_edit.h"
 			   "widgets/line_edit.cpp"
 			   "widgets/loading.h"

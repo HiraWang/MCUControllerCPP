@@ -17,7 +17,8 @@ DeviceArduinoDue::DeviceArduinoDue(const wchar_t* port_name,
 								   BYTE stop_bits,
 								   BYTE parity) :
 	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity),
-	activate(true)
+	activate(true),
+	count(0)
 {
 
 }

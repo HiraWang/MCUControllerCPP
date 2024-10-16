@@ -11,6 +11,8 @@
 #include "../devices/device.h"
 #include "../widgets/button.h"
 #include "../widgets/canvas.h"
+#include "../widgets/label.h"
+#include "../widgets/lcd.h"
 #include "../widgets/slider.h"
 
 class MonitorView : public QWidget
@@ -68,7 +70,8 @@ private:
     MetButton* buffer_dir_button;
     MetButton* result_dir_button;
     MetSlider* data_offset_slider;
-    QLCDNumber* lcd;
+    MetLcd* timer_lcd;
+    MetLcd* signal_lcd;
 };
 
 #endif
