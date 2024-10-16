@@ -2,9 +2,12 @@
 
 #include <QTimer>
 
+extern std::string MONITOR_RESULT_DIR;
+
 MetCanvas::MetCanvas(Helper* helper, int w, int h, QWidget* parent) :
     QWidget(parent),
-    helper(helper)
+    helper(helper),
+    call_render(false)
 {
     setFixedSize(w, h);
     setAutoFillBackground(false);
@@ -26,7 +29,18 @@ void MetCanvas::paintEvent(QPaintEvent* event)
     painter.begin(this);
     painter.setRenderHint(QPainter::Antialiasing);
     helper->paint(&painter, event);
+    if (call_render) {
+        QPixmap pixmap(this->size());
+        this->render(&pixmap);
+        pixmap.save(QString::fromStdString(MONITOR_RESULT_DIR) + "\\canvas.png");
+        call_render = false;
+    }
     painter.end();
+}
+
+void MetCanvas::SetRenderFlag(bool status)
+{
+    this->call_render = status;
 }
 
 MetGlCanvas::MetGlCanvas(Helper* helper, QWidget* parent) : 

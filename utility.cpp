@@ -20,6 +20,7 @@ std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
 std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
+std::string IMAGE_MET_IMAGE = "\\images\\Image.png";
 std::string IMAGE_MET_LEFT = "\\images\\Left.png";
 std::string IMAGE_MET_LOAD = "\\images\\Load.png";
 std::string IMAGE_MET_LOADING = "\\images\\Loading.gif";
@@ -33,6 +34,8 @@ std::string IMAGE_MET_SCAN = "\\images\\Scan.png";
 std::string IMAGE_MET_STOP = "\\images\\Stop.png";
 std::string IMAGE_MET_UP = "\\images\\Up.png";
 
+std::string MONITOR_BUFFER_DIR = "buffer";
+std::string MONITOR_RESULT_DIR = "result";
 std::string CONFIG_MET = "\\configuration\\config.json";
 
 char* CopyStringToNewedCharArray(const std::string& str)
@@ -97,6 +100,17 @@ void ResizeConsole(int w, int h)
     }
     std::cout << "resize console" << '\n';
     SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
+}
+
+void RemoveAllFilesFromDir(QString path)
+{
+    QDir dir(path);
+    dir.setNameFilters(QStringList() << "*.*");
+    dir.setFilter(QDir::Files);
+    foreach(QString dirFile, dir.entryList())
+    {
+        dir.remove(dirFile);
+    }
 }
 
 void ShowSerialCodeInfo(SerialCode code)

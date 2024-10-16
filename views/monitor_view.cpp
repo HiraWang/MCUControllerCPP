@@ -1,5 +1,6 @@
 #include "monitor_view.h"
 
+#include <direct.h>
 #include <QGridLayout>
 
 #include "../widgets/button.h"
@@ -12,10 +13,13 @@ extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
 extern std::string IMAGE_MET_DOWN;
 extern std::string IMAGE_MET_ATTACHED_FILES;
+extern std::string IMAGE_MET_IMAGE;
 extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_MENU;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
+extern std::string MONITOR_BUFFER_DIR;
+extern std::string MONITOR_RESULT_DIR;
 
 MonitorView::MonitorView(int w,
 					     int h,
@@ -101,6 +105,9 @@ void MonitorView::SetupUi()
 	plot_info_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)), this);
+	render_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)), this);
 	bin_dir_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
@@ -119,6 +126,8 @@ void MonitorView::SetupUi()
 		&MonitorView::ToggleScaleYMinusButton);
 	connect(plot_info_button, &QPushButton::released, this,
 		&MonitorView::TogglePlotInfoButton);
+	connect(render_button, &QPushButton::released, this,
+		&MonitorView::ToggleRenderButton);
 	connect(bin_dir_button, &QPushButton::released, this,
 		&MonitorView::ToggleBinDirButton);
 
@@ -148,6 +157,7 @@ void MonitorView::SetupUi()
 	QHBoxLayout* upper_layout = new QHBoxLayout();
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(render_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(bin_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
@@ -189,6 +199,8 @@ void MonitorView::ToggleScanButton()
 		timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
+		_mkdir(MONITOR_RESULT_DIR.c_str());
+		RemoveAllFilesFromDir(MONITOR_RESULT_DIR.c_str());
 		helper->SetDataMinAndMax(1000.0f, 0.0f);
 		helper->SetFirstRoundFlag(true);
 		due->activate = true;
@@ -264,10 +276,17 @@ void MonitorView::TogglePlotInfoButton()
 	}
 }
 
+void MonitorView::ToggleRenderButton()
+{
+	render_button->SetButtonDefault();
+	canvas->SetRenderFlag(true);
+}
+
 void MonitorView::ToggleBinDirButton()
 {
 	bin_dir_button->SetButtonDefault();
-	ShellExecute(nullptr, L"open", nullptr, nullptr, L"buf", SW_SHOWNORMAL);
+	std::wstring result_dir = std::wstring(MONITOR_BUFFER_DIR.begin(), MONITOR_BUFFER_DIR.end());
+	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
 }
 
 void MonitorView::ToggleDataOffsetSlider()

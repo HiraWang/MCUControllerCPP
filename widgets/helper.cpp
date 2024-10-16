@@ -5,6 +5,8 @@
 
 #include "utility.h"
 
+extern std::string MONITOR_BUFFER_DIR;
+
 Helper::Helper(HelperType type) : 
     type(type)
 {
@@ -250,7 +252,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     // prepare painter and buffer
     painter->setBrush(line_brush);
     painter->setPen(line_pen);
-    std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
+    std::string name = MONITOR_BUFFER_DIR + "\\buf_" + std::to_string(count) + ".bin";
     std::ifstream input(name, std::ios::binary);
 
     if (input.good()) {

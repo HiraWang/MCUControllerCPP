@@ -7,6 +7,9 @@
 #include <QDir>
 
 #include "device.h"
+#include "utility.h"
+
+extern std::string MONITOR_BUFFER_DIR;
 
 DeviceArduinoDue::DeviceArduinoDue(const wchar_t* port_name,
 								   DWORD baud_rate,
@@ -125,15 +128,8 @@ SerialCode DeviceArduinoDue::Login()
 
 SerialCode DeviceArduinoDue::ReadBufferAndSave()
 {
-	_mkdir("buf");
-	QString path = "buf";
-	QDir dir(path);
-	dir.setNameFilters(QStringList() << "*.*");
-	dir.setFilter(QDir::Files);
-	foreach(QString dirFile, dir.entryList())
-	{
-		dir.remove(dirFile);
-	}
+	_mkdir(MONITOR_BUFFER_DIR.c_str());
+	RemoveAllFilesFromDir(MONITOR_BUFFER_DIR.c_str());
 
 	count = 0;
 	BYTE buf[MONITOR_BUFFER_SIZE];
@@ -143,7 +139,7 @@ SerialCode DeviceArduinoDue::ReadBufferAndSave()
 		if (!ReadFile(serial_handle, buf, MONITOR_BUFFER_SIZE, &dw_bytes_read, NULL)) {
 			return SERIAL_FAIL_TO_READ;
 		} else {
-			std::string name = "buf\\buf_" + std::to_string(count) + ".bin";
+			std::string name = MONITOR_BUFFER_DIR + "\\buf_" + std::to_string(count) + ".bin";
 			std::ofstream(name, std::ios::binary).write(reinterpret_cast<char*>(buf), MONITOR_BUFFER_SIZE);
 			count++;
 		}

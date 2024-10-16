@@ -12,6 +12,7 @@ class MetCanvas : public QWidget
 public:
     MetCanvas(Helper* helper, int w, int h, QWidget* parent);
     virtual ~MetCanvas();
+    void SetRenderFlag(bool status);
 
 public slots:
     void animate();
@@ -20,6 +21,7 @@ protected:
     void paintEvent(QPaintEvent* event) override;
 
 private:
+    bool call_render;
     Helper* helper;
 };
 

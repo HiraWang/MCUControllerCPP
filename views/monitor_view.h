@@ -34,6 +34,7 @@ private slots:
     void ToggleScaleXMinusButton();
     void ToggleScaleYMinusButton();
     void TogglePlotInfoButton();
+    void ToggleRenderButton();
     void ToggleBinDirButton();
     void ToggleDataOffsetSlider();
 
@@ -59,6 +60,7 @@ private:
     MetButton* scale_x_minus_button;
     MetButton* scale_y_minus_button;
     MetButton* plot_info_button;
+    MetButton* render_button;
     MetButton* bin_dir_button;
     MetSlider* data_offset_slider;
 };

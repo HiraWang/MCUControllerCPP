@@ -2,6 +2,8 @@
 #define UTILITY_H
 
 #include <iostream>
+#include <QDir>
+#include <QString>
 
 #define MONITOR_CHUNK_SIZE (4096)
 #define MONITOR_BUFFER_SIZE (MONITOR_CHUNK_SIZE * 2) 
@@ -52,6 +54,7 @@ std::string GetSerialCodeInfo(SerialCode code);
 void HideConsole();
 void ShowConsole();
 void ResizeConsole(int w, int h);
+void RemoveAllFilesFromDir(QString path);
 void ShowSerialCodeInfo(SerialCode code);
 
 class MetPara
