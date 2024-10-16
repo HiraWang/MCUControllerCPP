@@ -36,6 +36,7 @@ private slots:
     void TogglePlotInfoButton();
     void ToggleRenderButton();
     void ToggleBufferDirButton();
+    void ToggleResultDirButton();
     void ToggleDataOffsetSlider();
 
 private:
@@ -62,6 +63,7 @@ private:
     MetButton* plot_info_button;
     MetButton* render_button;
     MetButton* buffer_dir_button;
+    MetButton* result_dir_button;
     MetSlider* data_offset_slider;
 };
 

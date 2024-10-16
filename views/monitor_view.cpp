@@ -16,6 +16,7 @@ extern std::string IMAGE_MET_ATTACHED_FILES;
 extern std::string IMAGE_MET_IMAGE;
 extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_MENU;
+extern std::string IMAGE_MET_RESULT;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
 extern std::string MONITOR_BUFFER_DIR;
@@ -111,6 +112,9 @@ void MonitorView::SetupUi()
 	buffer_dir_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
+	result_dir_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
 	connect(scan_button, &QPushButton::released, this,
 		&MonitorView::ToggleScanButton);
@@ -130,6 +134,8 @@ void MonitorView::SetupUi()
 		&MonitorView::ToggleRenderButton);
 	connect(buffer_dir_button, &QPushButton::released, this,
 		&MonitorView::ToggleBufferDirButton);
+	connect(result_dir_button, &QPushButton::released, this,
+		&MonitorView::ToggleResultDirButton);
 
 	MetSliderStyle slider_style(COLOR_WHITE, COLOR_BLACK);
 	data_offset_slider = new MetSlider(slider_style,Qt::Vertical,
@@ -159,6 +165,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(render_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(buffer_dir_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(result_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
@@ -286,6 +293,13 @@ void MonitorView::ToggleBufferDirButton()
 {
 	buffer_dir_button->SetButtonDefault();
 	std::wstring result_dir = std::wstring(MONITOR_BUFFER_DIR.begin(), MONITOR_BUFFER_DIR.end());
+	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
+}
+
+void MonitorView::ToggleResultDirButton()
+{
+	buffer_dir_button->SetButtonDefault();
+	std::wstring result_dir = std::wstring(MONITOR_RESULT_DIR.begin(), MONITOR_RESULT_DIR.end());
 	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
 }
 
