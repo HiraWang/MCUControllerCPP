@@ -21,6 +21,7 @@ Helper::Helper(HelperType type) :
     line_pen.setWidth(1);
     text_pen = QPen(Qt::white);
     text_font.setPixelSize(12);
+    grid_font.setPixelSize(12);
 
     elapsed = 0;
     period = 0;
@@ -203,7 +204,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     int height = event->rect().height();
     float width_f = (float)width;
     float height_f = (float)height;
-    float grid_x_count = 500.0f / scale_x;
+    float grid_x_count = 10.0f / scale_x;
     float grid_y_count = 10.0f / scale_y;
     float width_interval = width_f / grid_x_count;
     float height_interval = height_f / grid_y_count;
@@ -231,12 +232,17 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     painter->translate(0, 0);
 
     // draw grid
+    grid_font.setPixelSize(12 * scale_y);
+    painter->setFont(grid_font);
     painter->setPen(QPen(QColor(100, 100, 100)));
+
     for (float i = 0.0f; i < width_f; i += width_interval) {
         painter->drawLine(i, 0, i, height);
     }
-    for (float i = 0.0f; i < height_f; i += height_interval) {
+    for (float i = 0.0f, j = 0.0f; i < height_f; i += height_interval, j++) {
         painter->drawLine(0, i, width, i);
+        painter->drawText(QRect(5, i + 5, 50, 50),
+            Qt::AlignLeft, QString::number((grid_y_count - j) * 0.5f));
     }
 
     // prepare painter and buffer

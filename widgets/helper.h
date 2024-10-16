@@ -43,6 +43,7 @@ private:
     QBrush circle_brush;
     QBrush line_brush;
     QFont text_font;
+    QFont grid_font;
     QPen circle_pen;
     QPen line_pen;
     QPen text_pen;
