@@ -81,8 +81,9 @@ void MonitorView::SetupUi()
 	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
 	canvas = new MetCanvas(helper, width(), height() - upper_widget_h, this);
 
-	timer = new QTimer(this);
-	connect(timer, &QTimer::timeout, this, &MonitorView::Update);
+	timer = new QElapsedTimer();
+	ui_timer = new QTimer(this);
+	connect(ui_timer, &QTimer::timeout, this, &MonitorView::Update);
 
 	MetButtonStyle button_style;
 	scan_button = new MetButton(button_style, "", "", 80, 80,
@@ -145,6 +146,19 @@ void MonitorView::SetupUi()
 
 	connect(data_offset_slider, &QSlider::valueChanged, this,
 		&MonitorView::ToggleDataOffsetSlider);
+
+	lcd = new QLCDNumber();
+	lcd->setFixedWidth(80);
+	lcd->setFixedHeight(35);
+	lcd->setStyleSheet("QLCDNumber {"
+					   "background-color: " + QString(COLOR_BLACK) + ";"
+					   "border: 2px solid rgb(113, 113, 113);"
+					   "border-width: 3px;"
+					   "border-radius: 5px;"
+					   "color: " + QString(COLOR_WHITE) + ";"
+					   "font: " + QString(FONT_SIZE) + ";"
+					   "}");
+	lcd->display(0);
 	
 	QWidget* scale_buttons = new QWidget(this);
 	scale_buttons->setFixedWidth(100);
@@ -169,6 +183,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
+	upper_layout->addWidget(lcd, 0, Qt::AlignRight);
 	upper_layout->setContentsMargins(0, 0, 0, 0);
 	upper_widgets->setLayout(upper_layout);
 
@@ -181,6 +196,11 @@ void MonitorView::SetupUi()
 
 void MonitorView::Update()
 {
+	size_t elapsed_time_ms = static_cast<size_t>(timer->elapsed());
+	size_t elapsed_time = elapsed_time_ms / 1000;
+	size_t minute = elapsed_time / 60;
+	size_t second = elapsed_time % 60;
+	lcd->display(QString::number(minute) + ":" + QString::number(second));
 	helper->SetCount(due->count);
 	canvas->update();
 }
@@ -203,7 +223,7 @@ void MonitorView::ToggleScanButton()
 		scan_button->SetButtonDefault();
 		due->activate = false;
 		thread->join();
-		timer->stop();
+		ui_timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
 		_mkdir(MONITOR_RESULT_DIR.c_str());
@@ -212,7 +232,8 @@ void MonitorView::ToggleScanButton()
 		helper->SetFirstRoundFlag(true);
 		due->activate = true;
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
-		timer->start(10);
+		timer->start();
+		ui_timer->start(10);
 	}
 }
 

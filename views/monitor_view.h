@@ -1,9 +1,11 @@
 #ifndef MONITOR_VIEW_H
 #define MONITOR_VIEW_H
 
+#include <QElapsedTimer>
 #include <QHBoxLayout>
-#include <QWidget>
+#include <QLCDNumber>
 #include <QTimer>
+#include <QWidget>
 
 #include "../utility.h"
 #include "../devices/device.h"
@@ -51,7 +53,8 @@ private:
     MetParaList* para_list;
     std::thread* thread;
     size_t count;
-    QTimer* timer;
+    QElapsedTimer* timer;
+    QTimer* ui_timer;
     Helper* helper;
     MetCanvas* canvas;
     MetButton* scan_button;
@@ -65,6 +68,7 @@ private:
     MetButton* buffer_dir_button;
     MetButton* result_dir_button;
     MetSlider* data_offset_slider;
+    QLCDNumber* lcd;
 };
 
 #endif
