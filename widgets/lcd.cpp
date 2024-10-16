@@ -46,7 +46,6 @@ void MetLcd::SetupUi()
 	layout = new QHBoxLayout(this);
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->addWidget(label_name, 0, { Qt::AlignLeft, Qt::AlignVCenter });
-	layout->addWidget(this, 0, { Qt::AlignRight, Qt::AlignVCenter });
 	layout->addWidget(label_unit, 0, { Qt::AlignRight, Qt::AlignVCenter });
 	setLayout(layout);
 }
