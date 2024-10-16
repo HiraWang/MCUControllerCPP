@@ -1,6 +1,7 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include <complex>
 #include <iostream>
 #include <QDir>
 #include <QString>
@@ -56,6 +57,7 @@ void ShowConsole();
 void ResizeConsole(int w, int h);
 void RemoveAllFilesFromDir(QString path);
 void ShowSerialCodeInfo(SerialCode code);
+void FFT(int size, std::complex<double>* x);
 
 class MetPara
 {

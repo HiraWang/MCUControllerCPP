@@ -123,6 +123,38 @@ void ShowSerialCodeInfo(SerialCode code)
     }
 }
 
+void FFT(int size, std::complex<double>* x)
+{
+    // bit-reversal permutation
+    for (int i = 1, j = 0; i < size; ++i) {
+        for (int k = size >> 1; !((j ^= k) & k); k >>= 1);
+        if (i > j) swap(x[i], x[j]);
+    }
+
+    // dynamic programming
+    for (int k = 2; k <= size; k <<= 1) {
+        float theta = -2.0 * 3.14159 / k;
+        std::complex<float> delta_w(cos(theta), sin(theta));
+
+        // do fft for each k
+        for (int j = 0; j < size; j += k) {
+            std::complex<double> w(1, 0);
+            for (int i = j; i < j + k / 2; i++) {
+                std::complex<double> a = x[i];
+                std::complex<double> b = x[i + k / 2] * w;
+                x[i] = a + b;
+                x[i + k / 2] = a - b;
+                w *= delta_w;
+            }
+        }
+    }
+
+    // scale
+    for (int i = 0; i < size; i++) {
+        x[i] /= sqrt(size);
+    }
+}
+
 MetPara::MetPara() : 
     is_editable(false),
     num(0),
