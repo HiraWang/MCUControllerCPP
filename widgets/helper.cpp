@@ -232,13 +232,15 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     painter->translate(0, 0);
 
     // draw grid
-    grid_font.setPixelSize(12 * scale_y);
-    painter->setFont(grid_font);
     painter->setPen(QPen(QColor(100, 100, 100)));
-
     for (float i = 0.0f; i < width_f; i += width_interval) {
         painter->drawLine(i, 0, i, height);
     }
+    painter->drawText(QRect(width_f - 65, height_f - 30, 50, 50),
+        Qt::AlignRight, QString::number((int)(data_count)));
+
+    grid_font.setPixelSize(12 * scale_y);
+    painter->setFont(grid_font);
     for (float i = 0.0f, j = 0.0f; i < height_f; i += height_interval, j++) {
         painter->drawLine(0, i, width, i);
         painter->drawText(QRect(5, i + 5, 50, 50),
