@@ -108,7 +108,7 @@ void MonitorView::SetupUi()
 	render_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)), this);
-	bin_dir_button = new MetButton(button_style, "", "", 80, 80,
+	buffer_dir_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
 
@@ -128,8 +128,8 @@ void MonitorView::SetupUi()
 		&MonitorView::TogglePlotInfoButton);
 	connect(render_button, &QPushButton::released, this,
 		&MonitorView::ToggleRenderButton);
-	connect(bin_dir_button, &QPushButton::released, this,
-		&MonitorView::ToggleBinDirButton);
+	connect(buffer_dir_button, &QPushButton::released, this,
+		&MonitorView::ToggleBufferDirButton);
 
 	MetSliderStyle slider_style(COLOR_WHITE, COLOR_BLACK);
 	data_offset_slider = new MetSlider(slider_style,Qt::Vertical,
@@ -158,7 +158,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(render_button, 0, Qt::AlignLeft);
-	upper_layout->addWidget(bin_dir_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(buffer_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
 	upper_layout->addWidget(scale_buttons, 0, Qt::AlignLeft);
 	upper_layout->addStretch(10);
@@ -282,9 +282,9 @@ void MonitorView::ToggleRenderButton()
 	canvas->SetRenderFlag(true);
 }
 
-void MonitorView::ToggleBinDirButton()
+void MonitorView::ToggleBufferDirButton()
 {
-	bin_dir_button->SetButtonDefault();
+	buffer_dir_button->SetButtonDefault();
 	std::wstring result_dir = std::wstring(MONITOR_BUFFER_DIR.begin(), MONITOR_BUFFER_DIR.end());
 	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
 }
