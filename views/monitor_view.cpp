@@ -233,14 +233,22 @@ void MonitorView::ToggleScanButton()
 		ui_timer->stop();
 	} else {
 		scan_button->SetButtonPressed();
+		// initialization
+		// initialize result directory
 		_mkdir(MONITOR_RESULT_DIR.c_str());
 		RemoveAllFilesFromDir(MONITOR_RESULT_DIR.c_str());
+		// initialize helper
 		helper->SetDataMinAndMax(1000.0f, 0.0f);
 		helper->SetFirstRoundFlag(true);
+		// initialize device
 		due->activate = true;
 		due->count = 0;
+		// activation
+		// start reading buffer
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
+		// start calculating elapsed time
 		timer->start();
+		// start refreshing UI
 		ui_timer->start(10);
 	}
 }
