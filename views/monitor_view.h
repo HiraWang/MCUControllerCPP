@@ -39,6 +39,7 @@ private slots:
     void ToggleScaleYMinusButton();
     void TogglePlotInfoButton();
     void ToggleRenderButton();
+    void ToggleAnalyzeButton();
     void ToggleBufferDirButton();
     void ToggleResultDirButton();
     void ToggleDataOffsetSlider();
@@ -46,6 +47,7 @@ private slots:
 private:
     void SetupUi();
     void Update();
+    bool call_analyze;
     int w;
     int h;
     int upper_widget_h;
@@ -67,6 +69,7 @@ private:
     MetButton* scale_y_minus_button;
     MetButton* plot_info_button;
     MetButton* render_button;
+    MetButton* analyze_button;
     MetButton* buffer_dir_button;
     MetButton* result_dir_button;
     MetSlider* data_offset_slider;

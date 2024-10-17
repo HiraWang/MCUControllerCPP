@@ -348,3 +348,51 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     painter->drawLine(width, 0, width, height);
     painter->drawLine(0, height, width, height);
 }
+
+
+void Helper::AnalyzeData(size_t count)
+{
+    std::string name = MONITOR_BUFFER_DIR + "\\buf_" + std::to_string(count) + ".bin";
+    std::ifstream input(name, std::ios::binary);
+
+    unsigned char buf[MONITOR_BUFFER_SIZE];
+    const int buf_size = MONITOR_BUFFER_SIZE;
+    double data[MONITOR_CHUNK_SIZE];
+    double data_mean = 0.0;
+    float freq = 0.0f;
+    float fourier[MONITOR_CHUNK_SIZE];
+    std::complex<double> data_complex[MONITOR_CHUNK_SIZE];
+
+    if (input.good()) {
+        // read buffer from file
+        for (int i = 0; i < buf_size; i++) {
+            input.read(reinterpret_cast<char*>(&buf[i]), buf_size);
+        }
+
+        // update data from buffer
+        for (int i = 0, j = 0; i < buf_size; i += 2) {
+            float value = (float)((buf[i + 1] << 8) | buf[i]) / 4096.0f * 3.3f;
+            data[j++] = (double)(value);
+            data_mean += (double)(value);
+        }
+        data_mean = data_mean / (double)MONITOR_CHUNK_SIZE;
+    
+        // prepare fft input data
+        for (int i = 0; i < MONITOR_CHUNK_SIZE; i++) {
+            data_complex[i].real(data[i] - data_mean);
+            data_complex[i].imag(0);
+        }
+
+        // fft
+        FFT(MONITOR_CHUNK_SIZE, data_complex);
+
+        // calculate freqency
+        for (int i = 0; i < MONITOR_CHUNK_SIZE; i++) {
+            fourier[i] = (float)(abs(data_complex[i].real()));
+            if (freq < fourier[i]) {
+                freq = fourier[i];
+            }
+        }
+        std::cout << "freqency " << freq << '\n';
+    }
+}

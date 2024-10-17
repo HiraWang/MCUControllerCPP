@@ -16,6 +16,7 @@ extern std::string IMAGE_MET_ATTACHED_FILES;
 extern std::string IMAGE_MET_IMAGE;
 extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_MENU;
+extern std::string IMAGE_MET_PROCESS;
 extern std::string IMAGE_MET_RESULT;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
@@ -28,6 +29,7 @@ MonitorView::MonitorView(int w,
 					     QWidget* parent) :
 	w(w),
 	h(h),
+	call_analyze(false),
 	upper_widget_h(120),
 	scale_x_interval(0.5f),
 	scale_y_interval(0.2f),
@@ -110,6 +112,9 @@ void MonitorView::SetupUi()
 	render_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)), this);
+	analyze_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)), this);
 	buffer_dir_button = new MetButton(button_style, "", "", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
@@ -133,6 +138,8 @@ void MonitorView::SetupUi()
 		&MonitorView::TogglePlotInfoButton);
 	connect(render_button, &QPushButton::released, this,
 		&MonitorView::ToggleRenderButton);
+	connect(analyze_button, &QPushButton::released, this,
+		&MonitorView::ToggleAnalyzeButton);
 	connect(buffer_dir_button, &QPushButton::released, this,
 		&MonitorView::ToggleBufferDirButton);
 	connect(result_dir_button, &QPushButton::released, this,
@@ -178,6 +185,7 @@ void MonitorView::SetupUi()
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(render_button, 0, Qt::AlignLeft);
+	upper_layout->addWidget(analyze_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(buffer_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(result_dir_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(data_offset_slider, 0, Qt::AlignLeft);
@@ -207,8 +215,13 @@ void MonitorView::Update()
 	size_t signal_count_m = signal_count / 1000000;
 	signal_lcd->display(QString::number(signal_count_m));
 
-	helper->SetCount(due->count);
+	helper->SetCount(count);
 	canvas->update();
+
+	if (call_analyze) {
+		std::thread* t = new std::thread(&Helper::AnalyzeData, helper, count - 1);
+		call_analyze = false;
+	}
 }
 
 void MonitorView::ScaleUpCanvasSize()
@@ -246,6 +259,7 @@ void MonitorView::ToggleScanButton()
 		// activation
 		// start reading buffer
 		thread = new std::thread(&DeviceArduinoDue::ReadBufferAndSave, due);
+		Sleep(1000);
 		// start calculating elapsed time
 		timer->start();
 		// start refreshing UI
@@ -324,6 +338,12 @@ void MonitorView::ToggleRenderButton()
 {
 	render_button->SetButtonDefault();
 	canvas->SetRenderFlag(true);
+}
+
+void MonitorView::ToggleAnalyzeButton()
+{
+	analyze_button->SetButtonDefault();
+	call_analyze = true;
 }
 
 void MonitorView::ToggleBufferDirButton()

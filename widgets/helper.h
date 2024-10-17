@@ -36,6 +36,7 @@ public:
     void paint(QPainter* painter, QPaintEvent* event, int period, int pulse_width,
         int voltage, int offset);
     void paint(QPainter* painter, QPaintEvent* event, size_t count);
+    void AnalyzeData(size_t count);
 
 private:
     HelperType type;
