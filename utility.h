@@ -1,7 +1,13 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 
+#include <complex>
 #include <iostream>
+#include <QDir>
+#include <QString>
+
+#define MONITOR_CHUNK_SIZE (4096)
+#define MONITOR_BUFFER_SIZE (MONITOR_CHUNK_SIZE * 2) 
 
 typedef enum {
     BUTTON_DEFAULT = false,
@@ -29,6 +35,7 @@ typedef enum {
     BUFFER_SIZE,
     BYTESIZE,
     CHUNKS_PER_SCENE,
+    MONITOR_KEYWORD,
     OFFSET,
     PARITY,
     PERIOD_MAX,
@@ -48,7 +55,9 @@ std::string GetSerialCodeInfo(SerialCode code);
 void HideConsole();
 void ShowConsole();
 void ResizeConsole(int w, int h);
+void RemoveAllFilesFromDir(QString path);
 void ShowSerialCodeInfo(SerialCode code);
+void FFT(int size, std::complex<double>* x);
 
 class MetPara
 {

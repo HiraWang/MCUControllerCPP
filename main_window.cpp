@@ -6,6 +6,7 @@
 #include "devices/device.h"
 #include "views/automation_view.h"
 #include "views/g1b_view.h"
+#include "views/monitor_view.h"
 #include "views/reglo_icc_view.h"
 #include "widgets/msg_subwindow.h"
 
@@ -37,7 +38,7 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::TogglePowerButton);
 
 	// set device list to combo box
-	device_list = { "Automation", "G1B", "Reglo ICC" };
+	device_list = { "Automation", "G1B", "Reglo ICC", "Monitor" };
 	ui->upper_view->combo_box->addItems(device_list);
 
 	// load data to para list
@@ -70,9 +71,13 @@ void MainWindow::ToggleWindowButton()
 	if (button->status) {
 		button->SetButtonDefault();
 		showFullScreen();
+		if (ui->bottom_view->monitor_view)
+			ui->bottom_view->monitor_view->ScaleUpCanvasSize();
 	} else {
 		button->SetButtonPressed();
 		showMaximized();
+		if (ui->bottom_view->monitor_view)
+			ui->bottom_view->monitor_view->ScaleDownCanvasSize();
 	}
 }
 
@@ -144,12 +149,21 @@ void MainWindow::TogglePowerButton()
 			for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
 				ui->bottom_view->tab->removeTab(i);
 			}
+			ui->bottom_view->automation_view = nullptr;
+			ui->bottom_view->g1b_view = nullptr;
+			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if (current_device == Device::G1B) {
 			ui->bottom_view->g1b_view->~G1BView();
 			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->g1b_view = nullptr;
 		} else if ((current_device == Device::REGLO_ICC)) {
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
 			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->reglo_icc_view = nullptr;
+		} else if ((current_device == Device::MONITOR)) {
+			ui->bottom_view->monitor_view->~MonitorView();
+			ui->bottom_view->tab->removeTab(0);
+			ui->bottom_view->monitor_view = nullptr;
 		}
 	} else {
 		button->SetButtonPressed();
@@ -187,6 +201,12 @@ void MainWindow::TogglePowerButton()
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
 				device_list[current_device]);
 			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
+				ui->bottom_view->tab->show();
+		} else if (current_device == Device::MONITOR) {
+			ui->bottom_view->monitor_view = new MonitorView(w, h, para_list, ui->bottom_view);
+			ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
+				device_list[current_device]);
+			if (ui->bottom_view->monitor_view->serial_status == SERIAL_OK)
 				ui->bottom_view->tab->show();
 		}
 		

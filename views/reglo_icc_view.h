@@ -19,12 +19,8 @@ public:
                  MetParaList* para_list,
                  QWidget* parent = nullptr);
     virtual ~RegloIccView();
-    MetPumpChannel* channel_1;
-    MetPumpChannel* channel_2;
-    MetButton* read_button;
-    MetButton* write_button;
-    DeviceRegloIcc* reglo_icc;
     SerialCode serial_status;
+    DeviceRegloIcc* reglo_icc;
 
 private:
     void SetupUi();
@@ -34,6 +30,10 @@ private:
     int h;
     QVBoxLayout* layout;
     MetParaList* para_list;
+    MetPumpChannel* channel_1;
+    MetPumpChannel* channel_2;
+    MetButton* read_button;
+    MetButton* write_button;
 };
 
 #endif
