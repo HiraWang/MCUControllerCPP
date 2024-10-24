@@ -10,13 +10,15 @@
 class MetLabelStyle
 {
 public:
-	MetLabelStyle(QString bkg_color, 
+	MetLabelStyle(QString bkg_color = "transparent",
 				  QString font_size = FONT_SIZE,
-				  QString font_color = FONT_COLOR);
+				  QString font_color = FONT_COLOR,
+				  QString font_style = "bold");
 	virtual ~MetLabelStyle();
 	QString bkg_color;
 	QString font_size;
 	QString font_color;
+	QString font_style;
 };
 
 class MetLabel : public QLabel

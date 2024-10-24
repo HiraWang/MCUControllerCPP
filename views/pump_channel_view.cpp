@@ -40,7 +40,7 @@ void MetPumpChannel::SetupUi()
 	setFixedWidth(500);
 	setStyleSheet(style_sheet);
 
-	MetLabelStyle label_style(FONT_SIZE, FONT_COLOR);
+	MetLabelStyle label_style;
 	MetLabel* name_label = new MetLabel(label_style, name, 120, 25, this);
 	MetLabel* rpm_label = new MetLabel(label_style, "Rate:", 120, 25, this);
 	MetLabel* dir_label = new MetLabel(label_style, "Direction:", 120, 25, this);

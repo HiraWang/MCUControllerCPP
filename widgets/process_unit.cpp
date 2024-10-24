@@ -31,7 +31,7 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 							  "color: " + QString(COLOR_WHITE) + ";"
 							  "}");
 
-	MetLabelStyle label_style_2(FONT_SIZE, FONT_COLOR);
+	MetLabelStyle label_style_2;
 	label_time = new MetLabel(label_style_2, time, 120, 25, this);
 	label_unit = new MetLabel(label_style_2, "s", 20, 25, this);
 	label_status = new MetLabel(label_style_2, "", 25, 25, this);

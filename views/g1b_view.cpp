@@ -62,7 +62,7 @@ void G1BView::SetupUi()
 	setFixedWidth(w);
 	setFixedHeight(h);
 
-	MetLabelStyle label_style(FONT_SIZE, FONT_COLOR);
+	MetLabelStyle label_style;
 	MetLabel* freq_label = new MetLabel(label_style, "Freq:", 200, 25, this);
 	MetLabel* pw_label = new MetLabel(label_style, "Pulse Width:", 200, 25, this);
 	MetLabel* voltage_label = new MetLabel(label_style, "Voltage:", 200, 25, this);

@@ -26,19 +26,21 @@ void MetLabel::LoadStyleSheet()
 	style_sheet =
 		"QLabel {"
 		"background-color: " + style.bkg_color + ";"
-		"font: bold " + style.font_size + ";"
+		"font: " + style.font_style + " " + style.font_size + ";"
 		"color: " + style.font_color + ";"
 		"}";
 }
 
 MetLabelStyle::MetLabelStyle(QString bkg_color,
 							 QString font_size, 
-							 QString font_color) :
+							 QString font_color,
+						     QString font_style) :
 	bkg_color(bkg_color),
 	font_size(font_size),
-	font_color(font_color)
+	font_color(font_color),
+	font_style(font_style)
 {
-	
+
 }
 
 MetLabelStyle::~MetLabelStyle()

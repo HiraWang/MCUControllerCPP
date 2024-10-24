@@ -47,7 +47,7 @@ void MetLoginSubwindow::SetupUi()
 	setStyleSheet(style_sheet);
 	setWindowFlag(Qt::FramelessWindowHint);
 
-	MetLabelStyle label_style(FONT_SIZE, FONT_COLOR);
+	MetLabelStyle label_style;
 	MetLabel* account_label = new MetLabel(label_style, "Account:", 120, 25, this);
 	MetLabel* password_label = new MetLabel(label_style, "Password:", 120, 25, this);
 
