@@ -393,6 +393,6 @@ void Helper::AnalyzeData(size_t count)
                 freq = fourier[i];
             }
         }
-        std::cout << "freqency " << freq << '\n';
+        g_out << "freqency " << freq << '\n';
     }
 }

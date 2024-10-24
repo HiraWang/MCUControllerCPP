@@ -2,12 +2,15 @@
 #define UTILITY_H
 
 #include <complex>
+#include <fstream>
 #include <iostream>
 #include <QDir>
 #include <QString>
 
 #define MONITOR_CHUNK_SIZE (4096)
 #define MONITOR_BUFFER_SIZE (MONITOR_CHUNK_SIZE * 2) 
+
+extern std::ostream g_out;
 
 typedef enum {
     BUTTON_DEFAULT = false,
@@ -81,6 +84,36 @@ public:
     ExitCode LoadJsonFile();
     size_t size;
     MetPara* list;
+};
+
+#include <streambuf>
+
+struct teebuf
+    : std::streambuf
+{
+    std::streambuf* sb1_;
+    std::streambuf* sb2_;
+
+    teebuf(std::streambuf* sb1, std::streambuf* sb2)
+        : sb1_(sb1), sb2_(sb2) {
+    }
+    int overflow(int c) {
+        typedef std::streambuf::traits_type traits;
+        bool rc(true);
+        if (!traits::eq_int_type(traits::eof(), c)) {
+            traits::eq_int_type(this->sb1_->sputc(c), traits::eof())
+                && (rc = false);
+            traits::eq_int_type(this->sb2_->sputc(c), traits::eof())
+                && (rc = false);
+        }
+        return rc ? traits::not_eof(c) : traits::eof();
+    }
+    int sync() {
+        bool rc(true);
+        this->sb1_->pubsync() != -1 || (rc = false);
+        this->sb2_->pubsync() != -1 || (rc = false);
+        return rc ? 0 : -1;
+    }
 };
 
 #endif

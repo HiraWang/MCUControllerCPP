@@ -10,6 +10,10 @@ using json = nlohmann::json;
 bool g_normal = true;
 bool g_ui_test = !g_normal;
 
+std::ofstream fout("output.txt");
+teebuf sbuf(fout.rdbuf(), std::cout.rdbuf());
+std::ostream g_out = std::ostream(&sbuf);
+
 std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_ATTACHED_FILES = "\\images\\AttachedFiles.png";
@@ -46,7 +50,7 @@ char* CopyStringToNewedCharArray(const std::string& str)
     rsize_t size = str.length() + 1;
     char* arr = new char[size];
     strcpy_s(arr, size, c_str);
-    //std::cout << arr << '\n';
+    //g_out << arr << '\n';
 
     return arr;
 }
@@ -79,19 +83,19 @@ std::string GetAbsPath(std::string file_name)
     std::string path = GetCurrentPath();
     if (path.empty() || file_name.empty())
         return std::string();
-    std::cout << "get path : " << GetCurrentPath() + file_name << '\n';
+    g_out << "get path : " << GetCurrentPath() + file_name << '\n';
     return GetCurrentPath() + file_name;
 }
 
 void HideConsole()
 {
-    std::cout << "hide console" << '\n';
+    g_out << "hide console" << '\n';
     ShowWindow(GetConsoleWindow(), SW_HIDE);
 }
 
 void ShowConsole()
 {
-    std::cout << "show console" << '\n';
+    g_out << "show console" << '\n';
     ShowWindow(GetConsoleWindow(), SW_SHOW);
 }
 
@@ -100,7 +104,7 @@ void ResizeConsole(int w, int h)
     if (w <= 100 || h <= 100) {
         return;
     }
-    std::cout << "resize console" << '\n';
+    g_out << "resize console" << '\n';
     SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
 }
 
@@ -118,9 +122,9 @@ void RemoveAllFilesFromDir(QString path)
 void ShowSerialCodeInfo(SerialCode code)
 {
     if (code == SERIAL_OK) {
-        std::cout << "OK\n";
+        g_out << "OK\n";
     } else {
-        std::cout << "FAIL\n";
+        g_out << "FAIL\n";
     }
 }
 
@@ -229,10 +233,10 @@ ExitCode MetParaList::LoadJsonFile()
     json data = json::parse(f);
     size = data.size();
     if (!list) {
-        std::cout << "create new list of met para" << '\n';
+        g_out << "create new list of met para" << '\n';
         list = new MetPara[size];
     } else {
-        std::cout << "reset the list of met para" << '\n';
+        g_out << "reset the list of met para" << '\n';
         for (int id = 0; id < size; id++) {
             list[id].Reset();
         }
@@ -241,16 +245,16 @@ ExitCode MetParaList::LoadJsonFile()
     // Insert data to MetParaList 
     int id = 0;
     for (json::iterator it = data.begin(); it != data.end(); ++it, id++) {
-        std::cout << std::left << std::setw(20) << it.key() << " : " << it.value();
+        g_out << std::left << std::setw(20) << it.key() << " : " << it.value();
         list[id].name = it.key();
         if (it.value().is_string()) {
             list[id].str = it.value();
-            std::cout << std::right << std::setw(18) << list[id].str << '\n';
+            g_out << std::right << std::setw(18) << list[id].str << '\n';
         } else if (it.value().is_number()) {
             list[id].num = it.value();
-            std::cout << std::right << std::setw(20) << list[id].num << '\n';
+            g_out << std::right << std::setw(20) << list[id].num << '\n';
         } else {
-            std::cout << '\n';
+            g_out << '\n';
         }
         list[id].is_editable = false;
     }
