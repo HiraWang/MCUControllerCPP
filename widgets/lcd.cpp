@@ -54,9 +54,9 @@ void MetLcd::LoadStyleSheet()
 {
 	style_sheet_label =
 		"QLabel {"
-		"background-color: " + QString("transparent") + ";"
+		"background-color: " + QString(COLOR_NONE) + ";"
 		"font: 12px;"
-		"color: " + COLOR_WHITE + ";"
+		"color: " + QString(COLOR_WHITE) + ";"
 		"}";
 	style_sheet_lcd =
 		"QLCDNumber {"

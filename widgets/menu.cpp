@@ -47,7 +47,7 @@ void MetMenu::AddAttribute(MetPara para,
 					       MetLineEdit* line_edit,
 						   bool is_editable)
 {
-	MetLabelStyle label_style("transparent", FONT_SIZE, FONT_COLOR, "");
+	MetLabelStyle label_style(COLOR_NONE, FONT_SIZE, FONT_COLOR, "");
 	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
 		200, 25, this);
 	if (para.str.empty()) {

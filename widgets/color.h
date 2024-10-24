@@ -1,6 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+constexpr auto COLOR_NONE = "transparent";
 constexpr auto COLOR_BLACK = "#000000";
 constexpr auto COLOR_WHITE = "#ffffff";
 constexpr auto COLOR_GRAY = "rgb(145, 145, 145)";
