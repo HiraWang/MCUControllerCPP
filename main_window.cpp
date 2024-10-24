@@ -15,8 +15,12 @@ MainWindow::MainWindow(QWidget* parent) :
     ui(new MainWindowUI()),
 	para_list(new MetParaList())
 {
-	// resize console
+	// optimize console
 	ResizeConsole(1520, 680);
+	DWORD prev_mode;
+	HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+	GetConsoleMode(handle, &prev_mode);
+	SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS | (prev_mode & ~ENABLE_QUICK_EDIT_MODE));
 
 	// set main window ui
     ui->SetupUi(this);
