@@ -110,7 +110,7 @@ void MainWindow::ToggleMenuButton()
 void MainWindow::ToggleConsoleButton()
 {
 	MetButton* button = ui->upper_view->console_button;
-	//std::cout << IsConsoleVisible() << '\n';
+	//g_out << IsConsoleVisible() << '\n';
 	if (button->status) {
 		button->SetButtonDefault();
 		HideConsole();

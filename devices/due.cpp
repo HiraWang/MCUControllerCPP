@@ -42,10 +42,10 @@ SerialCode DeviceArduinoDue::Open()
 	// check serial port
 	if (serial_handle == INVALID_HANDLE_VALUE) {
 		if (GetLastError() == ERROR_FILE_NOT_FOUND) {
-			std::cout << "serial port does not exist" << '\n';
+			g_out << "serial port does not exist" << '\n';
 			return SERIAL_NO_PORT;
 		}
-		std::cout << "some other error occurred" << '\n';
+		g_out << "some other error occurred" << '\n';
 		return SERIAL_FAIL;
 	}
 
@@ -54,7 +54,7 @@ SerialCode DeviceArduinoDue::Open()
 	serial_params.DCBlength = sizeof(serial_params);
 
 	if (!GetCommState(serial_handle, &serial_params)) {
-		std::cout << "error getting serial port state" << '\n';
+		g_out << "error getting serial port state" << '\n';
 		return SERIAL_FAIL_TO_GET_STATE;
 	}
 
@@ -64,7 +64,7 @@ SerialCode DeviceArduinoDue::Open()
 	serial_params.Parity = parity;
 
 	if (!SetCommState(serial_handle, &serial_params)) {
-		std::cout << "error setting serial port state" << '\n';
+		g_out << "error setting serial port state" << '\n';
 		return SERIAL_FAIL_TO_SET_STATE;
 	}
 
@@ -78,7 +78,7 @@ SerialCode DeviceArduinoDue::Open()
 
 	SetCommTimeouts(serial_handle, &timeout);
 	if (!SetCommTimeouts(serial_handle, &timeout)) {
-		std::cout << "error setting timeout" << '\n';
+		g_out << "error setting timeout" << '\n';
 		return SERIAL_FAIL_TO_SET_TIMEOUT;
 	}
 
@@ -103,7 +103,7 @@ SerialCode DeviceArduinoDue::Read()
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
@@ -117,7 +117,7 @@ SerialCode DeviceArduinoDue::Write()
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
