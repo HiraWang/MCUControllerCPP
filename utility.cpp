@@ -7,13 +7,6 @@
 
 using json = nlohmann::json;
 
-bool g_normal = true;
-bool g_ui_test = !g_normal;
-
-std::ofstream fout("output.txt");
-teebuf sbuf(fout.rdbuf(), std::cout.rdbuf());
-std::ostream g_out = std::ostream(&sbuf);
-
 std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_ATTACHED_FILES = "\\images\\AttachedFiles.png";
@@ -42,7 +35,15 @@ std::string IMAGE_MET_UP = "\\images\\Up.png";
 
 std::string MONITOR_BUFFER_DIR = "buffer";
 std::string MONITOR_RESULT_DIR = "result";
+std::string LOG_FILE_PATH = MONITOR_RESULT_DIR + "\\output.txt";
 std::string CONFIG_MET = "\\configuration\\config.json";
+
+bool g_normal = true;
+bool g_ui_test = !g_normal;
+
+std::ofstream fout(LOG_FILE_PATH);
+teebuf sbuf(fout.rdbuf(), std::cout.rdbuf());
+std::ostream g_out = std::ostream(&sbuf);
 
 char* CopyStringToNewedCharArray(const std::string& str)
 {
