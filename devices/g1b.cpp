@@ -56,6 +56,11 @@ SerialCode DeviceG1B::Open()
 	serial_params.StopBits = stop_bits;
 	serial_params.Parity = parity;
 
+	serial_params.fRtsControl = RTS_CONTROL_HANDSHAKE;
+	serial_params.fOutxCtsFlow = true;
+	serial_params.fDtrControl = DTR_CONTROL_DISABLE;
+	serial_params.fOutxDsrFlow = false;
+
 	if (!SetCommState(serial_handle, &serial_params)) {
 		g_out << "error setting serial port state" << '\n';
 		return SERIAL_FAIL_TO_SET_STATE;

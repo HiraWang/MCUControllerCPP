@@ -32,7 +32,7 @@ G1BView::G1BView(int w,
 	std::wcout << port << " " << sizeof(port) << '\n';
 
 	g1b = new DeviceG1B(port,
-				        CBR_9600,
+				        CBR_1200,
 				        8,
 				        ONESTOPBIT,
 				        NOPARITY);
