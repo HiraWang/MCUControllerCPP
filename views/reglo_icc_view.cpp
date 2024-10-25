@@ -39,7 +39,7 @@ RegloIccView::RegloIccView(int w,
 		reglo_icc = nullptr;
 		return;
 	} else {
-		std::cout << "device RegloIcc opened" << '\n';
+		g_out << "device RegloIcc opened" << '\n';
 		SetupUi();
 	}
 }

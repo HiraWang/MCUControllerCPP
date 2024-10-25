@@ -33,7 +33,7 @@ AutomationView::AutomationView(int w,
 		return;
 	} else {
 		serial_status = SERIAL_OK;
-		std::cout << "found device G1B and RegloIcc" << '\n';
+		g_out << "found device G1B and RegloIcc" << '\n';
 		SetupUi();
 	}
 }
@@ -230,7 +230,7 @@ void AutomationView::Update(int count)
 {
 	all_process->SetLcd(QString::number(count));
 	MetProcessUnit** list = process_unit_list;
-	std::cout << count << '\n';
+	g_out << count << '\n';
 
 	for (int i = 1; i < unit_cnt; i++) {
 		if (list[i - 1]->time_tot < count && count <= list[i]->time_tot) {
@@ -254,58 +254,58 @@ void AutomationView::Update(int count)
 
 void AutomationView::StartPumpAllChannel()
 {	
-	std::cout << "StartPumpAllChannel\n";
+	g_out << "StartPumpAllChannel\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->On(1));
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 void AutomationView::StopPumpChannelNo2()
 {
-	std::cout << "StopPumpChannelNo2\n";
+	g_out << "StopPumpChannelNo2\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 void AutomationView::StartPulseGenerator()
 {
-	std::cout << "StartPulseGenerator\n";
+	g_out << "StartPulseGenerator\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(g1b->On());
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 void AutomationView::StartPumpChannelNo2()
 {
-	std::cout << "StartPumpChannelNo2\n";
+	g_out << "StartPumpChannelNo2\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 void AutomationView::StopPulseGenerator()
 {
-	std::cout << "StopPulseGenerator\n";
+	g_out << "StopPulseGenerator\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(g1b->Off());
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 void AutomationView::StopPumpAllChannel()
 {
-	std::cout << "StopPumpAllChannel\n";
+	g_out << "StopPumpAllChannel\n";
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->Off(1));
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
-	std::cout << '\n';
+	g_out << '\n';
 }
 
 TimerWorker::TimerWorker(QWidget* parent)

@@ -36,10 +36,10 @@ SerialCode DeviceRegloIcc::Open()
 	// check serial port
 	if (serial_handle == INVALID_HANDLE_VALUE) {
 		if (GetLastError() == ERROR_FILE_NOT_FOUND) {
-			std::cout << "serial port does not exist" << '\n';
+			g_out << "serial port does not exist" << '\n';
 			return SERIAL_NO_PORT;
 		}
-		std::cout << "some other error occurred" << '\n';
+		g_out << "some other error occurred" << '\n';
 		return SERIAL_FAIL;
 	}
 
@@ -48,7 +48,7 @@ SerialCode DeviceRegloIcc::Open()
 	serial_params.DCBlength = sizeof(serial_params);
 
 	if (!GetCommState(serial_handle, &serial_params)) {
-		std::cout << "error getting serial port state" << '\n';
+		g_out << "error getting serial port state" << '\n';
 		return SERIAL_FAIL_TO_GET_STATE;
 	}
 
@@ -58,7 +58,7 @@ SerialCode DeviceRegloIcc::Open()
 	serial_params.Parity = parity;
 
 	if (!SetCommState(serial_handle, &serial_params)) {
-		std::cout << "error setting serial port state" << '\n';
+		g_out << "error setting serial port state" << '\n';
 		return SERIAL_FAIL_TO_SET_STATE;
 	}
 
@@ -72,7 +72,7 @@ SerialCode DeviceRegloIcc::Open()
 
 	SetCommTimeouts(serial_handle, &timeout);
 	if (!SetCommTimeouts(serial_handle, &timeout)) {
-		std::cout << "error setting timeout" << '\n';
+		g_out << "error setting timeout" << '\n';
 		return SERIAL_FAIL_TO_SET_TIMEOUT;
 	}
 
@@ -104,7 +104,7 @@ SerialCode DeviceRegloIcc::Read()
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
@@ -118,7 +118,7 @@ SerialCode DeviceRegloIcc::Write()
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
@@ -136,14 +136,14 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 
 	std::stringstream rpm_i_stream;
 	rpm_i_stream << std::setw(4) << std::setfill('0') << std::to_string(rpm_i);
-	//std::cout << rpm_i_stream.str() << '\n';
+	//g_out << rpm_i_stream.str() << '\n';
 
 	std::stringstream rpm_f_stream;
 	rpm_f_stream << std::setw(2) << std::setfill('0') << std::to_string(rpm_f);
-	//std::cout << rpm_f_stream.str() << '\n';
+	//g_out << rpm_f_stream.str() << '\n';
 
 	std::string buf = std::to_string(channel) + 'S' + rpm_i_stream.str() + rpm_f_stream.str() + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -161,7 +161,7 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'J' + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -179,7 +179,7 @@ SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'K' + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -197,7 +197,7 @@ SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 SerialCode DeviceRegloIcc::On(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'H' + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -215,7 +215,7 @@ SerialCode DeviceRegloIcc::On(BYTE channel)
 SerialCode DeviceRegloIcc::Off(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'I' + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -234,8 +234,8 @@ SerialCode DeviceRegloIcc::SetAddress()
 {
 	std::string buf_1 = "@2" + CR;
 	std::string buf_2 = "2~1" + CR;
-	std::cout << buf_1 << '\n';
-	std::cout << buf_2 << '\n';
+	g_out << buf_1 << '\n';
+	g_out << buf_2 << '\n';
 
 	char* cmd_1 = CopyStringToNewedCharArray(buf_1);
 	char* cmd_2 = CopyStringToNewedCharArray(buf_2);
@@ -263,7 +263,7 @@ SerialCode DeviceRegloIcc::SetAddress()
 SerialCode DeviceRegloIcc::SetRpmMode(BYTE channel)
 {
 	std::string buf = std::to_string(channel) + 'L' + CR;
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);

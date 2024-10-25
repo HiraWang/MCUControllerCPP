@@ -15,7 +15,7 @@ MetMsgSubwindow::MetMsgSubwindow(QString message,
 	message(message),
 	QDialog(parent)
 {
-	std::cout << message.toStdString() << '\n';
+	g_out << message.toStdString() << '\n';
 	LoadStyleSheet();
 	SetupUi();
 }

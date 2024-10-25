@@ -35,10 +35,10 @@ SerialCode DeviceG1B::Open()
 	// check serial port
 	if (serial_handle == INVALID_HANDLE_VALUE) {
 		if (GetLastError() == ERROR_FILE_NOT_FOUND) {
-			std::cout << "serial port does not exist" << '\n';
+			g_out << "serial port does not exist" << '\n';
 			return SERIAL_NO_PORT;
 		}
-		std::cout << "some other error occurred" << '\n';
+		g_out << "some other error occurred" << '\n';
 		return SERIAL_FAIL;
 	}
 
@@ -47,7 +47,7 @@ SerialCode DeviceG1B::Open()
 	serial_params.DCBlength = sizeof(serial_params);
 
 	if (!GetCommState(serial_handle, &serial_params)) {
-		std::cout << "error getting serial port state" << '\n';
+		g_out << "error getting serial port state" << '\n';
 		return SERIAL_FAIL_TO_GET_STATE;
 	}
 
@@ -57,7 +57,7 @@ SerialCode DeviceG1B::Open()
 	serial_params.Parity = parity;
 
 	if (!SetCommState(serial_handle, &serial_params)) {
-		std::cout << "error setting serial port state" << '\n';
+		g_out << "error setting serial port state" << '\n';
 		return SERIAL_FAIL_TO_SET_STATE;
 	}
 
@@ -71,7 +71,7 @@ SerialCode DeviceG1B::Open()
 
 	SetCommTimeouts(serial_handle, &timeout);
 	if (!SetCommTimeouts(serial_handle, &timeout)) {
-		std::cout << "error setting timeout" << '\n';
+		g_out << "error setting timeout" << '\n';
 		return SERIAL_FAIL_TO_SET_TIMEOUT;
 	}
 
@@ -96,7 +96,7 @@ SerialCode DeviceG1B::Read()
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
@@ -110,7 +110,7 @@ SerialCode DeviceG1B::Write()
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		std::cout << buf << '\n';
+		g_out << buf << '\n';
 		return SERIAL_OK;
 	}
 }
@@ -122,7 +122,7 @@ SerialCode DeviceG1B::Read(char* buf, const int size)
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		std::cout << "Read : " << buf;
+		g_out << "Read : " << buf;
 		return SERIAL_OK;
 	}
 }
@@ -135,7 +135,7 @@ SerialCode DeviceG1B::Write(const char* buf)
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		std::cout << "Write : " << buf;
+		g_out << "Write : " << buf;
 		return SERIAL_OK;
 	}
 }
@@ -144,7 +144,7 @@ SerialCode DeviceG1B::Login()
 {
 	q_login_ret = {};
 	SerialCode ret = SERIAL_FAIL;
-	std::cout << g_g1b_account << " " << g_g1b_password << '\n';
+	g_out << g_g1b_account << " " << g_g1b_password << '\n';
 
 	ret = LoginStepFunction("login step 1", std::string("\r\n"),
 		"avtech-f8369be5fff1", 5, 200);
@@ -155,24 +155,24 @@ SerialCode DeviceG1B::Login()
 			ret = LoginStepFunction("login step 3", std::string(g_g1b_password),
 				"> ", 5, 200);
 			if (ret == SERIAL_OK) {
-				std::cout << "login successful" << '\n';
+				g_out << "login successful" << '\n';
 				q_login_ret.push(ret);
 				emit SignalLoginFinished();
 				return ret;
 			} else {
-				std::cout << "login step 3 failed" << '\n';
+				g_out << "login step 3 failed" << '\n';
 				q_login_ret.push(ret);
 				emit SignalLoginFailed();
 				return ret;
 			}
 		} else {
-			std::cout << "login step 2 failed" << '\n';
+			g_out << "login step 2 failed" << '\n';
 			q_login_ret.push(ret);
 			emit SignalLoginFailed();
 			return ret;
 		}
 	} else {
-		std::cout << "login step 1 failed" << '\n';
+		g_out << "login step 1 failed" << '\n';
 		q_login_ret.push(ret);
 		emit SignalLoginFailed();
 		return ret;
@@ -190,7 +190,7 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 	char* cmd = CopyStringToNewedCharArray(input);
 
 	while (strstr(buf, keyword) == NULL && cnt < max_cnt) {
-		std::cout << name << " try no." << cnt << '\n';
+		g_out << name << " try no." << cnt << '\n';
 
 		if (cnt == 0) {
 			Write(cmd);
@@ -211,11 +211,11 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 SerialCode DeviceG1B::SetFreq(int freq)
 {
 	int period = (int)(1.0f / (float)freq * 1000000000.0f);
-	//std::cout << period << '\n';
+	//g_out << period << '\n';
 	std::string node("source:");
 	std::string period_cmd = "pulse:period " + std::to_string(period) + "ns;";
 	std::string buf = node + period_cmd + "hold width;double off";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -233,11 +233,11 @@ SerialCode DeviceG1B::SetFreq(int freq)
 SerialCode DeviceG1B::SetPulseWidth(float pw)
 {
 	int pw_ns = (int)((float)pw * 1000.0f);
-	//std::cout << pw_ns << '\n';
+	//g_out << pw_ns << '\n';
 	std::string node("source:");
 	std::string pw_cmd = "pulse:width " + std::to_string(pw_ns) + "ns;";
 	std::string buf = node + pw_cmd + "hold width;double off";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -256,7 +256,7 @@ SerialCode DeviceG1B::SetVoltage(int v)
 {
 	std::string node("source:");
 	std::string buf = node + "voltage " + std::to_string(v) + "V";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -275,7 +275,7 @@ SerialCode DeviceG1B::SetOffset(int offset)
 {
 	std::string node("source:");
 	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -293,7 +293,7 @@ SerialCode DeviceG1B::SetOffset(int offset)
 SerialCode DeviceG1B::On()
 {
 	std::string buf = "output on";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -311,7 +311,7 @@ SerialCode DeviceG1B::On()
 SerialCode DeviceG1B::Off()
 {
 	std::string buf = "output off";
-	std::cout << buf << '\n';
+	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);

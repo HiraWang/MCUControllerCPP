@@ -43,7 +43,7 @@ G1BView::G1BView(int w,
 		g1b = nullptr;
 		return;
 	} else {
-		std::cout << "device G1B opened" << '\n';
+		g_out << "device G1B opened" << '\n';
 		QString account = QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
 		QString password = QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str);
 		MetLoginSubwindow(g1b, account, password, this);

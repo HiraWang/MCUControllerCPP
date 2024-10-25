@@ -61,7 +61,7 @@ MonitorView::MonitorView(int w,
 		due = nullptr;
 		return;
 	} else {
-		std::cout << "monitor opened" << '\n';
+		g_out << "monitor opened" << '\n';
 		due->activate = false;
 		SetupUi();
 	}
