@@ -144,7 +144,8 @@ SerialCode DeviceG1B::Login()
 {
 	q_login_ret = {};
 	SerialCode ret = SERIAL_FAIL;
-	g_out << g_g1b_account << " " << g_g1b_password << '\n';
+	g_out << g_g1b_account;
+	g_out << g_g1b_password;
 
 	ret = LoginStepFunction("login step 1", std::string("\r\n"),
 		"avtech-f8369be5fff1", 5, 200);
