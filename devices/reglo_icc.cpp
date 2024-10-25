@@ -142,8 +142,9 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 	rpm_f_stream << std::setw(2) << std::setfill('0') << std::to_string(rpm_f);
 	//g_out << rpm_f_stream.str() << '\n';
 
-	std::string buf = std::to_string(channel) + 'S' + rpm_i_stream.str() + rpm_f_stream.str() + CR;
+	std::string buf = std::to_string(channel) + 'S' + rpm_i_stream.str() + rpm_f_stream.str();
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -160,8 +161,9 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 {
-	std::string buf = std::to_string(channel) + 'J' + CR;
+	std::string buf = std::to_string(channel) + 'J';
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -178,8 +180,9 @@ SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 
 SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 {
-	std::string buf = std::to_string(channel) + 'K' + CR;
+	std::string buf = std::to_string(channel) + 'K';
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -196,8 +199,9 @@ SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 
 SerialCode DeviceRegloIcc::On(BYTE channel)
 {
-	std::string buf = std::to_string(channel) + 'H' + CR;
+	std::string buf = std::to_string(channel) + 'H';
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -214,8 +218,9 @@ SerialCode DeviceRegloIcc::On(BYTE channel)
 
 SerialCode DeviceRegloIcc::Off(BYTE channel)
 {
-	std::string buf = std::to_string(channel) + 'I' + CR;
+	std::string buf = std::to_string(channel) + 'I';
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);
@@ -232,10 +237,12 @@ SerialCode DeviceRegloIcc::Off(BYTE channel)
 
 SerialCode DeviceRegloIcc::SetAddress()
 {
-	std::string buf_1 = "@2" + CR;
-	std::string buf_2 = "2~1" + CR;
+	std::string buf_1 = "@2";
+	std::string buf_2 = "2~1";
 	g_out << buf_1 << '\n';
 	g_out << buf_2 << '\n';
+	buf_1 += CR;
+	buf_2 += CR;
 
 	char* cmd_1 = CopyStringToNewedCharArray(buf_1);
 	char* cmd_2 = CopyStringToNewedCharArray(buf_2);
@@ -262,8 +269,9 @@ SerialCode DeviceRegloIcc::SetAddress()
 
 SerialCode DeviceRegloIcc::SetRpmMode(BYTE channel)
 {
-	std::string buf = std::to_string(channel) + 'L' + CR;
+	std::string buf = std::to_string(channel) + 'L';
 	g_out << buf << '\n';
+	buf += CR;
 
 	char* cmd = CopyStringToNewedCharArray(buf);
 	DWORD size = (DWORD)strlen(cmd);

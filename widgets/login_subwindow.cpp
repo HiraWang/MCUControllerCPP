@@ -101,8 +101,8 @@ void MetLoginSubwindow::Login()
 	// set account and password
 	extern std::string g_g1b_account;
 	extern std::string g_g1b_password;
-	g_g1b_account = account_edit->text().toStdString() + std::string("\r\n");
-	g_g1b_password = password_edit->text().toStdString() + std::string("\r\n");
+	g_g1b_account = account_edit->text().toStdString();
+	g_g1b_password = password_edit->text().toStdString();
 
 	MetLoadingSubwindow loading;
 	// close loading gif

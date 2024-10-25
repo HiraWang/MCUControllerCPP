@@ -122,7 +122,7 @@ SerialCode DeviceG1B::Read(char* buf, const int size)
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		g_out << "Read : " << buf;
+		//g_out << "Read : " << buf;
 		return SERIAL_OK;
 	}
 }
@@ -135,7 +135,7 @@ SerialCode DeviceG1B::Write(const char* buf)
 	if (!WriteFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_WRITE;
 	} else {
-		g_out << "Write : " << buf;
+		//g_out << "Write : " << buf;
 		return SERIAL_OK;
 	}
 }
@@ -144,10 +144,10 @@ SerialCode DeviceG1B::Login()
 {
 	q_login_ret = {};
 	SerialCode ret = SERIAL_FAIL;
-	g_out << g_g1b_account;
-	g_out << g_g1b_password;
+	g_out << g_g1b_account << '\n';
+	g_out << g_g1b_password << '\n';
 
-	ret = LoginStepFunction("login step 1", std::string("\r\n"),
+	ret = LoginStepFunction("login step 1", std::string(),
 		"avtech-f8369be5fff1", 5, 200);
 	if (ret == SERIAL_OK) {
 		ret = LoginStepFunction("login step 2", std::string(g_g1b_account),
@@ -186,6 +186,8 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 										int max_cnt,
 										DWORD time_delay)
 {
+	input += std::string("\r\n");
+
 	int cnt = 0;
 	char buf[MAXBYTE] = "";
 	char* cmd = CopyStringToNewedCharArray(input);
