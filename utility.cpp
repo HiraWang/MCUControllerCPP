@@ -42,8 +42,8 @@ bool g_normal = true;
 bool g_ui_test = !g_normal;
 
 std::ofstream fout(LOG_FILE_PATH);
-teebuf sbuf(fout.rdbuf(), std::cout.rdbuf());
-std::ostream g_out = std::ostream(&sbuf);
+MetLogBuf log_buf(fout.rdbuf(), std::cout.rdbuf());
+std::ostream g_out = std::ostream(&log_buf);
 
 char* CopyStringToNewedCharArray(const std::string& str)
 {

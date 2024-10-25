@@ -4,6 +4,7 @@
 #include <complex>
 #include <fstream>
 #include <iostream>
+#include <streambuf>
 #include <QDir>
 #include <QString>
 
@@ -86,34 +87,35 @@ public:
     MetPara* list;
 };
 
-#include <streambuf>
-
-struct teebuf
-    : std::streambuf
+class MetLogBuf : public std::streambuf
 {
-    std::streambuf* sb1_;
-    std::streambuf* sb2_;
-
-    teebuf(std::streambuf* sb1, std::streambuf* sb2)
-        : sb1_(sb1), sb2_(sb2) {
+public:
+    MetLogBuf(std::streambuf* sb_1, std::streambuf* sb_2) : 
+        sb_1(sb_1), sb_2(sb_2) {
     }
+
     int overflow(int c) {
         typedef std::streambuf::traits_type traits;
         bool rc(true);
         if (!traits::eq_int_type(traits::eof(), c)) {
-            traits::eq_int_type(this->sb1_->sputc(c), traits::eof())
+            traits::eq_int_type(this->sb_1->sputc(c), traits::eof())
                 && (rc = false);
-            traits::eq_int_type(this->sb2_->sputc(c), traits::eof())
+            traits::eq_int_type(this->sb_2->sputc(c), traits::eof())
                 && (rc = false);
         }
         return rc ? traits::not_eof(c) : traits::eof();
     }
+
     int sync() {
         bool rc(true);
-        this->sb1_->pubsync() != -1 || (rc = false);
-        this->sb2_->pubsync() != -1 || (rc = false);
+        this->sb_1->pubsync() != -1 || (rc = false);
+        this->sb_2->pubsync() != -1 || (rc = false);
         return rc ? 0 : -1;
     }
+
+private:
+    std::streambuf* sb_1;
+    std::streambuf* sb_2;
 };
 
 #endif
