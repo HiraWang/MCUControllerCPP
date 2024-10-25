@@ -10,6 +10,8 @@
 #include "views/reglo_icc_view.h"
 #include "widgets/msg_subwindow.h"
 
+extern std::string MONITOR_RESULT_DIR;
+
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
     ui(new MainWindowUI()),
@@ -36,6 +38,8 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::ToggleMenuButton);
 	connect(ui->upper_view->console_button, &QPushButton::released,
 		this, &MainWindow::ToggleConsoleButton);
+	connect(ui->upper_view->result_dir_button, &QPushButton::released,
+		this, &MainWindow::ToggleResultDirButton);
 	connect(ui->upper_view->ui_test_button, &QPushButton::released,
 		this, &MainWindow::ToggleUiTestButton);
 	connect(ui->upper_view->power_button, &QPushButton::released,
@@ -118,6 +122,14 @@ void MainWindow::ToggleConsoleButton()
 		button->SetButtonPressed();
 		ShowConsole();
 	}
+}
+
+void MainWindow::ToggleResultDirButton()
+{
+	MetButton* button = ui->upper_view->result_dir_button;
+	button->SetButtonDefault();
+	std::wstring result_dir = std::wstring(MONITOR_RESULT_DIR.begin(), MONITOR_RESULT_DIR.end());
+	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
 }
 
 void MainWindow::ToggleUiTestButton()

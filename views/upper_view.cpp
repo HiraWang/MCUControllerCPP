@@ -8,6 +8,7 @@ extern std::string IMAGE_MET_LOAD;
 extern std::string IMAGE_MET_MAX_SIZE;
 extern std::string IMAGE_MET_MENU;
 extern std::string IMAGE_MET_POWER;
+extern std::string IMAGE_MET_RESULT;
 
 UpperView::UpperView(QWidget* parent) :
 	QWidget(parent)
@@ -45,6 +46,9 @@ void UpperView::SetupUi()
 	console_button = new MetButton(button_style, "CONSOLE", "CLOSE", 80, 80,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
+	result_dir_button = new MetButton(button_style, "", "", 80, 80,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
 	MetButtonStyle debug_button_style(COLOR_ON_1, COLOR_DEBUG_1, COLOR_ON_2, COLOR_DEBUG_2,
 		COLOR_ON_3, COLOR_DEBUG_3);
@@ -66,6 +70,7 @@ void UpperView::SetupUi()
 	layout->addWidget(load_config_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(menu_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(console_button, 0, Qt::AlignTop | Qt::AlignRight);
+	layout->addWidget(result_dir_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(ui_test_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);
