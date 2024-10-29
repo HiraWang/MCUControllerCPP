@@ -18,6 +18,7 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	is_normal_unit(is_normal_unit),
 	QWidget(parent)
 {
+	setFixedWidth(700);
 	LoadStyleSheet();
 
 	MetLabelStyle label_style_1(COLOR_BLACK, FONT_SIZE, COLOR_WHITE);

@@ -131,12 +131,30 @@ void AutomationView::SetupUi()
 	button_layout->addStretch(1);
 	button_layout->addWidget(button_run, 0, Qt::AlignCenter);
 	button_layout->addStretch(10);
+	
+	bar = new QProgressBar(this);
+	bar->setFixedWidth(process_unit_list[0]->width() - 15);
+	bar->setRange(0, 100);
+	bar->reset();
+	bar->setStyleSheet("QProgressBar::chunk {"
+					   "border-radius: 3px;"
+					   "background: " + QString(COLOR_ON_1) + ";"
+					   "}"
+					   "QProgressBar {"
+					   "background: " + QString(COLOR_DEEP_GRAY) + ";"
+					   "border: 2px solid black;"
+					   "text-align:center;"
+					   "color: #fff;"
+					   "height: 25px;"
+					   "border-radius: 5px;"
+					   "}");
 
 	layout = new QVBoxLayout(this);
 	for (int i = 0; i < unit_cnt; i++) {
 		layout->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
 	}
 	layout->addWidget(all_process, 0, Qt::AlignCenter);
+	layout->addWidget(bar, 0, Qt::AlignCenter);
 	layout->addItem(button_layout);
 	setLayout(layout);
 }
@@ -185,6 +203,7 @@ void AutomationView::ToggleSetButton()
 	all_process->time_edit->setText(QString::number(time_tot));
 	all_process->StatusOff();
 	all_process->SetLcd("0");
+	bar->reset();
 }
 
 void AutomationView::ToggleRunButton()
@@ -228,6 +247,7 @@ void AutomationView::StopProcess()
 
 void AutomationView::Update(int count)
 {
+	bar->setValue(roundf((float)(count) / (float)(time_tot) * 100.0f));
 	all_process->SetLcd(QString::number(count));
 	MetProcessUnit** list = process_unit_list;
 	g_out << count << '\n';

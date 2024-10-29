@@ -2,6 +2,7 @@
 #define AUTOMATION_H
 
 #include <QLCDNumber>
+#include <QProgressBar>
 #include <QThread>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -90,6 +91,7 @@ private:
     MetLabel* label_unit;
     MetLabel* label_status;
     QLCDNumber* lcd;
+    QProgressBar* bar;
     MetButton* button_set;
     MetButton* button_run;
     MetParaList* para_list;
