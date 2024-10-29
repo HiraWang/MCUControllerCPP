@@ -117,20 +117,10 @@ void AutomationView::SetupUi()
 										  "}");
 
 	MetButtonStyle button_style;
-	button_set = new MetButton(button_style, "SET", "SET", 80, 80, "", "", this);
 	button_run = new MetButton(button_style, "RUN", "STOP", 80, 80, "", "", this);
 	
-	connect(button_set, &QPushButton::released, this,
-		&AutomationView::ToggleSetButton);
 	connect(button_run, &QPushButton::released, this,
 		&AutomationView::ToggleRunButton);
-
-	QHBoxLayout* button_layout = new QHBoxLayout();
-	button_layout->addStretch(10);
-	button_layout->addWidget(button_set, 0, Qt::AlignCenter);
-	button_layout->addStretch(1);
-	button_layout->addWidget(button_run, 0, Qt::AlignCenter);
-	button_layout->addStretch(10);
 	
 	bar = new QProgressBar(this);
 	bar->setFixedWidth(process_unit_list[0]->width() - 15);
@@ -155,7 +145,8 @@ void AutomationView::SetupUi()
 	}
 	layout->addWidget(all_process, 0, Qt::AlignCenter);
 	layout->addWidget(bar, 0, Qt::AlignCenter);
-	layout->addItem(button_layout);
+	layout->addWidget(button_run, 0, Qt::AlignCenter);
+	layout->setContentsMargins(0, 10, 0, 20);
 	setLayout(layout);
 }
 
@@ -184,10 +175,9 @@ void AutomationView::LoadStyleSheet()
 		"border-radius: 2px;";
 }
 
-void AutomationView::ToggleSetButton()
+void AutomationView::Set()
 {
 	InitLists();
-	button_set->SetButtonDefault();
 	for (int i = 0; i < unit_cnt; i++) {
 		MetProcessUnit* unit_anchor = process_unit_list[i];
 		unit_anchor->time = (int)(unit_anchor->time_edit->text().toInt());
@@ -208,13 +198,11 @@ void AutomationView::ToggleSetButton()
 
 void AutomationView::ToggleRunButton()
 {
-	if (all_process->status == true) {
-		return;
-	}
 	if (button_run->status) {
 		button_run->SetButtonDefault();
 		StopProcess();
 	} else {
+		Set();
 		button_run->SetButtonPressed();
 		RunProcess();
 	}

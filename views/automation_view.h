@@ -55,11 +55,11 @@ public slots:
     void Update(int);
 
 private slots:
-    void ToggleSetButton();
     void ToggleRunButton();
 
 private:
     void InitLists();
+    void Set();
     void SetupUi();
     void LoadStyleSheet();
     void RunProcess();
@@ -92,7 +92,6 @@ private:
     MetLabel* label_status;
     QLCDNumber* lcd;
     QProgressBar* bar;
-    MetButton* button_set;
     MetButton* button_run;
     MetParaList* para_list;
     std::list<std::string> process_name_list;
