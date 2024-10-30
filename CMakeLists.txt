@@ -74,7 +74,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/slider.h"
 			   "widgets/slider.cpp"
 			   "widgets/tab.h"
-			   "widgets/tab.cpp")
+			   "widgets/tab.cpp"
+			   "widgets/tree.h"
+			   "widgets/tree.cpp")
 
 set(MET_IMAGES ${./images/})
 

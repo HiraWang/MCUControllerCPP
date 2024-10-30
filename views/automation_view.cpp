@@ -139,14 +139,54 @@ void AutomationView::SetupUi()
 					   "border-radius: 5px;"
 					   "}");
 
-	layout = new QVBoxLayout(this);
+	QWidget* container_automation = new QWidget(this);
+	QWidget* container_pulse_gen = new QWidget(this);
+	QWidget* container_pump = new QWidget(this);
+	container_pulse_gen->setObjectName("pulse_gen_container");
+	container_pulse_gen->setFixedWidth((width() - 750) / 2);
+	container_pulse_gen->setFixedHeight(height()- 9);
+	container_pulse_gen->setStyleSheet("QWidget#pulse_gen_container {"
+									   "background-color: " + QString(COLOR_GRAY) + ";"
+									   "border-radius: 10px;"
+									   "}");
+	container_automation->setFixedWidth(700);
+	container_automation->setFixedHeight(height());
+	container_pump->setObjectName("pump_container");
+	container_pump->setFixedWidth((width() - 750) / 2);
+	container_pump->setFixedHeight(height() - 9);
+	container_pump->setStyleSheet("QWidget#pump_container {"
+								  "background-color: " + QString(COLOR_GRAY) + ";"
+								  "border-radius: 10px;"
+								  "}");
+
+	QVBoxLayout* layout_automation = new QVBoxLayout(this);
+	QVBoxLayout* layout_pulse_gen = new QVBoxLayout(this);
+	QVBoxLayout* layout_pump = new QVBoxLayout(this);
+	layout_automation->setContentsMargins(0, 0, 0, 0);
+	layout_pulse_gen->setContentsMargins(0, 0, 0, 0);
+	layout_pump->setContentsMargins(0, 0, 0, 0);
+
+	MetTreeStyle tree_style;
+	tree = new MetTree(tree_style, (width() - 750) / 2, height() - 9, this);
+	layout_pulse_gen->addWidget(tree, 0, Qt::AlignCenter);
+	container_pulse_gen->setLayout(layout_pulse_gen);
+
+	layout_automation->addStretch(1);
 	for (int i = 0; i < unit_cnt; i++) {
-		layout->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
+		layout_automation->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
 	}
-	layout->addWidget(all_process, 0, Qt::AlignCenter);
-	layout->addWidget(bar, 0, Qt::AlignCenter);
-	layout->addWidget(button_run, 0, Qt::AlignCenter);
-	layout->setContentsMargins(0, 10, 0, 20);
+	layout_automation->addWidget(all_process, 0, Qt::AlignCenter);
+	layout_automation->addStretch(1);
+	layout_automation->addWidget(bar, 0, Qt::AlignCenter);
+	layout_automation->addStretch(1);
+	layout_automation->addWidget(button_run, 0, Qt::AlignCenter);
+	layout_automation->addStretch(1);
+	container_automation->setLayout(layout_automation);
+
+	layout = new QHBoxLayout(this);
+	layout->addWidget(container_pulse_gen, 0, { Qt::AlignLeft, Qt::AlignVCenter });
+	layout->addWidget(container_automation, 0, Qt::AlignCenter);
+	layout->addWidget(container_pump, 0, { Qt::AlignRight, Qt::AlignVCenter });
 	setLayout(layout);
 }
 

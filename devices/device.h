@@ -57,9 +57,13 @@ public:
     SerialCode Read(char* buf, const int size); // overload
     SerialCode Write(const char* buf);          // overload
     SerialCode SetFreq(int freq);
+    SerialCode GetFreq(int* freq);
     SerialCode SetPulseWidth(float pw);
+    SerialCode GetPulseWidth(float* pw);
     SerialCode SetVoltage(int v);
+    SerialCode GetVoltage(int* v);
     SerialCode SetOffset(int offset);
+    SerialCode GetOffset(int* offset);
     SerialCode On();
     SerialCode Off();
 
@@ -73,6 +77,10 @@ private:
                                  const char* keyword,
                                  int max_cnt,
                                  DWORD time_delay);
+    int offset;
+    int voltage;
+    int frequency;
+    float pulse_width;
 };
 
 class DeviceRegloIcc : public SerialPort

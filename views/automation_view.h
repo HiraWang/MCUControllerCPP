@@ -15,6 +15,7 @@
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
 #include "../widgets/process_unit.h"
+#include "../widgets/tree.h"
 
 class TimerWorker : public QObject
 {
@@ -82,7 +83,7 @@ private:
     DeviceRegloIcc* reglo_icc;
     QThread* thread;
     TimerWorker* worker;
-    QVBoxLayout* layout;
+    QHBoxLayout* layout;
     MetProcessUnit** process_unit_list;
     MetProcessUnit* all_process;
     MetLabel* label_name;
@@ -92,6 +93,7 @@ private:
     MetLabel* label_status;
     QLCDNumber* lcd;
     QProgressBar* bar;
+    MetTree* tree;
     MetButton* button_run;
     MetParaList* para_list;
     std::list<std::string> process_name_list;

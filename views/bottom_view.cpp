@@ -23,5 +23,6 @@ void BottomView::SetupUi()
 
 	layout = new QHBoxLayout(this);
 	layout->addWidget(tab, 0, Qt::AlignCenter);
+	layout->setContentsMargins(0, 0, 0, 0);
 	setLayout(layout);
 }

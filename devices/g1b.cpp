@@ -218,6 +218,7 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 
 SerialCode DeviceG1B::SetFreq(int freq)
 {
+	this->frequency = freq;
 	int period = (int)(1.0f / (float)freq * 1000000000.0f);
 	//g_out << period << '\n';
 	std::string node("source:");
@@ -238,8 +239,15 @@ SerialCode DeviceG1B::SetFreq(int freq)
 	}
 }
 
+SerialCode DeviceG1B::GetFreq(int* freq)
+{
+	*freq = this->frequency;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetPulseWidth(float pw)
 {
+	this->pulse_width = pw;
 	int pw_ns = (int)((float)pw * 1000.0f);
 	//g_out << pw_ns << '\n';
 	std::string node("source:");
@@ -260,8 +268,15 @@ SerialCode DeviceG1B::SetPulseWidth(float pw)
 	}
 }
 
+SerialCode DeviceG1B::GetPulseWidth(float* pw)
+{
+	*pw = this->pulse_width;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetVoltage(int v)
 {
+	this->voltage = v;
 	std::string node("source:");
 	std::string buf = node + "voltage " + std::to_string(v) + "V";
 	g_out << buf << '\n';
@@ -279,8 +294,15 @@ SerialCode DeviceG1B::SetVoltage(int v)
 	}
 }
 
+SerialCode DeviceG1B::GetVoltage(int* v)
+{
+	*v = this->voltage;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetOffset(int offset)
 {
+	this->offset = offset;
 	std::string node("source:");
 	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
 	g_out << buf << '\n';
@@ -296,6 +318,12 @@ SerialCode DeviceG1B::SetOffset(int offset)
 		delete[] cmd;
 		return SERIAL_OK;
 	}
+}
+
+SerialCode DeviceG1B::GetOffset(int* offset)
+{
+	*offset = this->offset;
+	return SERIAL_OK;
 }
 
 SerialCode DeviceG1B::On()
