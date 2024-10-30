@@ -29,33 +29,35 @@ MetTree::MetTree(MetTreeStyle style,
                               { "Hz", "ms", "v", "v" } };
 
     for (int i = 0; i < 2; i++) {
-        QTreeWidgetItem* item_1 = new QTreeWidgetItem();
+        QTreeWidgetItem* item_1 = new QTreeWidgetItem(this);
         item_1->setText(0, list_1[i][0]);
         item_1->setText(1, list_1[i][1]);
         item_1->setBackground(0, Qt::green);
 
         if (list_1[i][0] == "pump") {
             for (int c = 0; c < 2; c++) {
-                QTreeWidgetItem* item_channel = new QTreeWidgetItem();
+                QTreeWidgetItem* item_channel = new QTreeWidgetItem(item_1);
                 item_channel->setText(0, "channel");
                 item_channel->setText(1, QString::number(c + 1));
                 item_1->addChild(item_channel);
                 for (int j = 0; j < 2; j++) {
-                    QTreeWidgetItem* item_2 = new QTreeWidgetItem();
+                    QTreeWidgetItem* item_2 = new QTreeWidgetItem(item_channel);
                     item_2->setText(0, list_2[i][j]);
                     item_2->setText(2, list_3[i][j]);
                     item_channel->addChild(item_2);
                 }
+                item_channel->setExpanded(true);
             }
         } else if (list_1[i][0] == "pulse gen") {
             for (int j = 0; j < 4; j++) {
-                QTreeWidgetItem* item_2 = new QTreeWidgetItem();
+                QTreeWidgetItem* item_2 = new QTreeWidgetItem(item_1);
                 item_2->setText(0, list_2[i][j]);
                 item_2->setText(2, list_3[i][j]);
                 item_1->addChild(item_2);
             }
         }
         addTopLevelItem(item_1);
+        item_1->setExpanded(true);
     }
 }
 
