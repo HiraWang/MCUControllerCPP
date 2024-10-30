@@ -98,14 +98,18 @@ public:
     virtual SerialCode Write() override; // override
     virtual SerialCode Login() override; // override
     SerialCode SetRpm(BYTE channel, float rpm);
+    SerialCode GetRpm(float* rpm, BYTE channel);
     SerialCode SetCw(BYTE channel);
     SerialCode SetCcw(BYTE channel);
+    SerialCode GetDir(bool* dir, BYTE channel);
     SerialCode On(BYTE channel);
     SerialCode Off(BYTE channel);
 
 private:
     SerialCode SetAddress();
     SerialCode SetRpmMode(BYTE channel);
+    float rpm[2];
+    bool direction[2];
 };
 
 class DeviceArduinoDue : public SerialPort

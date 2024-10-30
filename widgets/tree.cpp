@@ -10,18 +10,23 @@ MetTree::MetTree(MetTreeStyle style,
     LoadStyleSheet();
     setStyleSheet(style_sheet);
     setIndentation(20);
-    setColumnCount(2);
+    setColumnCount(3);
     setFixedHeight(h);
-    setColumnWidth(0, 130);
+    setColumnWidth(0, 120);
+    setColumnWidth(1, 80);
+    setColumnWidth(2, 20);
 
     QStringList column_title;
     column_title.append("Name");
     column_title.append("Value");
+    column_title.append("Unit");
     setHeaderLabels(column_title);
 
     QStringList list_1[2] = { { "pump", "reglo icc" }, { "pulse gen", "g1b" } };
     QStringList list_2[2] = { { "rpm", "dir" },
                               { "freq", "pw", "voltage", "offset" } };
+    QStringList list_3[2] = { { "rpm", "" },
+                              { "Hz", "ms", "v", "v" } };
 
     for (int i = 0; i < 2; i++) {
         QTreeWidgetItem* item_1 = new QTreeWidgetItem();
@@ -38,6 +43,7 @@ MetTree::MetTree(MetTreeStyle style,
                 for (int j = 0; j < 2; j++) {
                     QTreeWidgetItem* item_2 = new QTreeWidgetItem();
                     item_2->setText(0, list_2[i][j]);
+                    item_2->setText(2, list_3[i][j]);
                     item_channel->addChild(item_2);
                 }
             }
@@ -45,6 +51,7 @@ MetTree::MetTree(MetTreeStyle style,
             for (int j = 0; j < 4; j++) {
                 QTreeWidgetItem* item_2 = new QTreeWidgetItem();
                 item_2->setText(0, list_2[i][j]);
+                item_2->setText(2, list_3[i][j]);
                 item_1->addChild(item_2);
             }
         }
@@ -87,9 +94,42 @@ void MetTree::LoadStyleSheet()
         "font: " + style.font_size + ";"
         "color: " + style.font_color + ";"
         "}"
-        "QTreeView:branch {"
-        "background-color: " + QString(COLOR_DEEP_GRAY) + ";"
+        "QTreeView::branch {"
+        "background-color: " + QString(COLOR_DEBUG_1) + ";"
         "border-bottom: 2px solid black;"
+        "}"
+        "QTreeView::branch:has-siblings:!adjoins-item {"
+        "background-color: " + QString(COLOR_DEBUG_1) + ";"
+        "border-bottom: 2px solid black;"
+        //"border-image: url(:/images/BranchT.png) 0;"
+        "}"
+        "QTreeView::branch:has-siblings:adjoins-item {"
+        "background-color: " + QString(COLOR_DEBUG_1) + ";"
+        "border-right: 2px solid black;"
+        "border-bottom: 2px solid black;"
+        //"border-image: url(:/images/BranchMore.png) 0;"
+        "}"
+        "QTreeView::branch:!has-children:!has-siblings:adjoins-item {"
+        "background-color: " + QString(COLOR_DEBUG_1) + ";"
+        "border-right: 2px solid black;"
+        "border-bottom: 2px solid black;"
+        //"border-image: url(:/images/BranchEnd.png) 0;"
+        "}"
+        "QTreeView::branch:has-children:!has-siblings:closed,"
+        "QTreeView::branch:closed:has-children:has-siblings {"
+        "background-color: " + QString(COLOR_ON_1) + ";"
+        "border-right: 2px solid black;"
+        "border-bottom: 2px solid black;"
+        "border-image: none;"
+        "image: url(:/images/Right.png);"
+        "}"
+        "QTreeView::branch:open:has-children:!has-siblings,"
+        "QTreeView::branch:open:has-children:has-siblings {"
+        "background-color: " + QString(COLOR_ON_1) + ";"
+        "border-right: 2px solid black;"
+        "border-bottom: 2px solid black;"
+        "border-image: none;"
+        "image: url(:/images/Down.png);"
         "}"
         "QHeaderView {"
         "background-color: " + QString(COLOR_BLACK) + ";"
@@ -101,7 +141,7 @@ void MetTree::LoadStyleSheet()
         "border: 2px solid black;"
         "border-top-left-radius: 10px;"
         "border-top-right-radius: 10px;"
-        "padding-left: 20px;"
+        "padding-left: 10px;"
         "margin-left: -2px;"
         "margin-top: -2px;"
         "font: bold " + style.font_size + ";"
@@ -111,7 +151,7 @@ void MetTree::LoadStyleSheet()
         "border: 2px solid black;"
         "border-top-left-radius: 10px;"
         "border-top-right-radius: 10px;"
-        "padding-left: 20px;"
+        "padding-left: 10px;"
         "margin-left: -2px;"
         "margin-right: -2px;"
         "margin-top: -2px;"

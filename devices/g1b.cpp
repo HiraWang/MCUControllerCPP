@@ -8,10 +8,14 @@ std::queue<SerialCode> q_login_ret;
 
 DeviceG1B::DeviceG1B(const wchar_t* port_name,
 					 DWORD baud_rate,
-				     BYTE byte_size,
+					 BYTE byte_size,
 					 BYTE stop_bits,
 					 BYTE parity) :
-	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity),
+	frequency(0),
+	pulse_width(0.0f),
+	voltage(0),
+	offset(0)
 {
 
 }

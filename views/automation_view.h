@@ -17,6 +17,11 @@
 #include "../widgets/process_unit.h"
 #include "../widgets/tree.h"
 
+struct MetTreeData
+{
+    float value[2];
+};
+
 class TimerWorker : public QObject
 {
     Q_OBJECT // enable meta object abilities
@@ -71,6 +76,12 @@ private:
     void StartPumpChannelNo2();
     void StopPulseGenerator();
     void StopPumpAllChannel();
+    MetTreeData GetRpm();
+    MetTreeData GetDir();
+    MetTreeData GetFreq();
+    MetTreeData GetPw();
+    MetTreeData GetVoltage();
+    MetTreeData GetOffset();
     int w;
     int h;
     int unit_cnt;
@@ -97,7 +108,9 @@ private:
     MetButton* button_run;
     MetParaList* para_list;
     std::list<std::string> process_name_list;
+    std::list<std::string> parameter_name_list;
     std::list<void (AutomationView::*)()> process_function_list;
+    std::list<MetTreeData(AutomationView::*)()> parameter_function_list;
 };
 
 #endif

@@ -64,6 +64,24 @@ void AutomationView::InitLists()
 		&AutomationView::StopPulseGenerator,
 		&AutomationView::StopPumpAllChannel
 	};
+
+	parameter_name_list = {
+		"rpm",
+		"dir",
+		"freq",
+		"pw",
+		"voltage",
+		"offset"
+	};
+
+	parameter_function_list = {
+		&AutomationView::GetRpm,
+		&AutomationView::GetDir,
+		&AutomationView::GetFreq,
+		&AutomationView::GetPw,
+		&AutomationView::GetVoltage,
+		&AutomationView::GetOffset
+	};
 }
 
 void AutomationView::SetupUi()
@@ -159,9 +177,9 @@ void AutomationView::SetupUi()
 								  "border-radius: 10px;"
 								  "}");
 
-	QVBoxLayout* layout_automation = new QVBoxLayout(this);
-	QVBoxLayout* layout_pulse_gen = new QVBoxLayout(this);
-	QVBoxLayout* layout_pump = new QVBoxLayout(this);
+	QVBoxLayout* layout_automation = new QVBoxLayout();
+	QVBoxLayout* layout_pulse_gen = new QVBoxLayout();
+	QVBoxLayout* layout_pump = new QVBoxLayout();
 	layout_automation->setContentsMargins(0, 0, 0, 0);
 	layout_pulse_gen->setContentsMargins(0, 0, 0, 0);
 	layout_pump->setContentsMargins(0, 0, 0, 0);
@@ -234,6 +252,21 @@ void AutomationView::Set()
 	all_process->StatusOff();
 	all_process->SetLcd("0");
 	bar->reset();
+
+	while (parameter_name_list.size() > 0) {
+		QString name = QString::fromStdString(parameter_name_list.front());
+		parameter_name_list.pop_front();
+
+		QList<QTreeWidgetItem*> list = tree->findItems(name, Qt::MatchContains | Qt::MatchRecursive, 0);
+		MetTreeData data = (this->*parameter_function_list.front())();
+
+		int i = 0;
+		foreach(QTreeWidgetItem * item, list) {
+			item->setText(1, QString::number(data.value[i++]));
+		}
+
+		parameter_function_list.pop_front();
+	}
 }
 
 void AutomationView::ToggleRunButton()
@@ -354,6 +387,93 @@ void AutomationView::StopPumpAllChannel()
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
+}
+
+MetTreeData AutomationView::GetRpm()
+{
+	MetTreeData data = { 0.0f };
+	if (reglo_icc) {
+		reglo_icc->GetRpm(data.value, 1);
+		reglo_icc->GetRpm(data.value + 1, 2);
+	} else {
+		g_out << "fail to get rpm" << '\n';
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetDir()
+{
+	MetTreeData data = { 0.0f };
+	bool dir_1 = 0;
+	bool dir_2 = 0;
+	if (reglo_icc) {
+		reglo_icc->GetDir(&dir_1, 1);
+		reglo_icc->GetDir(&dir_2, 2);
+	} else {
+		g_out << "fail to get dir" << '\n';
+	}
+
+	if (dir_1) {
+		data.value[0] = 1.0f;
+	} else {
+		data.value[0] = 0.0f;
+	}
+	if (dir_2) {
+		data.value[1] = 1.0f;
+	} else {
+		data.value[1] = 0.0f;
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetFreq()
+{
+	MetTreeData data = { 0.0 };
+	int freq = 0.0;
+	if (g1b) {
+		g1b->GetFreq(&freq);
+	} else {
+		g_out << "fail to get freq" << '\n';
+	}
+	data.value[0] = freq;
+	return data;
+}
+
+MetTreeData AutomationView::GetPw()
+{
+	MetTreeData data = { 0.0f };
+	if (g1b) {
+		g1b->GetPulseWidth(data.value);
+	} else {
+		g_out << "fail to get pw" << '\n';
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetVoltage()
+{
+	MetTreeData data = { 0.0f };
+	int voltage = 0;
+	if (g1b) {
+		g1b->GetVoltage(&voltage);
+	} else {
+		g_out << "fail to get voltage" << '\n';
+	}
+	data.value[0] = (float)(voltage);
+	return data;
+}
+
+MetTreeData AutomationView::GetOffset()
+{
+	MetTreeData data = { 0.0f };
+	int offset = 0;
+	if (g1b) {
+		g1b->GetOffset(&offset);
+	} else {
+		g_out << "fail to get offset" << '\n';
+	}
+	data.value[0] = (float)(offset);
+	return data;
 }
 
 TimerWorker::TimerWorker(QWidget* parent)
