@@ -393,8 +393,9 @@ MetTreeData AutomationView::GetRpm()
 {
 	MetTreeData data = { 0.0f };
 	if (reglo_icc) {
-		reglo_icc->GetRpm(data.value, 1);
-		reglo_icc->GetRpm(data.value + 1, 2);
+		for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+			reglo_icc->GetRpm(data.value + i, i + 1);
+		}
 	} else {
 		g_out << "fail to get rpm" << '\n';
 	}
@@ -404,24 +405,21 @@ MetTreeData AutomationView::GetRpm()
 MetTreeData AutomationView::GetDir()
 {
 	MetTreeData data = { 0.0f };
-	bool dir_1 = 0;
-	bool dir_2 = 0;
+	bool dir[PUMP_CHANNEL_COUNT] = { false, false };
 	if (reglo_icc) {
-		reglo_icc->GetDir(&dir_1, 1);
-		reglo_icc->GetDir(&dir_2, 2);
+		for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+			reglo_icc->GetDir(dir + i, i + 1);
+		}
 	} else {
 		g_out << "fail to get dir" << '\n';
 	}
 
-	if (dir_1) {
-		data.value[0] = 1.0f;
-	} else {
-		data.value[0] = 0.0f;
-	}
-	if (dir_2) {
-		data.value[1] = 1.0f;
-	} else {
-		data.value[1] = 0.0f;
+	for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+		if (dir[i]) {
+			data.value[i] = 1.0f;
+		} else {
+			data.value[i] = 0.0f;
+		}
 	}
 	return data;
 }

@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QString>
 
+#define PUMP_CHANNEL_COUNT (2)
 #define MONITOR_CHUNK_SIZE (4096)
 #define MONITOR_BUFFER_SIZE (MONITOR_CHUNK_SIZE * 2) 
 
