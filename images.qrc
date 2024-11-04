@@ -4,5 +4,7 @@
         <file>images/Right.png</file>
         <file>images/Up.png</file>
         <file>images/Down.png</file>
-	</qresource>
+        <file>images/ArrowRight.png</file>
+        <file>images/ArrowDown.png</file>
+    </qresource>
 </RCC>
