@@ -64,6 +64,24 @@ void AutomationView::InitLists()
 		&AutomationView::StopPulseGenerator,
 		&AutomationView::StopPumpAllChannel
 	};
+
+	parameter_name_list = {
+		"rpm",
+		"dir",
+		"freq",
+		"pw",
+		"voltage",
+		"offset"
+	};
+
+	parameter_function_list = {
+		&AutomationView::GetRpm,
+		&AutomationView::GetDir,
+		&AutomationView::GetFreq,
+		&AutomationView::GetPw,
+		&AutomationView::GetVoltage,
+		&AutomationView::GetOffset
+	};
 }
 
 void AutomationView::SetupUi()
@@ -139,14 +157,54 @@ void AutomationView::SetupUi()
 					   "border-radius: 5px;"
 					   "}");
 
-	layout = new QVBoxLayout(this);
+	container_automation = new QWidget(this);
+	container_left = new QWidget(this);
+	container_right = new QWidget(this);
+	container_left->setObjectName("pulse_gen_container");
+	container_left->setFixedWidth((width() - 750) / 2);
+	container_left->setFixedHeight(height()- 9);
+	container_left->setStyleSheet("QWidget#pulse_gen_container {"
+									   "background-color: " + QString(COLOR_GRAY) + ";"
+									   "border-radius: 10px;"
+									   "}");
+	container_automation->setFixedWidth(700);
+	container_automation->setFixedHeight(height());
+	container_right->setObjectName("pump_container");
+	container_right->setFixedWidth((width() - 750) / 2);
+	container_right->setFixedHeight(height() - 9);
+	container_right->setStyleSheet("QWidget#pump_container {"
+								  "background-color: " + QString(COLOR_GRAY) + ";"
+								  "border-radius: 10px;"
+								  "}");
+
+	QVBoxLayout* layout_automation = new QVBoxLayout();
+	QVBoxLayout* layout_left = new QVBoxLayout();
+	QVBoxLayout* layout_right = new QVBoxLayout();
+	layout_automation->setContentsMargins(0, 0, 0, 0);
+	layout_left->setContentsMargins(0, 0, 0, 0);
+	layout_right->setContentsMargins(0, 0, 0, 0);
+
+	MetTreeStyle tree_style;
+	tree = new MetTree(tree_style, (width() - 750) / 2, height() - 9, this);
+	layout_left->addWidget(tree, 0, Qt::AlignTop);
+	container_left->setLayout(layout_left);
+
+	layout_automation->addStretch(1);
 	for (int i = 0; i < unit_cnt; i++) {
-		layout->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
+		layout_automation->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
 	}
-	layout->addWidget(all_process, 0, Qt::AlignCenter);
-	layout->addWidget(bar, 0, Qt::AlignCenter);
-	layout->addWidget(button_run, 0, Qt::AlignCenter);
-	layout->setContentsMargins(0, 10, 0, 20);
+	layout_automation->addWidget(all_process, 0, Qt::AlignCenter);
+	layout_automation->addStretch(1);
+	layout_automation->addWidget(bar, 0, Qt::AlignCenter);
+	layout_automation->addStretch(1);
+	layout_automation->addWidget(button_run, 0, Qt::AlignCenter);
+	layout_automation->addStretch(3);
+	container_automation->setLayout(layout_automation);
+
+	layout = new QHBoxLayout(this);
+	layout->addWidget(container_left, 0, { Qt::AlignLeft, Qt::AlignTop });
+	layout->addWidget(container_automation, 0, Qt::AlignCenter);
+	layout->addWidget(container_right, 0, { Qt::AlignRight, Qt::AlignTop });
 	setLayout(layout);
 }
 
@@ -194,6 +252,21 @@ void AutomationView::Set()
 	all_process->StatusOff();
 	all_process->SetLcd("0");
 	bar->reset();
+
+	while (parameter_name_list.size() > 0) {
+		QString name = QString::fromStdString(parameter_name_list.front());
+		parameter_name_list.pop_front();
+
+		QList<QTreeWidgetItem*> list = tree->findItems(name, Qt::MatchContains | Qt::MatchRecursive, 0);
+		MetTreeData data = (this->*parameter_function_list.front())();
+
+		int i = 0;
+		foreach(QTreeWidgetItem * item, list) {
+			item->setText(1, QString::number(data.value[i++]));
+		}
+
+		parameter_function_list.pop_front();
+	}
 }
 
 void AutomationView::ToggleRunButton()
@@ -206,6 +279,26 @@ void AutomationView::ToggleRunButton()
 		button_run->SetButtonPressed();
 		RunProcess();
 	}
+}
+
+void AutomationView::ScaleUpSize()
+{
+	container_right->setFixedHeight(height() - 9);
+	container_right->update();
+	container_left->setFixedHeight(height() - 9);
+	container_left->update();
+	tree->setFixedHeight(height() - 9);
+	tree->update();
+}
+
+void AutomationView::ScaleDownSize()
+{
+	container_right->setFixedHeight(height() - 30);
+	container_right->update();
+	container_left->setFixedHeight(height() - 30);
+	container_left->update();
+	tree->setFixedHeight(height() - 30);
+	tree->update();
 }
 
 void AutomationView::RunProcess()
@@ -314,6 +407,91 @@ void AutomationView::StopPumpAllChannel()
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
+}
+
+MetTreeData AutomationView::GetRpm()
+{
+	MetTreeData data = { 0.0f };
+	if (reglo_icc) {
+		for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+			reglo_icc->GetRpm(data.value + i, i + 1);
+		}
+	} else {
+		g_out << "fail to get rpm" << '\n';
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetDir()
+{
+	MetTreeData data = { 0.0f };
+	bool dir[PUMP_CHANNEL_COUNT] = { false, false };
+	if (reglo_icc) {
+		for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+			reglo_icc->GetDir(dir + i, i + 1);
+		}
+	} else {
+		g_out << "fail to get dir" << '\n';
+	}
+
+	for (int i = 0; i < PUMP_CHANNEL_COUNT; i++) {
+		if (dir[i]) {
+			data.value[i] = 1.0f;
+		} else {
+			data.value[i] = 0.0f;
+		}
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetFreq()
+{
+	MetTreeData data = { 0.0 };
+	int freq = 0.0;
+	if (g1b) {
+		g1b->GetFreq(&freq);
+	} else {
+		g_out << "fail to get freq" << '\n';
+	}
+	data.value[0] = freq;
+	return data;
+}
+
+MetTreeData AutomationView::GetPw()
+{
+	MetTreeData data = { 0.0f };
+	if (g1b) {
+		g1b->GetPulseWidth(data.value);
+	} else {
+		g_out << "fail to get pw" << '\n';
+	}
+	return data;
+}
+
+MetTreeData AutomationView::GetVoltage()
+{
+	MetTreeData data = { 0.0f };
+	int voltage = 0;
+	if (g1b) {
+		g1b->GetVoltage(&voltage);
+	} else {
+		g_out << "fail to get voltage" << '\n';
+	}
+	data.value[0] = (float)(voltage);
+	return data;
+}
+
+MetTreeData AutomationView::GetOffset()
+{
+	MetTreeData data = { 0.0f };
+	int offset = 0;
+	if (g1b) {
+		g1b->GetOffset(&offset);
+	} else {
+		g_out << "fail to get offset" << '\n';
+	}
+	data.value[0] = (float)(offset);
+	return data;
 }
 
 TimerWorker::TimerWorker(QWidget* parent)

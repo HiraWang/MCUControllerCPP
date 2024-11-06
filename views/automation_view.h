@@ -15,6 +15,12 @@
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
 #include "../widgets/process_unit.h"
+#include "../widgets/tree.h"
+
+struct MetTreeData
+{
+    float value[2];
+};
 
 class TimerWorker : public QObject
 {
@@ -49,6 +55,8 @@ public:
                    DeviceRegloIcc* reglo_icc,
                    QWidget* parent = nullptr);
     virtual ~AutomationView();
+    void ScaleUpSize();
+    void ScaleDownSize();
     SerialCode serial_status;
 
 public slots:
@@ -70,6 +78,12 @@ private:
     void StartPumpChannelNo2();
     void StopPulseGenerator();
     void StopPumpAllChannel();
+    MetTreeData GetRpm();
+    MetTreeData GetDir();
+    MetTreeData GetFreq();
+    MetTreeData GetPw();
+    MetTreeData GetVoltage();
+    MetTreeData GetOffset();
     int w;
     int h;
     int unit_cnt;
@@ -82,7 +96,7 @@ private:
     DeviceRegloIcc* reglo_icc;
     QThread* thread;
     TimerWorker* worker;
-    QVBoxLayout* layout;
+    QHBoxLayout* layout;
     MetProcessUnit** process_unit_list;
     MetProcessUnit* all_process;
     MetLabel* label_name;
@@ -92,10 +106,16 @@ private:
     MetLabel* label_status;
     QLCDNumber* lcd;
     QProgressBar* bar;
+    MetTree* tree;
     MetButton* button_run;
     MetParaList* para_list;
+    QWidget* container_automation;
+    QWidget* container_left;
+    QWidget* container_right;
     std::list<std::string> process_name_list;
+    std::list<std::string> parameter_name_list;
     std::list<void (AutomationView::*)()> process_function_list;
+    std::list<MetTreeData(AutomationView::*)()> parameter_function_list;
 };
 
 #endif

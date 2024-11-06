@@ -8,11 +8,13 @@
 extern std::string CR;
 
 DeviceRegloIcc::DeviceRegloIcc(const wchar_t* port_name,
-						       DWORD baud_rate,
-						       BYTE byte_size,
-						       BYTE stop_bits,
-						       BYTE parity) :
-	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+							   DWORD baud_rate,
+							   BYTE byte_size,
+							   BYTE stop_bits,
+							   BYTE parity) :
+	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity),
+	rpm{ 0, 0 },
+	direction{ false, false }
 {
 
 }
@@ -130,6 +132,7 @@ SerialCode DeviceRegloIcc::Login()
 
 SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 {
+	this->rpm[channel - 1] = rpm;
 	int tmp = (int)roundf(rpm * 100.0f);
 	int rpm_i = (int)(rpm);
 	int rpm_f = (int)(tmp % 100);
@@ -159,8 +162,15 @@ SerialCode DeviceRegloIcc::SetRpm(BYTE channel, float rpm)
 	}
 }
 
+SerialCode DeviceRegloIcc::GetRpm(float* rpm, BYTE channel)
+{
+	*rpm = this->rpm[channel - 1];
+	return SERIAL_OK;
+}
+
 SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 {
+	this->direction[channel - 1] = true;
 	std::string buf = std::to_string(channel) + 'J';
 	g_out << buf << '\n';
 	buf += CR;
@@ -180,6 +190,7 @@ SerialCode DeviceRegloIcc::SetCw(BYTE channel)
 
 SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 {
+	this->direction[channel - 1] = false;
 	std::string buf = std::to_string(channel) + 'K';
 	g_out << buf << '\n';
 	buf += CR;
@@ -195,6 +206,12 @@ SerialCode DeviceRegloIcc::SetCcw(BYTE channel)
 		delete[] cmd;
 		return SERIAL_OK;
 	}
+}
+
+SerialCode DeviceRegloIcc::GetDir(bool* dir, BYTE channel)
+{
+	*dir = this->direction[channel - 1];
+	return SERIAL_OK;
 }
 
 SerialCode DeviceRegloIcc::On(BYTE channel)

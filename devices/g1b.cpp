@@ -8,10 +8,14 @@ std::queue<SerialCode> q_login_ret;
 
 DeviceG1B::DeviceG1B(const wchar_t* port_name,
 					 DWORD baud_rate,
-				     BYTE byte_size,
+					 BYTE byte_size,
 					 BYTE stop_bits,
 					 BYTE parity) :
-	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity)
+	SerialPort(port_name, baud_rate, byte_size, stop_bits, parity),
+	frequency(0),
+	pulse_width(0.0f),
+	voltage(0),
+	offset(0)
 {
 
 }
@@ -218,6 +222,7 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 
 SerialCode DeviceG1B::SetFreq(int freq)
 {
+	this->frequency = freq;
 	int period = (int)(1.0f / (float)freq * 1000000000.0f);
 	//g_out << period << '\n';
 	std::string node("source:");
@@ -238,8 +243,15 @@ SerialCode DeviceG1B::SetFreq(int freq)
 	}
 }
 
+SerialCode DeviceG1B::GetFreq(int* freq)
+{
+	*freq = this->frequency;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetPulseWidth(float pw)
 {
+	this->pulse_width = pw;
 	int pw_ns = (int)((float)pw * 1000.0f);
 	//g_out << pw_ns << '\n';
 	std::string node("source:");
@@ -260,8 +272,15 @@ SerialCode DeviceG1B::SetPulseWidth(float pw)
 	}
 }
 
+SerialCode DeviceG1B::GetPulseWidth(float* pw)
+{
+	*pw = this->pulse_width;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetVoltage(int v)
 {
+	this->voltage = v;
 	std::string node("source:");
 	std::string buf = node + "voltage " + std::to_string(v) + "V";
 	g_out << buf << '\n';
@@ -279,8 +298,15 @@ SerialCode DeviceG1B::SetVoltage(int v)
 	}
 }
 
+SerialCode DeviceG1B::GetVoltage(int* v)
+{
+	*v = this->voltage;
+	return SERIAL_OK;
+}
+
 SerialCode DeviceG1B::SetOffset(int offset)
 {
+	this->offset = offset;
 	std::string node("source:");
 	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
 	g_out << buf << '\n';
@@ -296,6 +322,12 @@ SerialCode DeviceG1B::SetOffset(int offset)
 		delete[] cmd;
 		return SERIAL_OK;
 	}
+}
+
+SerialCode DeviceG1B::GetOffset(int* offset)
+{
+	*offset = this->offset;
+	return SERIAL_OK;
 }
 
 SerialCode DeviceG1B::On()

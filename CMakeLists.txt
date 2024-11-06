@@ -21,6 +21,7 @@ add_executable(MCUControllerCPP)
 target_sources(MCUControllerCPP PRIVATE
 			   main.cpp
 			   MET.rc
+			   images.qrc
 			   "main_window.h" 
 			   "main_window.cpp"
 			   "main_window_ui.h"
@@ -74,7 +75,9 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/slider.h"
 			   "widgets/slider.cpp"
 			   "widgets/tab.h"
-			   "widgets/tab.cpp")
+			   "widgets/tab.cpp"
+			   "widgets/tree.h"
+			   "widgets/tree.cpp")
 
 set(MET_IMAGES ${./images/})
 
