@@ -30,7 +30,6 @@ MonitorView::MonitorView(int w,
 	w(w),
 	h(h),
 	call_analyze(false),
-	upper_widget_h(120),
 	scale_x_interval(0.5f),
 	scale_y_interval(0.2f),
 	para_list(para_list),
@@ -81,7 +80,7 @@ void MonitorView::SetupUi()
 
 	helper = new Helper(HelperType::OSCILLOSCOPE);
 	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
-	canvas = new MetCanvas(helper, width(), height() - upper_widget_h, this);
+	canvas = new MetCanvas(helper, width() - 30, height(), this);
 
 	timer = new QElapsedTimer();
 	ui_timer = new QTimer(this);
@@ -180,7 +179,6 @@ void MonitorView::SetupUi()
 	lcds->setLayout(lcd_layout);
 
 	QWidget* upper_widgets = new QWidget(this);
-	upper_widgets->setFixedHeight(upper_widget_h - 20);
 	QHBoxLayout* upper_layout = new QHBoxLayout();
 	upper_layout->addWidget(scan_button, 0, Qt::AlignLeft);
 	upper_layout->addWidget(plot_info_button, 0, Qt::AlignLeft);
@@ -196,8 +194,9 @@ void MonitorView::SetupUi()
 	upper_widgets->setLayout(upper_layout);
 
 	layout = new QVBoxLayout(this);
+	layout->setContentsMargins(15, 15, 15, 15);
 	layout->addWidget(upper_widgets, 0, Qt::AlignTop);
-	layout->addWidget(canvas, 0, Qt::AlignBottom);
+	layout->addWidget(canvas, 0, { Qt::AlignHCenter, Qt::AlignBottom });
 	layout->addStretch(1);
 	setLayout(layout);
 }
@@ -226,13 +225,13 @@ void MonitorView::Update()
 
 void MonitorView::ScaleUpCanvasSize()
 {
-	canvas->setFixedSize(QSize(width(), height() - upper_widget_h));
+	canvas->setFixedHeight(height());
 	canvas->update();
 }
 
 void MonitorView::ScaleDownCanvasSize()
 {
-	canvas->setFixedSize(QSize(width(), height() - upper_widget_h - 23));
+	canvas->setFixedHeight(height() - 145);
 	canvas->update();
 }
 

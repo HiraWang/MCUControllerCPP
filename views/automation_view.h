@@ -55,6 +55,8 @@ public:
                    DeviceRegloIcc* reglo_icc,
                    QWidget* parent = nullptr);
     virtual ~AutomationView();
+    void ScaleUpSize();
+    void ScaleDownSize();
     SerialCode serial_status;
 
 public slots:
@@ -107,6 +109,9 @@ private:
     MetTree* tree;
     MetButton* button_run;
     MetParaList* para_list;
+    QWidget* container_automation;
+    QWidget* container_left;
+    QWidget* container_right;
     std::list<std::string> process_name_list;
     std::list<std::string> parameter_name_list;
     std::list<void (AutomationView::*)()> process_function_list;

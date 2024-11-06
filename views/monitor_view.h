@@ -50,7 +50,6 @@ private:
     bool call_analyze;
     int w;
     int h;
-    int upper_widget_h;
     float scale_x_interval;
     float scale_y_interval;
     QVBoxLayout* layout;
