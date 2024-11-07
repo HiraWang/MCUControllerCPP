@@ -48,20 +48,22 @@ void MetLoginSubwindow::SetupUi()
 	setWindowFlag(Qt::FramelessWindowHint);
 
 	MetLabelStyle label_style;
-	MetLabel* account_label = new MetLabel(label_style, "Account:", 120, 25, this);
-	MetLabel* password_label = new MetLabel(label_style, "Password:", 120, 25, this);
+	MetLabel* account_label = new MetLabel(label_style, "Account:", 120, WIDGET_H, this);
+	MetLabel* password_label = new MetLabel(label_style, "Password:", 120, WIDGET_H, this);
 
 	MetLineEditStyle line_edit_style;
-	account_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	account_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 	account_edit->setText(account);
-	password_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	password_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 	password_edit->setText(password);
 
 	MetButtonStyle button_style;
-	MetButton* login_button = new MetButton(button_style, "LOGIN", "LOGIN", 80, 25, "", "", this);
+	MetButton* login_button = new MetButton(button_style, "LOGIN", "LOGIN",
+		BUTTON_W, WIDGET_H, "", "", this);
 	connect(login_button, &QPushButton::released, this, &MetLoginSubwindow::Login);
 
-	MetButton* close_button = new MetButton(button_style, "CLOSE", "CLOSE", 80, 25, "", "", this);
+	MetButton* close_button = new MetButton(button_style, "CLOSE", "CLOSE",
+		BUTTON_W, WIDGET_H, "", "", this);
 	connect(close_button, &QPushButton::released, this, &MetLoginSubwindow::Close);
 
 	QHBoxLayout* account_layout = new QHBoxLayout();

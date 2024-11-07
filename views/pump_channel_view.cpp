@@ -41,22 +41,25 @@ void MetPumpChannel::SetupUi()
 	setStyleSheet(style_sheet);
 
 	MetLabelStyle label_style;
-	MetLabel* name_label = new MetLabel(label_style, name, 120, 25, this);
-	MetLabel* rpm_label = new MetLabel(label_style, "Rate:", 120, 25, this);
-	MetLabel* dir_label = new MetLabel(label_style, "Direction:", 120, 25, this);
-	MetLabel* out_label = new MetLabel(label_style, "Pump State:", 120, 25, this);
+	MetLabel* name_label = new MetLabel(label_style, name, 120, WIDGET_H, this);
+	MetLabel* rpm_label = new MetLabel(label_style, "Rate:", 120, WIDGET_H, this);
+	MetLabel* dir_label = new MetLabel(label_style, "Direction:", 120, WIDGET_H, this);
+	MetLabel* out_label = new MetLabel(label_style, "Pump State:", 120, WIDGET_H, this);
 
 	MetLineEditStyle line_edit_style;
-	rpm_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	rpm_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 
 	MetButtonStyle button_style;
-	rpm_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
+	rpm_button = new MetButton(button_style, "SET", "SET", BUTTON_W, WIDGET_H,
+		"", "", this);
 	
 	// status orientated button style
 	MetButtonStyle two_state_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2,
 		COLOR_ON_2, COLOR_OFF_3, COLOR_ON_3);
-	dir_button = new MetButton(two_state_button_style, "CCW", "CW", 80, 25, "", "", this);
-	out_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
+	dir_button = new MetButton(two_state_button_style, "CCW", "CW", BUTTON_W, WIDGET_H,
+		"", "", this);
+	out_button = new MetButton(two_state_button_style, "", "", BUTTON_W, WIDGET_H,
+		"", "", this);
 
 	connect(rpm_button, &QPushButton::released, this,
 		&MetPumpChannel::ToggleRpmButton);

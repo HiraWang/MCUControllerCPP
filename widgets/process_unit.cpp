@@ -22,7 +22,7 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	LoadStyleSheet();
 
 	MetLabelStyle label_style_1(COLOR_BLACK, FONT_SIZE, COLOR_WHITE);
-	label_name = new MetLabel(label_style_1, name, 225, 25, this);
+	label_name = new MetLabel(label_style_1, name, 225, WIDGET_H, this);
 	label_name->setObjectName("process_name");
 	label_name->setStyleSheet("QLabel#process_name {"
 							  "background-color: " + QString(COLOR_DEEP_GRAY) + ";"
@@ -33,18 +33,18 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 							  "}");
 
 	MetLabelStyle label_style_2;
-	label_time = new MetLabel(label_style_2, time, 120, 25, this);
-	label_unit = new MetLabel(label_style_2, "s", 20, 25, this);
-	label_status = new MetLabel(label_style_2, "", 25, 25, this);
+	label_time = new MetLabel(label_style_2, time, 120, WIDGET_H, this);
+	label_unit = new MetLabel(label_style_2, "s", 20, WIDGET_H, this);
+	label_status = new MetLabel(label_style_2, "", WIDGET_H, WIDGET_H, this);
 
 	MetLineEditStyle line_edit_style;
-	time_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	time_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 
 	MetButtonStyle button_style;
-	button_minus_one = new MetButton(button_style, "MINUS", "MINUS", 25, 25,
+	button_minus_one = new MetButton(button_style, "MINUS", "MINUS", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)), this);
-	button_plus_one = new MetButton(button_style, "PLUS", "PLUS", 25, 25,
+	button_plus_one = new MetButton(button_style, "PLUS", "PLUS", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)), this);
 	
@@ -65,8 +65,8 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	}
 
 	lcd = new QLCDNumber();
-	lcd->setFixedWidth(80);
-	lcd->setFixedHeight(25);
+	lcd->setFixedWidth(BUTTON_W);
+	lcd->setFixedHeight(WIDGET_H);
 	lcd->setStyleSheet(style_sheet_lcd);
 	lcd->display(0);
 

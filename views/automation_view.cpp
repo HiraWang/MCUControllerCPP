@@ -135,7 +135,8 @@ void AutomationView::SetupUi()
 										  "}");
 
 	MetButtonStyle button_style;
-	button_run = new MetButton(button_style, "RUN", "STOP", 80, 80, "", "", this);
+	button_run = new MetButton(button_style, "RUN", "STOP", BUTTON_W, BUTTON_W,
+		"", "", this);
 	
 	connect(button_run, &QPushButton::released, this,
 		&AutomationView::ToggleRunButton);

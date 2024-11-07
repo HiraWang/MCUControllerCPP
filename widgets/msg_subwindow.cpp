@@ -43,7 +43,8 @@ void MetMsgSubwindow::SetupUi()
 	label.setStyleSheet(style_sheet_label);
 
 	MetButtonStyle button_style;
-	MetButton button = MetButton(button_style, "OK", "OK", 80, 80, "", "", this);
+	MetButton button = MetButton(button_style, "OK", "OK", BUTTON_W, BUTTON_W,
+		"", "", this);
 	connect(&button, &QPushButton::released, this, &QDialog::close);
 
 	layout = new QVBoxLayout(this);

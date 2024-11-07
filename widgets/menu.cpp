@@ -34,7 +34,7 @@ void MetMenu::SetupUi()
 	for (int id = 0; id < para_list->size; id++) {
 		layout_list[id] = new QHBoxLayout();
 		MetLineEditStyle line_edit_style;
-		line_edit_list[id] = new MetLineEdit(line_edit_style, 100, 25, this);
+		line_edit_list[id] = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 		AddAttribute(para_list->list[id], layout_list[id],
 			line_edit_list[id], para_list->list[id].is_editable);
 		layout->addItem(layout_list[id]);
@@ -49,7 +49,7 @@ void MetMenu::AddAttribute(MetPara para,
 {
 	MetLabelStyle label_style(COLOR_NONE, FONT_SIZE, FONT_COLOR, "");
 	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
-		200, 25, this);
+		200, WIDGET_H, this);
 	if (para.str.empty()) {
 		line_edit->setText(QString::fromStdString(std::to_string(para.num)));
 	} else {

@@ -63,34 +63,40 @@ void G1BView::SetupUi()
 	setFixedHeight(h);
 
 	MetLabelStyle label_style;
-	MetLabel* freq_label = new MetLabel(label_style, "Freq:", 200, 25, this);
-	MetLabel* pw_label = new MetLabel(label_style, "Pulse Width:", 200, 25, this);
-	MetLabel* voltage_label = new MetLabel(label_style, "Voltage:", 200, 25, this);
-	MetLabel* offset_label = new MetLabel(label_style, "Offset:", 200, 25, this);
-	MetLabel* out_label = new MetLabel(label_style, "Pulse State:", 200, 25, this);
+	MetLabel* freq_label = new MetLabel(label_style, "Freq:", 200, WIDGET_H, this);
+	MetLabel* pw_label = new MetLabel(label_style, "Pulse Width:", 200, WIDGET_H, this);
+	MetLabel* voltage_label = new MetLabel(label_style, "Voltage:", 200, WIDGET_H, this);
+	MetLabel* offset_label = new MetLabel(label_style, "Offset:", 200, WIDGET_H, this);
+	MetLabel* out_label = new MetLabel(label_style, "Pulse State:", 200, WIDGET_H, this);
 
 	MetLineEditStyle line_edit_style;
-	freq_edit = new MetLineEdit(line_edit_style, 100, 25, this);
-	pw_edit = new MetLineEdit(line_edit_style, 100, 25, this);
-	voltage_edit = new MetLineEdit(line_edit_style, 100, 25, this);
-	offset_edit = new MetLineEdit(line_edit_style, 100, 25, this);
+	freq_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
+	pw_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
+	voltage_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
+	offset_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 
-	MetLabel* freq_unit = new MetLabel(label_style, "Hz", 120, 25, this);
-	MetLabel* pw_unit = new MetLabel(label_style, "us", 120, 25, this);
-	MetLabel* voltage_unit = new MetLabel(label_style, "V", 120, 25, this);
-	MetLabel* offset_unit = new MetLabel(label_style, "V", 120, 25, this);
+	MetLabel* freq_unit = new MetLabel(label_style, "Hz", 120, WIDGET_H, this);
+	MetLabel* pw_unit = new MetLabel(label_style, "us", 120, WIDGET_H, this);
+	MetLabel* voltage_unit = new MetLabel(label_style, "V", 120, WIDGET_H, this);
+	MetLabel* offset_unit = new MetLabel(label_style, "V", 120, WIDGET_H, this);
 
 	MetButtonStyle button_style;
-	freq_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
-	pw_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
-	voltage_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
-	offset_button = new MetButton(button_style, "SET", "SET", 80, 25, "", "", this);
-	img_button = new MetButton(button_style, "IMG", "IMG", 80, 25, "", "", this);
+	freq_button = new MetButton(button_style, "SET", "SET", BUTTON_W, WIDGET_H,
+		"", "", this);
+	pw_button = new MetButton(button_style, "SET", "SET", BUTTON_W, WIDGET_H,
+		"", "", this);
+	voltage_button = new MetButton(button_style, "SET", "SET", BUTTON_W, WIDGET_H,
+		"", "", this);
+	offset_button = new MetButton(button_style, "SET", "SET", BUTTON_W, WIDGET_H,
+		"", "", this);
+	img_button = new MetButton(button_style, "IMG", "IMG", BUTTON_W, WIDGET_H,
+		"", "", this);
 
 	// status orientated button style
 	MetButtonStyle two_state_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2,
 		COLOR_ON_2, COLOR_OFF_3, COLOR_ON_3);
-	out_button = new MetButton(two_state_button_style, "", "", 80, 25, "", "", this);
+	out_button = new MetButton(two_state_button_style, "", "", BUTTON_W, WIDGET_H,
+		"", "", this);
 
 	connect(freq_button, &QPushButton::released, this,
 		&G1BView::ToggleFreqButton);

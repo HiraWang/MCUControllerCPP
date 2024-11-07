@@ -87,37 +87,37 @@ void MonitorView::SetupUi()
 	connect(ui_timer, &QTimer::timeout, this, &MonitorView::Update);
 
 	MetButtonStyle button_style;
-	scan_button = new MetButton(button_style, "", "", 80, 80,
+	scan_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_SCAN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)), this);
-	scale_reset_button = new MetButton(button_style, "", "", 25, 25,
+	scale_reset_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
-	scale_x_plus_button = new MetButton(button_style, "", "", 25, 25,
+	scale_x_plus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)), this);
-	scale_y_plus_button = new MetButton(button_style, "", "", 25, 25,
+	scale_y_plus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)), this);
-	scale_x_minus_button = new MetButton(button_style, "", "", 25, 25,
+	scale_x_minus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)), this);
-	scale_y_minus_button = new MetButton(button_style, "", "", 25, 25,
+	scale_y_minus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)), this);
-	plot_info_button = new MetButton(button_style, "", "", 80, 80,
+	plot_info_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)), this);
-	render_button = new MetButton(button_style, "", "", 80, 80,
+	render_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)), this);
-	analyze_button = new MetButton(button_style, "", "", 80, 80,
+	analyze_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)), this);
-	buffer_dir_button = new MetButton(button_style, "", "", 80, 80,
+	buffer_dir_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
-	result_dir_button = new MetButton(button_style, "", "", 80, 80,
+	result_dir_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
