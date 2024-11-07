@@ -7,6 +7,8 @@
 #include <QPaintEvent>
 #include <QPen>
 
+#include "utility.h"
+
 typedef enum {
     PULSE_CHART = 0,
     OSCILLOSCOPE,
@@ -62,6 +64,7 @@ private:
     size_t count;
     int buffer_size;
     int data_offset;
+    float data_previous[MONITOR_CHUNK_SIZE];
     float data_first;
     float data_max;
     float data_min;

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <fstream>
 
-#include "utility.h"
-
 extern std::string MONITOR_BUFFER_DIR;
 
 Helper::Helper(HelperType type) : 
@@ -31,6 +29,8 @@ Helper::Helper(HelperType type) :
     voltage = 0;
     offset = 0;
     show_plot_info = true;
+
+    memset(data_previous, 0, MONITOR_CHUNK_SIZE * sizeof(float));
 }
 
 void Helper::SetExampleInfo(int elapsed)
@@ -313,6 +313,16 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
             int x2 = i * data_interval;
             float y1 = height_f - (data[i - 1] * voltage_interval * scale_y);
             float y2 = height_f - (data[i] * voltage_interval * scale_y);
+            painter->drawLine(x1, y1, x2, y2);
+            data_previous[i] = data[i];
+        }
+    } else {
+        // draw previous data
+        for (int i = 1; i < (int)(data_count); i++) {
+            int x1 = i * data_interval - data_interval;
+            int x2 = i * data_interval;
+            float y1 = height_f - (data_previous[i - 1] * voltage_interval * scale_y);
+            float y2 = height_f - (data_previous[i] * voltage_interval * scale_y);
             painter->drawLine(x1, y1, x2, y2);
         }
     }
