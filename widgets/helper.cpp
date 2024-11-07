@@ -220,7 +220,7 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     float data_first_current_round = 0.0f;
 
     // buffer and data
-    unsigned char buf[MONITOR_BUFFER_SIZE];
+    unsigned char buf[MONITOR_BUFFER_SIZE] = { 0 };
     const int buf_offset = 2 * data_offset;
     const int buf_size = MONITOR_BUFFER_SIZE;
     const int chunk_size = MONITOR_CHUNK_SIZE;
