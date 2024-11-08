@@ -62,6 +62,7 @@ std::string GetSerialCodeInfo(SerialCode code);
 void HideConsole();
 void ShowConsole();
 void ResizeConsole(int w, int h);
+void ListComPorts();
 void RemoveAllFilesFromDir(QString path);
 void ShowSerialCodeInfo(SerialCode code);
 void FFT(int size, std::complex<double>* x);

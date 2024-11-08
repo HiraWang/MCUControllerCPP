@@ -6,7 +6,8 @@
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
-    // set default font
+    ListComPorts();
+
     QFont font("Arial");
     app.setFont(font);
 

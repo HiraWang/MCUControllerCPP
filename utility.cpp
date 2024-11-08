@@ -1,5 +1,6 @@
 #include "utility.h"
 
+#include <atlstr.h>
 #include <direct.h>
 #include <Windows.h>
 #include <fstream>
@@ -105,8 +106,34 @@ void ResizeConsole(int w, int h)
     if (w <= 100 || h <= 100) {
         return;
     }
-    g_out << "resize console" << '\n';
+    //g_out << "resize console" << '\n';
     SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
+}
+
+void ListComPorts()
+{
+    HANDLE handle;
+    CString file_name_tmp;
+    bool no_com_ports = true;
+
+    for (int i = 1; i < 20; i++) {
+        std::string common_base_name = "\\\\.\\COM";
+        common_base_name += std::to_string(i);
+        file_name_tmp = common_base_name.c_str();
+        LPCTSTR file_name_lp = file_name_tmp;
+
+        handle = CreateFileW(file_name_lp, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
+        if (handle != INVALID_HANDLE_VALUE) {
+            std::wstring ws(file_name_lp);
+            g_out << std::string(ws.begin(), ws.end()) << '\n';
+            CloseHandle(handle);
+            no_com_ports = false;
+        }
+    }
+
+    if (no_com_ports) {
+        g_out << "No serial port" << '\n';
+    }
 }
 
 void RemoveAllFilesFromDir(QString path)
