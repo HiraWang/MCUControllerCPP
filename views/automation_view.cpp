@@ -14,6 +14,8 @@ AutomationView::AutomationView(int w,
                                QWidget* parent) :
 	w(w),
 	h(h),
+	h_delta_1(10),
+	h_delta_2(32),
 	serial_status(SERIAL_FAIL),
 	g1b(g1b),
 	reglo_icc(reglo_icc),
@@ -163,7 +165,7 @@ void AutomationView::SetupUi()
 	container_right = new QWidget(this);
 	container_left->setObjectName("pulse_gen_container");
 	container_left->setFixedWidth((width() - 750) / 2);
-	container_left->setFixedHeight(height()- 9);
+	container_left->setFixedHeight(height()- h_delta_1);
 	container_left->setStyleSheet("QWidget#pulse_gen_container {"
 									   "background-color: " + QString(COLOR_GRAY) + ";"
 									   "border-radius: 10px;"
@@ -172,7 +174,7 @@ void AutomationView::SetupUi()
 	container_automation->setFixedHeight(height());
 	container_right->setObjectName("pump_container");
 	container_right->setFixedWidth((width() - 750) / 2);
-	container_right->setFixedHeight(height() - 9);
+	container_right->setFixedHeight(height() - h_delta_1);
 	container_right->setStyleSheet("QWidget#pump_container {"
 								  "background-color: " + QString(COLOR_GRAY) + ";"
 								  "border-radius: 10px;"
@@ -186,7 +188,7 @@ void AutomationView::SetupUi()
 	layout_right->setContentsMargins(0, 0, 0, 0);
 
 	MetTreeStyle tree_style;
-	tree = new MetTree(tree_style, (width() - 750) / 2, height() - 9, this);
+	tree = new MetTree(tree_style, (width() - 750) / 2, height() - h_delta_1, this);
 	layout_left->addWidget(tree, 0, Qt::AlignTop);
 	container_left->setLayout(layout_left);
 
@@ -284,21 +286,21 @@ void AutomationView::ToggleRunButton()
 
 void AutomationView::ScaleUpSize()
 {
-	container_right->setFixedHeight(height() - 9);
+	container_right->setFixedHeight(height() - h_delta_1);
 	container_right->update();
-	container_left->setFixedHeight(height() - 9);
+	container_left->setFixedHeight(height() - h_delta_1);
 	container_left->update();
-	tree->setFixedHeight(height() - 9);
+	tree->setFixedHeight(height() - h_delta_1);
 	tree->update();
 }
 
 void AutomationView::ScaleDownSize()
 {
-	container_right->setFixedHeight(height() - 30);
+	container_right->setFixedHeight(height() - h_delta_2);
 	container_right->update();
-	container_left->setFixedHeight(height() - 30);
+	container_left->setFixedHeight(height() - h_delta_2);
 	container_left->update();
-	tree->setFixedHeight(height() - 30);
+	tree->setFixedHeight(height() - h_delta_2);
 	tree->update();
 }
 

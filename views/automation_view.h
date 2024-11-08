@@ -86,6 +86,8 @@ private:
     MetTreeData GetOffset();
     int w;
     int h;
+    int h_delta_1;
+    int h_delta_2;
     int unit_cnt;
     int time_tot;
     QString style_sheet;

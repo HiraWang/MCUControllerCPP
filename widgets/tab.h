@@ -10,11 +10,11 @@
 class MetTabStyle
 {
 public:
-	MetTabStyle(QString bkg_color = COLOR_LIGHT_GRAY,
-			    QString hover_bkg_color = COLOR_GRAY,
+	MetTabStyle(QString bkg_color = COLOR_GRAY,
+			    QString hover_bkg_color = COLOR_DEEP_GRAY,
 				QString selection_bkg_color = COLOR_BLACK,
 			    QString font_size = FONT_SIZE,
-			    QString font_color = FONT_COLOR);
+			    QString font_color = COLOR_LIGHT_GRAY);
 	virtual ~MetTabStyle();
 
 	QString bkg_color;
