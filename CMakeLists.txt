@@ -68,6 +68,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/loading.cpp"
 			   "widgets/login_subwindow.h"
 			   "widgets/login_subwindow.cpp"
+			   "widgets/menu.h"
+			   "widgets/menu.cpp"
 			   "widgets/msg_subwindow.h"
 			   "widgets/msg_subwindow.cpp"
 			   "widgets/process_unit.h"
