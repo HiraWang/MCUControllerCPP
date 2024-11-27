@@ -2,6 +2,7 @@
 #define MENU_H
 
 #include <QMenu>
+#include <QMouseEvent>
 #include <QVBoxLayout>
 
 #include "utility.h"
@@ -13,6 +14,9 @@ class MetMenu : public QMenu
 public:
     MetMenu(QWidget* parent = nullptr);
     virtual ~MetMenu();
+
+protected:
+    virtual void mouseReleaseEvent(QMouseEvent* e) override;
 
 private:
     void SetupUi();

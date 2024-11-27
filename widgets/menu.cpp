@@ -45,3 +45,13 @@ void MetMenu::LoadStyleSheet()
 		"background-color: " + QString(COLOR_WHITE) + ";"
 		"}";
 }
+
+void MetMenu::mouseReleaseEvent(QMouseEvent* e)
+{
+	QAction* action = this->actionAt(e->pos());
+	if (action) {
+		action->activate(QAction::Trigger);
+	} else {
+		QMenu::mouseReleaseEvent(e);
+	}
+}
