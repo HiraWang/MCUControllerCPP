@@ -15,6 +15,9 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     virtual ~MainWindow();
 
+protected:
+    void mousePressEvent(QMouseEvent* event);
+
 private slots:
     void ToggleExitButton();
     void ToggleWindowButton();

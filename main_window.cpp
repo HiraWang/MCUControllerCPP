@@ -1,5 +1,6 @@
 ﻿#include "main_window.h"
 
+#include <QMessageBox>
 #include <QPainter>
 #include <QStyleOption>
 
@@ -8,6 +9,7 @@
 #include "views/g1b_view.h"
 #include "views/monitor_view.h"
 #include "views/reglo_icc_view.h"
+#include "widgets/menu.h"
 #include "widgets/msg_subwindow.h"
 
 extern std::string MONITOR_RESULT_DIR;
@@ -63,6 +65,22 @@ MainWindow::~MainWindow()
 {
     delete ui;
 	delete para_list;
+}
+
+void MainWindow::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		MetMenu menu;
+		QAction* act = menu.addAction("C++");
+		connect(act, &QAction::triggered, this, [=]()
+			{
+				QMessageBox::information(this, "title", "C++");
+			});
+		menu.addAction("Java");
+		menu.addAction("Python");
+		menu.exec(QCursor::pos());
+	}
 }
 
 void MainWindow::ToggleExitButton()
