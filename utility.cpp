@@ -18,6 +18,7 @@ std::string IMAGE_MET_ERROR = "\\images\\Error.png";
 std::string IMAGE_MET_EXIT = "\\images\\Exit.png";
 std::string IMAGE_MET_FULL_SCREEN = "\\images\\FullScreen.png";
 std::string IMAGE_MET_ICO = "\\images\\MET.ico";
+std::string IMAGE_MET_INFO = "\\images\\Info.png";
 std::string IMAGE_MET_IMAGE = "\\images\\Image.png";
 std::string IMAGE_MET_LEFT = "\\images\\Left.png";
 std::string IMAGE_MET_LOAD = "\\images\\Load.png";

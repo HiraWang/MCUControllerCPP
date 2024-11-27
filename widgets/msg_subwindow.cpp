@@ -9,10 +9,13 @@
 #include "../widgets/button.h"
 
 extern std::string IMAGE_MET_ERROR;
+extern std::string IMAGE_MET_INFO;
 
 MetMsgSubwindow::MetMsgSubwindow(QString message,
+								 MsgType type,
 								 QWidget* parent) :
 	message(message),
+	type(type),
 	QDialog(parent)
 {
 	g_out << message.toStdString() << '\n';
@@ -32,7 +35,13 @@ void MetMsgSubwindow::SetupUi()
 	setStyleSheet(style_sheet_dialog);
 	setWindowFlag(Qt::FramelessWindowHint);
 
-	QPixmap pixmap = QPixmap(QString::fromStdString(GetAbsPath(IMAGE_MET_ERROR)));
+	QPixmap pixmap;
+	g_out << type << this->type << '\n';
+	if (type == MSG_INFO) {
+		pixmap = QPixmap(QString::fromStdString(GetAbsPath(IMAGE_MET_INFO)));
+	} else if (type == MSG_ERROR) {
+		pixmap = QPixmap(QString::fromStdString(GetAbsPath(IMAGE_MET_ERROR)));
+	}
 
 	QLabel icon;
 	icon.setScaledContents(true);

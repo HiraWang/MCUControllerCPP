@@ -75,7 +75,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		QAction* act = menu.addAction("C++");
 		connect(act, &QAction::triggered, this, [=]()
 			{
-				MetMsgSubwindow("test", this);
+				MetMsgSubwindow("test", MSG_INFO, this);
 			});
 		menu.addAction("Java");
 		menu.addAction("Python");
