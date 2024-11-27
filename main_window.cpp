@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget* parent) :
 	}
 
 	// set menu with para list
-	ui->upper_view->menu = new MetMenu(para_list, this);
+	ui->upper_view->menu = new MetDialog(para_list, this);
 }
 
 MainWindow::~MainWindow()

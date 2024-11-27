@@ -1,10 +1,10 @@
-#include "menu.h"
+#include "dialog.h"
 
 #include "color.h"
 #include "label.h"
 
-MetMenu::MetMenu(MetParaList* para_list,
-				 QWidget* parent) :
+MetDialog::MetDialog(MetParaList* para_list,
+					 QWidget* parent) :
 	para_list(para_list),
 	QDialog(parent)
 {
@@ -13,13 +13,13 @@ MetMenu::MetMenu(MetParaList* para_list,
 	SetupUi();
 }
 
-MetMenu::~MetMenu()
+MetDialog::~MetDialog()
 {
 	free(layout_list);
 	free(line_edit_list);
 }
 
-void MetMenu::SetupUi()
+void MetDialog::SetupUi()
 {
 	setWindowTitle("Menu");
 	setFixedWidth(300);
@@ -42,10 +42,10 @@ void MetMenu::SetupUi()
 	setLayout(layout);
 }
 
-void MetMenu::AddAttribute(MetPara para,
-						   QHBoxLayout* layout,
-					       MetLineEdit* line_edit,
-						   bool is_editable)
+void MetDialog::AddAttribute(MetPara para,
+						     QHBoxLayout* layout,
+					         MetLineEdit* line_edit,
+						     bool is_editable)
 {
 	MetLabelStyle label_style(COLOR_NONE, FONT_SIZE, FONT_COLOR, "");
 	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
@@ -61,7 +61,7 @@ void MetMenu::AddAttribute(MetPara para,
 	layout->addWidget(line_edit, 0, Qt::AlignRight);
 }
 
-void MetMenu::UpdateAttributes()
+void MetDialog::UpdateAttributes()
 {
 	for (int id = 0; id < para_list->size; id++) {
 		MetPara para = para_list->list[id];
@@ -73,12 +73,12 @@ void MetMenu::UpdateAttributes()
 	}
 }
 
-void MetMenu::Show()
+void MetDialog::Show()
 {
 	QDialog::show();
 }
 
-void MetMenu::Close()
+void MetDialog::Close()
 {
 	QDialog::close();
 }

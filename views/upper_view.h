@@ -7,8 +7,8 @@
 #include "../utility.h"
 #include "../widgets/button.h"
 #include "../widgets/combo_box.h"
+#include "../widgets/dialog.h"
 #include "../widgets/label.h"
-#include "../widgets/menu.h"
 
 class UpperView : public QWidget
 {
@@ -17,7 +17,7 @@ class UpperView : public QWidget
 public:
     UpperView(QWidget* parent = nullptr);
     virtual ~UpperView();
-    MetMenu* menu;
+    MetDialog* menu;
     MetComboBox* combo_box;
     MetButton* exit_button;
     MetButton* window_button;

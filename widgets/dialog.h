@@ -1,5 +1,5 @@
-#ifndef MENU_H
-#define MENU_H
+#ifndef DIALOG_H
+#define DIALOG_H
 
 #include <QDialog>
 #include <QHBoxLayout>
@@ -8,14 +8,14 @@
 #include "utility.h"
 #include "../widgets/line_edit.h"
 
-class MetMenu : public QDialog
+class MetDialog : public QDialog
 {
     Q_OBJECT // enable meta object abilities
 
 public:
-    MetMenu(MetParaList* para_list,
-            QWidget* parent = nullptr);
-    virtual ~MetMenu();
+    MetDialog(MetParaList* para_list,
+              QWidget* parent = nullptr);
+    virtual ~MetDialog();
     void Show();
     void Close();
     void UpdateAttributes();
