@@ -36,7 +36,6 @@ void MetMsgSubwindow::SetupUi()
 	setWindowFlag(Qt::FramelessWindowHint);
 
 	QPixmap pixmap;
-	g_out << type << this->type << '\n';
 	if (type == MSG_INFO) {
 		pixmap = QPixmap(QString::fromStdString(GetAbsPath(IMAGE_MET_INFO)));
 	} else if (type == MSG_ERROR) {
