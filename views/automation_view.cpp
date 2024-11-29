@@ -263,6 +263,26 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 				menu_ptr->close();
 			});
 
+		QAction* act_plus_1_minute = menu.addAction("Plus 1 minute");
+		connect(act_plus_1_minute, &QAction::triggered, this, [=]()
+			{
+				for (int i = 0; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() + 60;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QAction* act_minus_1_minute = menu.addAction("Minus 1 minute");
+		connect(act_minus_1_minute, &QAction::triggered, this, [=]()
+			{
+				for (int i = 0; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() - 60;
+					if (time < 0)
+						time = 0;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
 		menu.exec(QCursor::pos());
 	}
 }
