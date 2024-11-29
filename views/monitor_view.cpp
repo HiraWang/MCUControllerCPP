@@ -222,6 +222,8 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 				MetMsgSubwindow(msg, MSG_INFO, this);
 			});
 
+		menu.addSeparator();
+
 		QIcon icon_zoom_in = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_IN)));
 		QAction* act_zoom_in = menu.addAction(icon_zoom_in, "Zoom in");
 		connect(act_zoom_in, &QAction::triggered, this, [=]()
@@ -237,6 +239,8 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 				ToggleScaleXMinusButton();
 				ToggleScaleYMinusButton();
 			});
+
+		menu.addSeparator();
 
 		QIcon icon_render = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)));
 		QAction* act_render = menu.addAction(icon_render, "Screen shot");
