@@ -75,12 +75,14 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 	if (event->button() == Qt::RightButton)
 	{
 		MetMenu menu;
+		MetMenu* menu_ptr = &menu;
 
 		QIcon icon_dialog = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)));
 		QAction* act_dialog = menu.addAction(icon_dialog, "Show dialog");
 		connect(act_dialog, &QAction::triggered, this, [=]()
 			{
 				ToggleMenuButton();
+				menu_ptr->close();
 			});
 
 		QIcon icon_console = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)));
@@ -88,6 +90,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		connect(act_console, &QAction::triggered, this, [=]()
 			{
 				ToggleConsoleButton();
+				menu_ptr->close();
 			});
 
 		QIcon icon_result = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)));
@@ -95,6 +98,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		connect(act_result, &QAction::triggered, this, [=]()
 			{
 				ToggleResultDirButton();
+				menu_ptr->close();
 			});
 
 		menu.exec(QCursor::pos());

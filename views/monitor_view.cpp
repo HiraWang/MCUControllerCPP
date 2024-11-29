@@ -209,6 +209,7 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 	if (event->button() == Qt::RightButton)
 	{
 		MetMenu menu;
+		MetMenu* menu_ptr = &menu;
 
 		QAction* act_show_count = menu.addAction("Show count");
 		connect(act_show_count, &QAction::triggered, this, [=]()
@@ -227,7 +228,7 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 		QIcon icon_zoom_in = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_IN)));
 		QAction* act_zoom_in = menu.addAction(icon_zoom_in, "Zoom in");
 		connect(act_zoom_in, &QAction::triggered, this, [=]()
-			{
+			{	
 				ToggleScaleXPlusButton();
 				ToggleScaleYPlusButton();
 			});
@@ -244,8 +245,12 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 
 		QIcon icon_render = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)));
 		QAction* act_render = menu.addAction(icon_render, "Screen shot");
-		connect(act_render, &QAction::triggered, this, &MonitorView::ToggleRenderButton);
-		
+		connect(act_render, &QAction::triggered, this, [=]()
+			{
+				ToggleRenderButton();
+				menu_ptr->close();
+			});
+
 		menu.exec(QCursor::pos());
 	}
 }
