@@ -12,6 +12,9 @@
 #include "widgets/menu.h"
 #include "widgets/msg_subwindow.h"
 
+extern std::string IMAGE_MET_CONSOLE;
+extern std::string IMAGE_MET_MENU;
+extern std::string IMAGE_MET_RESULT;
 extern std::string MONITOR_RESULT_DIR;
 
 MainWindow::MainWindow(QWidget* parent) : 
@@ -72,13 +75,28 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 	if (event->button() == Qt::RightButton)
 	{
 		MetMenu menu;
-		QAction* act = menu.addAction("C++");
-		connect(act, &QAction::triggered, this, [=]()
+
+		QIcon icon_dialog = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)));
+		QAction* act_dialog = menu.addAction(icon_dialog, "Show dialog");
+		connect(act_dialog, &QAction::triggered, this, [=]()
 			{
-				MetMsgSubwindow("test", MSG_INFO, this);
+				ToggleMenuButton();
 			});
-		menu.addAction("Java");
-		menu.addAction("Python");
+
+		QIcon icon_console = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)));
+		QAction* act_console = menu.addAction(icon_console, "Show console");
+		connect(act_console, &QAction::triggered, this, [=]()
+			{
+				ToggleConsoleButton();
+			});
+
+		QIcon icon_result = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)));
+		QAction* act_result = menu.addAction(icon_result, "Result directory");
+		connect(act_result, &QAction::triggered, this, [=]()
+			{
+				ToggleResultDirButton();
+			});
+
 		menu.exec(QCursor::pos());
 	}
 }
