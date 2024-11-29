@@ -247,7 +247,7 @@ void MainWindow::TogglePowerButton()
 		button->SetButtonPressed();
 		// add pages to tab widget
 		int w = width() - 25;
-		int h = 550;
+		int h = height() - 170;
 		if (current_device == Device::AUTOMATION) {
 			ui->bottom_view->g1b_view = new G1BView(w, h,
 				para_list, ui->bottom_view);
