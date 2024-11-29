@@ -3,6 +3,7 @@
 
 #include <QMenu>
 #include <QMouseEvent>
+#include <QProxyStyle>
 #include <QVBoxLayout>
 
 #include "utility.h"
@@ -23,6 +24,12 @@ private:
     void LoadStyleSheet();
     QString style_sheet;
     QVBoxLayout* layout;
+};
+
+class MetMenuCustomStyle : public QProxyStyle
+{
+public:
+    virtual int pixelMetric(PixelMetric metric, const QStyleOption* option, const QWidget* widget) const;
 };
 
 #endif

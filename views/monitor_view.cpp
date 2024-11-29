@@ -21,6 +21,8 @@ extern std::string IMAGE_MET_PROCESS;
 extern std::string IMAGE_MET_RESULT;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
+extern std::string IMAGE_MET_ZOOM_IN;
+extern std::string IMAGE_MET_ZOOM_OUT;
 extern std::string MONITOR_BUFFER_DIR;
 extern std::string MONITOR_RESULT_DIR;
 
@@ -220,23 +222,26 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 				MetMsgSubwindow(msg, MSG_INFO, this);
 			});
 
-		QAction* act_zoom_in = menu.addAction("Zoom in");
+		QIcon icon_zoom_in = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_IN)));
+		QAction* act_zoom_in = menu.addAction(icon_zoom_in, "Zoom in");
 		connect(act_zoom_in, &QAction::triggered, this, [=]()
 			{
 				ToggleScaleXPlusButton();
 				ToggleScaleYPlusButton();
 			});
 
-		QAction* act_zoom_out = menu.addAction("Zoom out");
+		QIcon icon_zoom_out = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_OUT)));
+		QAction* act_zoom_out = menu.addAction(icon_zoom_out, "Zoom out");
 		connect(act_zoom_out, &QAction::triggered, this, [=]()
 			{
 				ToggleScaleXMinusButton();
 				ToggleScaleYMinusButton();
 			});
 
-		QAction* act_render = menu.addAction("Screen shot");
+		QIcon icon_render = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)));
+		QAction* act_render = menu.addAction(icon_render, "Screen shot");
 		connect(act_render, &QAction::triggered, this, &MonitorView::ToggleRenderButton);
-
+		
 		menu.exec(QCursor::pos());
 	}
 }

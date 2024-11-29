@@ -34,6 +34,8 @@ std::string IMAGE_MET_RIGHT = "\\images\\Right.png";
 std::string IMAGE_MET_SCAN = "\\images\\Scan.png";
 std::string IMAGE_MET_STOP = "\\images\\Stop.png";
 std::string IMAGE_MET_UP = "\\images\\Up.png";
+std::string IMAGE_MET_ZOOM_IN = "\\images\\ZoomIn.png";
+std::string IMAGE_MET_ZOOM_OUT = "\\images\\ZoomOut.png";
 
 std::string MONITOR_BUFFER_DIR = "buffer";
 std::string MONITOR_RESULT_DIR = "result";

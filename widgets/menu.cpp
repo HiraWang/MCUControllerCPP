@@ -21,6 +21,8 @@ void MetMenu::SetupUi()
 {
 	setFixedWidth(200);
 	setStyleSheet(style_sheet);
+	MetMenuCustomStyle* style = new MetMenuCustomStyle();
+	setStyle(style);
 }
 
 void MetMenu::LoadStyleSheet()
@@ -30,11 +32,12 @@ void MetMenu::LoadStyleSheet()
 		"background-color: " + QString(COLOR_GRAY) + ";"
 		"border: 2px solid black;"
 		"border-radius: 5px;"
-		"font: bold " + QString(FONT_SIZE) + ";"
+		"font: 14px;"
 		"color: " + QString(FONT_COLOR) + ";"
 		"}"
 		"QMenu::item {"
-		"padding: 5px 10px 5px 10px;"
+		"height: 20px;"
+		"padding: 5px 0px 5px 10px;"
 		"border-radius: 5px;"
 		"}"
 		"QMenu::item:hover {"
@@ -54,4 +57,12 @@ void MetMenu::mouseReleaseEvent(QMouseEvent* e)
 	} else {
 		QMenu::mouseReleaseEvent(e);
 	}
+}
+
+int MetMenuCustomStyle::pixelMetric(PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
+{
+	if (metric == QStyle::PM_SmallIconSize) {
+		return 24;
+	}
+	return QProxyStyle::pixelMetric(metric, option, widget);
 }
