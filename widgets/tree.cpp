@@ -1,5 +1,7 @@
 #include "tree.h"
 
+#include "menu.h"
+
 MetTree::MetTree(MetTreeStyle style,
                  int w,
                  int h,
@@ -251,6 +253,40 @@ void MetTree::LoadStyleSheet()
         "QScrollBar::add-line:horizontal:pressed {"
         "background-color: " + QString(COLOR_DEEP_GRAY) + ";"
         "}";
+}
+
+void MetTree::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::RightButton)
+    {
+        MetMenu menu;
+        MetMenu* menu_ptr = &menu;
+
+        QTreeWidgetItemIterator it(this);
+        QAction* act_run;
+        if ((*it)->isExpanded()) {
+            act_run = menu.addAction("Fold");
+        } else {
+            act_run = menu.addAction("Expand");
+        }
+
+        connect(act_run, &QAction::triggered, this, [=]()
+            {
+                QTreeWidgetItemIterator it(this);
+                while (*it) {
+                    if ((*it)->isExpanded()) {
+                        (*it)->setExpanded(false);
+                    } else {
+                        (*it)->setExpanded(true);
+                    }
+                    ++it;
+                }
+
+                menu_ptr->close();
+            });
+
+        menu.exec(QCursor::pos());
+    }
 }
 
 MetTreeStyle::MetTreeStyle(QString bkg_color,

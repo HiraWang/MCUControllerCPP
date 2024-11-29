@@ -31,6 +31,9 @@ public:
 			QWidget* parent = nullptr);
 	virtual ~MetTree();
 
+protected:
+	void mousePressEvent(QMouseEvent* event);
+
 private:
 	void LoadStyleSheet();
 	MetTreeStyle style;
