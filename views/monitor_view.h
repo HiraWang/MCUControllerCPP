@@ -30,6 +30,9 @@ public:
     SerialCode serial_status;
     DeviceArduinoDue* due;
 
+protected:
+    void mousePressEvent(QMouseEvent* event);
+
 private slots:
     void ToggleScanButton();
     void ToggleScaleResetButton();
@@ -55,7 +58,6 @@ private:
     QVBoxLayout* layout;
     MetParaList* para_list;
     std::thread* thread;
-    size_t count;
     QElapsedTimer* timer;
     QTimer* ui_timer;
     Helper* helper;

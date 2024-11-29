@@ -5,6 +5,7 @@
 
 #include "../widgets/button.h"
 #include "../widgets/login_subwindow.h"
+#include "../widgets/menu.h"
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_ui_test;
@@ -199,6 +200,45 @@ void MonitorView::SetupUi()
 	layout->addWidget(canvas, 0, { Qt::AlignHCenter, Qt::AlignBottom });
 	layout->addStretch(1);
 	setLayout(layout);
+}
+
+void MonitorView::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		MetMenu menu;
+
+		QAction* act_show_count = menu.addAction("Show count");
+		connect(act_show_count, &QAction::triggered, this, [=]()
+			{
+				QString msg;
+				if (due) {
+					msg = "Current count is " + QString::number(due->count);
+				} else {
+					msg = "No device detected";
+				}
+				MetMsgSubwindow(msg, MSG_INFO, this);
+			});
+
+		QAction* act_zoom_in = menu.addAction("Zoom in");
+		connect(act_zoom_in, &QAction::triggered, this, [=]()
+			{
+				ToggleScaleXPlusButton();
+				ToggleScaleYPlusButton();
+			});
+
+		QAction* act_zoom_out = menu.addAction("Zoom out");
+		connect(act_zoom_out, &QAction::triggered, this, [=]()
+			{
+				ToggleScaleXMinusButton();
+				ToggleScaleYMinusButton();
+			});
+
+		QAction* act_render = menu.addAction("Screen shot");
+		connect(act_render, &QAction::triggered, this, &MonitorView::ToggleRenderButton);
+
+		menu.exec(QCursor::pos());
+	}
 }
 
 void MonitorView::Update()
