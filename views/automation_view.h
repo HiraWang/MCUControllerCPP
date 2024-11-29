@@ -62,6 +62,9 @@ public:
 public slots:
     void Update(int);
 
+protected:
+    void mousePressEvent(QMouseEvent* event);
+
 private slots:
     void ToggleRunButton();
 

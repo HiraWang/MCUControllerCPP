@@ -2,10 +2,13 @@
 
 #include <QHBoxLayout>
 
+#include "../widgets/menu.h"
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_normal;
 extern bool g_ui_test;
+extern std::string IMAGE_MET_RIGHT;
+extern std::string IMAGE_MET_STOP;
 
 AutomationView::AutomationView(int w,
                                int h,
@@ -234,6 +237,34 @@ void AutomationView::LoadStyleSheet()
 	style_sheet_status_off =
 		"background-color: " + QString(COLOR_OFF_1) + ";"
 		"border-radius: 2px;";
+}
+
+void AutomationView::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton)
+	{
+		MetMenu menu;
+		MetMenu* menu_ptr = &menu;
+
+		QIcon icon_run;
+		QAction* act_run;
+
+		if (button_run->status) {
+			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)));
+			act_run = menu.addAction(icon_run, "Stop");
+		} else {
+			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)));
+			act_run = menu.addAction(icon_run, "Run");
+		}
+
+		connect(act_run, &QAction::triggered, this, [=]()
+			{
+				ToggleRunButton();
+				menu_ptr->close();
+			});
+
+		menu.exec(QCursor::pos());
+	}
 }
 
 void AutomationView::Set()
