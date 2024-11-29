@@ -13,8 +13,10 @@
 #include "widgets/msg_subwindow.h"
 
 extern std::string IMAGE_MET_CONSOLE;
+extern std::string IMAGE_MET_CONFIG;
 extern std::string IMAGE_MET_MENU;
 extern std::string IMAGE_MET_RESULT;
+extern std::string MONITOR_CONFIG_DIR;
 extern std::string MONITOR_RESULT_DIR;
 
 MainWindow::MainWindow(QWidget* parent) : 
@@ -90,6 +92,16 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 		connect(act_console, &QAction::triggered, this, [=]()
 			{
 				ToggleConsoleButton();
+				menu_ptr->close();
+			});
+
+		menu.addSeparator();
+
+		QIcon icon_config = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONFIG)));
+		QAction* act_config = menu.addAction(icon_config, "Config directory");
+		connect(act_config, &QAction::triggered, this, [=]()
+			{
+				ToggleConfigDirButton();
 				menu_ptr->close();
 			});
 
@@ -174,6 +186,12 @@ void MainWindow::ToggleResultDirButton()
 	button->SetButtonDefault();
 	std::wstring result_dir = std::wstring(MONITOR_RESULT_DIR.begin(), MONITOR_RESULT_DIR.end());
 	ShellExecute(nullptr, L"open", nullptr, nullptr, result_dir.c_str(), SW_SHOWNORMAL);
+}
+
+void MainWindow::ToggleConfigDirButton()
+{
+	std::wstring config_dir = std::wstring(MONITOR_CONFIG_DIR.begin(), MONITOR_CONFIG_DIR.end());
+	ShellExecute(nullptr, L"open", nullptr, nullptr, config_dir.c_str(), SW_SHOWNORMAL);
 }
 
 void MainWindow::ToggleUiTestButton()

@@ -12,6 +12,7 @@ std::string LF = "\n";
 std::string CR = "\r";
 std::string IMAGE_MET_ATTACHED_FILES = "\\images\\AttachedFiles.png";
 std::string IMAGE_MET_CLOSE = "\\images\\Close.png";
+std::string IMAGE_MET_CONFIG = "\\images\\Config.png";
 std::string IMAGE_MET_CONSOLE = "\\images\\Console.png";
 std::string IMAGE_MET_DOWN = "\\images\\Down.png";
 std::string IMAGE_MET_ERROR = "\\images\\Error.png";
@@ -38,6 +39,7 @@ std::string IMAGE_MET_ZOOM_IN = "\\images\\ZoomIn.png";
 std::string IMAGE_MET_ZOOM_OUT = "\\images\\ZoomOut.png";
 
 std::string MONITOR_BUFFER_DIR = "buffer";
+std::string MONITOR_CONFIG_DIR = "configuration";
 std::string MONITOR_RESULT_DIR = "result";
 std::string LOG_FILE_PATH = MONITOR_RESULT_DIR + "\\output.txt";
 std::string CONFIG_MET = "\\configuration\\config.json";

@@ -24,6 +24,7 @@ private slots:
     void ToggleLoadConfigButton();
     void ToggleMenuButton();
     void ToggleConsoleButton();
+    void ToggleConfigDirButton();
     void ToggleResultDirButton();
     void ToggleUiTestButton();
     void TogglePowerButton();
