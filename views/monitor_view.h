@@ -13,6 +13,7 @@
 #include "../widgets/canvas.h"
 #include "../widgets/label.h"
 #include "../widgets/lcd.h"
+#include "../widgets/menu.h"
 #include "../widgets/slider.h"
 
 class MonitorView : public QWidget
@@ -76,6 +77,7 @@ private:
     MetSlider* data_offset_slider;
     MetLcd* timer_lcd;
     MetLcd* signal_lcd;
+    MetMenu* menu;
 };
 
 #endif

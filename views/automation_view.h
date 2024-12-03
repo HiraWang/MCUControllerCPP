@@ -14,6 +14,7 @@
 #include "../widgets/button.h"
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
+#include "../widgets/menu.h"
 #include "../widgets/process_unit.h"
 #include "../widgets/tree.h"
 
@@ -114,6 +115,7 @@ private:
     MetTree* tree;
     MetButton* button_run;
     MetParaList* para_list;
+    MetMenu* menu;
     QWidget* container_automation;
     QWidget* container_left;
     QWidget* container_right;

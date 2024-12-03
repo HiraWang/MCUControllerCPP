@@ -5,7 +5,6 @@
 
 #include "../widgets/button.h"
 #include "../widgets/login_subwindow.h"
-#include "../widgets/menu.h"
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_ui_test;
@@ -37,6 +36,7 @@ MonitorView::MonitorView(int w,
 	scale_y_interval(0.2f),
 	para_list(para_list),
 	serial_status(SERIAL_OK),
+	menu(nullptr),
 	QWidget(parent)
 {
 	if (g_ui_test) {
@@ -207,10 +207,9 @@ void MonitorView::SetupUi()
 void MonitorView::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		MetMenu menu;
-		MetMenu* menu_ptr = &menu;
+		menu = new MetMenu();
 
-		QAction* act_show_count = menu.addAction("Show count");
+		QAction* act_show_count = menu->addAction("Show count");
 		connect(act_show_count, &QAction::triggered, this, [=]()
 			{
 				QString msg;
@@ -219,13 +218,14 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 				} else {
 					msg = "No device detected";
 				}
-				MetMsgSubwindow(msg, MSG_INFO, this);
+				MetMsgSubwindow(msg, MSG_INFO, menu);
+				menu->close();
 			});
 
-		menu.addSeparator();
+		menu->addSeparator();
 
 		QIcon icon_zoom_in = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_IN)));
-		QAction* act_zoom_in = menu.addAction(icon_zoom_in, "Zoom in");
+		QAction* act_zoom_in = menu->addAction(icon_zoom_in, "Zoom in");
 		connect(act_zoom_in, &QAction::triggered, this, [=]()
 			{	
 				ToggleScaleXPlusButton();
@@ -233,24 +233,32 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 			});
 
 		QIcon icon_zoom_out = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_OUT)));
-		QAction* act_zoom_out = menu.addAction(icon_zoom_out, "Zoom out");
+		QAction* act_zoom_out = menu->addAction(icon_zoom_out, "Zoom out");
 		connect(act_zoom_out, &QAction::triggered, this, [=]()
 			{
 				ToggleScaleXMinusButton();
 				ToggleScaleYMinusButton();
 			});
 
-		menu.addSeparator();
+		menu->addSeparator();
 
 		QIcon icon_render = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)));
-		QAction* act_render = menu.addAction(icon_render, "Screen shot");
+		QAction* act_render = menu->addAction(icon_render, "Screen shot");
 		connect(act_render, &QAction::triggered, this, [=]()
 			{
 				ToggleRenderButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
-		menu.exec(QCursor::pos());
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
 	}
 }
 

@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "font.h"
+#include "menu.h"
 
 class MetTreeStyle
 {
@@ -38,6 +39,7 @@ private:
 	void LoadStyleSheet();
 	MetTreeStyle style;
 	QString style_sheet;
+	MetMenu* menu;
 };
 
 #endif

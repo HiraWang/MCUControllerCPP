@@ -9,7 +9,6 @@
 #include "views/g1b_view.h"
 #include "views/monitor_view.h"
 #include "views/reglo_icc_view.h"
-#include "widgets/menu.h"
 #include "widgets/msg_subwindow.h"
 
 extern std::string IMAGE_MET_CONSOLE;
@@ -22,7 +21,8 @@ extern std::string MONITOR_RESULT_DIR;
 MainWindow::MainWindow(QWidget* parent) : 
     QMainWindow(parent), // call superclass constructor with an argument
     ui(new MainWindowUI()),
-	para_list(new MetParaList())
+	para_list(new MetParaList()),
+	menu(nullptr)
 {
 	// optimize console
 	ResizeConsole(1520, 680);
@@ -75,44 +75,51 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		MetMenu menu;
-		MetMenu* menu_ptr = &menu;
+		menu = new MetMenu();
 
 		QIcon icon_dialog = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)));
-		QAction* act_dialog = menu.addAction(icon_dialog, "Show dialog");
+		QAction* act_dialog = menu->addAction(icon_dialog, "Show dialog");
 		connect(act_dialog, &QAction::triggered, this, [=]()
 			{
 				ToggleMenuButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
 		QIcon icon_console = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)));
-		QAction* act_console = menu.addAction(icon_console, "Show console");
+		QAction* act_console = menu->addAction(icon_console, "Show console");
 		connect(act_console, &QAction::triggered, this, [=]()
 			{
 				ToggleConsoleButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
-		menu.addSeparator();
+		menu->addSeparator();
 
 		QIcon icon_config = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONFIG)));
-		QAction* act_config = menu.addAction(icon_config, "Config directory");
+		QAction* act_config = menu->addAction(icon_config, "Config directory");
 		connect(act_config, &QAction::triggered, this, [=]()
 			{
 				ToggleConfigDirButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
 		QIcon icon_result = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)));
-		QAction* act_result = menu.addAction(icon_result, "Result directory");
+		QAction* act_result = menu->addAction(icon_result, "Result directory");
 		connect(act_result, &QAction::triggered, this, [=]()
 			{
 				ToggleResultDirButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
-		menu.exec(QCursor::pos());
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
 	}
 }
 

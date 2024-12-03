@@ -4,6 +4,7 @@
 #include <QMainWindow>
 
 #include "main_window_ui.h"
+#include "widgets/menu.h"
 
 class MainWindow : public QMainWindow
 {  
@@ -35,6 +36,7 @@ private:
     // pointer to class does not call constructor in default
     MetParaList* para_list;
     MainWindowUI* ui;
+    MetMenu* menu;
 };
 
 #endif

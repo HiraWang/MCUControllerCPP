@@ -1,12 +1,11 @@
 #include "tree.h"
 
-#include "menu.h"
-
 MetTree::MetTree(MetTreeStyle style,
                  int w,
                  int h,
                  QWidget* parent) :
     style(style),
+    menu(nullptr),
     QTreeWidget(parent)
 {
     LoadStyleSheet();
@@ -258,15 +257,14 @@ void MetTree::LoadStyleSheet()
 void MetTree::mousePressEvent(QMouseEvent* event)
 {
     if (event->button() == Qt::RightButton) {
-        MetMenu menu;
-        MetMenu* menu_ptr = &menu;
+        menu = new MetMenu();
 
         QTreeWidgetItemIterator it(this);
         QAction* act_run;
         if ((*it)->isExpanded()) {
-            act_run = menu.addAction("Fold");
+            act_run = menu->addAction("Fold");
         } else {
-            act_run = menu.addAction("Expand");
+            act_run = menu->addAction("Expand");
         }
 
         connect(act_run, &QAction::triggered, this, [=]()
@@ -281,10 +279,18 @@ void MetTree::mousePressEvent(QMouseEvent* event)
                     ++it;
                 }
 
-                menu_ptr->close();
+                menu->close();
             });
 
-        menu.exec(QCursor::pos());
+        menu->exec(QCursor::pos());
+    } else if (event->button() == Qt::LeftButton) {
+        if (menu) {
+            QAction* action = menu->actionAt(event->pos());
+            if (!action) {
+                menu->close();
+                menu = nullptr;
+            }
+        }
     }
 }
 

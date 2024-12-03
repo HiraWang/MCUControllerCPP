@@ -2,7 +2,6 @@
 
 #include <QHBoxLayout>
 
-#include "../widgets/menu.h"
 #include "../widgets/msg_subwindow.h"
 
 extern bool g_normal;
@@ -22,6 +21,7 @@ AutomationView::AutomationView(int w,
 	serial_status(SERIAL_FAIL),
 	g1b(g1b),
 	reglo_icc(reglo_icc),
+	menu(nullptr),
 	QWidget(parent)
 {
 	InitLists();
@@ -242,27 +242,26 @@ void AutomationView::LoadStyleSheet()
 void AutomationView::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		MetMenu menu;
-		MetMenu* menu_ptr = &menu;
+		menu = new MetMenu();
 
 		QIcon icon_run;
 		QAction* act_run;
 
 		if (button_run->status) {
 			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)));
-			act_run = menu.addAction(icon_run, "Stop");
+			act_run = menu->addAction(icon_run, "Stop");
 		} else {
 			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)));
-			act_run = menu.addAction(icon_run, "Run");
+			act_run = menu->addAction(icon_run, "Run");
 		}
 
 		connect(act_run, &QAction::triggered, this, [=]()
 			{
 				ToggleRunButton();
-				menu_ptr->close();
+				menu->close();
 			});
 
-		QAction* act_plus_1_minute = menu.addAction("Plus 1 minute");
+		QAction* act_plus_1_minute = menu->addAction("Plus 1 minute");
 		connect(act_plus_1_minute, &QAction::triggered, this, [=]()
 			{
 				for (int i = 0; i < unit_cnt; i++) {
@@ -271,7 +270,7 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 				}
 			});
 
-		QAction* act_minus_1_minute = menu.addAction("Minus 1 minute");
+		QAction* act_minus_1_minute = menu->addAction("Minus 1 minute");
 		connect(act_minus_1_minute, &QAction::triggered, this, [=]()
 			{
 				for (int i = 0; i < unit_cnt; i++) {
@@ -282,7 +281,15 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 				}
 			});
 
-		menu.exec(QCursor::pos());
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
 	}
 }
 
