@@ -259,6 +259,7 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleRunButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		QAction* act_plus_1_minute = menu->addAction("Plus 1 minute");

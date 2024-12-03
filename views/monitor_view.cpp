@@ -220,6 +220,7 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 				}
 				MetMsgSubwindow(msg, MSG_INFO, menu);
 				menu->close();
+				menu = nullptr;
 			});
 
 		menu->addSeparator();
@@ -248,6 +249,7 @@ void MonitorView::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleRenderButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		menu->exec(QCursor::pos());

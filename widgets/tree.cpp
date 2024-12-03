@@ -280,6 +280,7 @@ void MetTree::mousePressEvent(QMouseEvent* event)
                 }
 
                 menu->close();
+                menu = nullptr;
             });
 
         menu->exec(QCursor::pos());

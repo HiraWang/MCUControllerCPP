@@ -83,6 +83,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleMenuButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		QIcon icon_console = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)));
@@ -91,6 +92,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleConsoleButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		menu->addSeparator();
@@ -101,6 +103,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleConfigDirButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		QIcon icon_result = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)));
@@ -109,6 +112,7 @@ void MainWindow::mousePressEvent(QMouseEvent* event)
 			{
 				ToggleResultDirButton();
 				menu->close();
+				menu = nullptr;
 			});
 
 		menu->exec(QCursor::pos());
