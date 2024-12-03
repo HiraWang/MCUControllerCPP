@@ -74,8 +74,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
-	if (event->button() == Qt::RightButton)
-	{
+	if (event->button() == Qt::RightButton) {
 		MetMenu menu;
 		MetMenu* menu_ptr = &menu;
 
