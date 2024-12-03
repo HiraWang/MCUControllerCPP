@@ -207,6 +207,9 @@ void MonitorView::SetupUi()
 void MonitorView::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
+		if (menu)
+			menu->close();
+
 		menu = new MetMenu();
 
 		QAction* act_show_count = menu->addAction("Show count");

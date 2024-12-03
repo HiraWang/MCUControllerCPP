@@ -75,6 +75,9 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
+		if (menu)
+			menu->close();
+
 		menu = new MetMenu();
 
 		QIcon icon_dialog = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)));
