@@ -14,6 +14,7 @@ AutomationView::AutomationView(int w,
                                int h,
 							   DeviceG1B* g1b,
 							   DeviceRegloIcc* reglo_icc,
+							   MonitorView* monitor_view,
                                QWidget* parent) :
 	w(w),
 	h(h),
@@ -22,6 +23,7 @@ AutomationView::AutomationView(int w,
 	serial_status(SERIAL_FAIL),
 	g1b(g1b),
 	reglo_icc(reglo_icc),
+	monitor_view(monitor_view),
 	menu(nullptr),
 	QWidget(parent)
 {
@@ -198,9 +200,15 @@ void AutomationView::SetupUi()
 	container_left->setLayout(layout_left);
 
 	MetTextEditStyle text_style;
-	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - h_delta_1) / 2, this);
+	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 2 * h_delta_1) / 2, this);
+	canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 2 * h_delta_1) / 2, this);
+	canvas->setContentsMargins(0, 0, 0, 0);
 	layout_right->addWidget(text, 0, Qt::AlignTop);
+	layout_right->addWidget(canvas, 0, Qt::AlignTop);
 	container_right->setLayout(layout_right);
+
+	ui_timer = new QTimer(this);
+	connect(ui_timer, &QTimer::timeout, this, &AutomationView::UpdateUi);
 
 	layout_automation->addStretch(1);
 	for (int i = 0; i < unit_cnt; i++) {
@@ -418,11 +426,15 @@ void AutomationView::RunProcess()
 	
 	worker->Reset();
 	thread->start();
+	ui_timer->start(10);
+	monitor_view->ToggleScanButton();
 }
 
 void AutomationView::StopProcess()
 {
 	thread->terminate();
+	ui_timer->stop();
+	monitor_view->ToggleScanButton();
 	StopPulseGenerator();
 	StopPumpAllChannel();
 }
@@ -515,6 +527,11 @@ void AutomationView::StopPumpAllChannel()
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
+}
+
+void AutomationView::UpdateUi()
+{
+	canvas->update();
 }
 
 MetTreeData AutomationView::GetRpm()

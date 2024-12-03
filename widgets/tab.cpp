@@ -69,6 +69,7 @@ void MetTab::LoadStyleSheet()
         "margin-right: 0px;"
         "border-top-left-radius: 6px;"
         "border-top-right-radius: 6px;"
+        "margin-top: 6px;"
         "}"
         "QTabWidget:pane {"
         "background-color: " + QString(COLOR_LIGHT_GRAY) + ";"

@@ -235,12 +235,14 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->combo_box->setEnabled(true);
 		if (current_device == Device::AUTOMATION) {
 			ui->bottom_view->automation_view->~AutomationView();
+			ui->bottom_view->monitor_view->~MonitorView();
 			ui->bottom_view->g1b_view->~G1BView();
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
 			for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
 				ui->bottom_view->tab->removeTab(i);
 			}
 			ui->bottom_view->automation_view = nullptr;
+			ui->bottom_view->monitor_view = nullptr;
 			ui->bottom_view->g1b_view = nullptr;
 			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if (current_device == Device::G1B) {
@@ -266,11 +268,18 @@ void MainWindow::TogglePowerButton()
 				para_list, ui->bottom_view);
 			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h,
 				para_list, ui->bottom_view);
+			ui->bottom_view->monitor_view = new MonitorView(w, h,
+				para_list, ui->bottom_view);
 			ui->bottom_view->automation_view = new AutomationView(w, h,
-				ui->bottom_view->g1b_view->g1b, ui->bottom_view->reglo_icc_view->reglo_icc, ui->bottom_view);
+				ui->bottom_view->g1b_view->g1b,
+				ui->bottom_view->reglo_icc_view->reglo_icc,
+				ui->bottom_view->monitor_view,
+				ui->bottom_view);
 
 			ui->bottom_view->tab->addTab(ui->bottom_view->automation_view,
 				device_list[Device::AUTOMATION]);
+			ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
+				device_list[Device::MONITOR]);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
 				device_list[Device::G1B]);
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
@@ -278,6 +287,7 @@ void MainWindow::TogglePowerButton()
 
 			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK &&
 				ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK &&
+				ui->bottom_view->monitor_view->serial_status == SERIAL_OK &&
 				ui->bottom_view->automation_view->serial_status == SERIAL_OK) {
 				ui->bottom_view->tab->show();
 			}

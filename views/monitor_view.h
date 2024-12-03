@@ -30,12 +30,15 @@ public:
     void ScaleDownCanvasSize();
     SerialCode serial_status;
     DeviceArduinoDue* due;
+    Helper* helper;
+
+public slots:
+    void ToggleScanButton();
 
 protected:
     void mousePressEvent(QMouseEvent* event);
 
 private slots:
-    void ToggleScanButton();
     void ToggleScaleResetButton();
     void ToggleScaleXPlusButton();
     void ToggleScaleYPlusButton();
@@ -61,7 +64,6 @@ private:
     std::thread* thread;
     QElapsedTimer* timer;
     QTimer* ui_timer;
-    Helper* helper;
     MetCanvas* canvas;
     MetButton* scan_button;
     MetButton* scale_reset_button;

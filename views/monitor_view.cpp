@@ -39,12 +39,12 @@ MonitorView::MonitorView(int w,
 	menu(nullptr),
 	QWidget(parent)
 {
-	if (g_ui_test) {
-		serial_status = SERIAL_OK;
-		due = nullptr;
-		SetupUi();
-		return;
-	}
+	//if (g_ui_test) {
+	//	serial_status = SERIAL_OK;
+	//	due = nullptr;
+	//	SetupUi();
+	//	return;
+	//}
 
 	std::string str = para_list->list[MONITOR_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());
@@ -83,7 +83,8 @@ void MonitorView::SetupUi()
 
 	helper = new Helper(HelperType::OSCILLOSCOPE);
 	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
-	canvas = new MetCanvas(helper, width() - 30, height(), this);
+	canvas = new MetCanvas(helper, width() - 25, height() - 125, this);
+	canvas->setContentsMargins(0, 0, 0, 0);
 
 	timer = new QElapsedTimer();
 	ui_timer = new QTimer(this);
