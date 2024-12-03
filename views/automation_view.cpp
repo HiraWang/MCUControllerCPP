@@ -172,18 +172,18 @@ void AutomationView::SetupUi()
 	container_left->setFixedWidth((width() - 750) / 2);
 	container_left->setFixedHeight(height()- h_delta_1);
 	container_left->setStyleSheet("QWidget#pulse_gen_container {"
-									   "background-color: " + QString(COLOR_GRAY) + ";"
-									   "border-radius: 10px;"
-									   "}");
+								  "background-color: " + QString(COLOR_LIGHT_GRAY) + ";"
+								  "border-radius: 10px;"
+								  "}");
 	container_automation->setFixedWidth(700);
 	container_automation->setFixedHeight(height());
 	container_right->setObjectName("pump_container");
 	container_right->setFixedWidth((width() - 750) / 2);
 	container_right->setFixedHeight(height() - h_delta_1);
 	container_right->setStyleSheet("QWidget#pump_container {"
-								  "background-color: " + QString(COLOR_GRAY) + ";"
-								  "border-radius: 10px;"
-								  "}");
+								   "background-color: " + QString(COLOR_LIGHT_GRAY) + ";"
+								   "border-radius: 10px;"
+								   "}");
 
 	QVBoxLayout* layout_automation = new QVBoxLayout();
 	QVBoxLayout* layout_left = new QVBoxLayout();

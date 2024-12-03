@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "font.h"
+#include "menu.h"
 
 class MetTextEditStyle
 {
@@ -30,12 +31,16 @@ public:
 				QWidget* parent = nullptr);
 	virtual ~MetTextEdit();
 
+protected:
+	void mousePressEvent(QMouseEvent* event);
+
 private:
 	void LoadStyleSheet();
 	int w;
 	int h;
 	MetTextEditStyle style;
 	QString style_sheet;
+	MetMenu* menu;
 };
 
 #endif

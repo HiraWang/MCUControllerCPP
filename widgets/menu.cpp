@@ -49,16 +49,6 @@ void MetMenu::LoadStyleSheet()
 		"}";
 }
 
-void MetMenu::mouseReleaseEvent(QMouseEvent* e)
-{
-	QAction* action = this->actionAt(e->pos());
-	if (action) {
-		action->activate(QAction::Trigger);
-	} else {
-		QMenu::mouseReleaseEvent(e);
-	}
-}
-
 int MetMenuCustomStyle::pixelMetric(PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
 {
 	if (metric == QStyle::PM_SmallIconSize) {

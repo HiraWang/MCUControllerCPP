@@ -1,17 +1,21 @@
 #include "text_edit.h"
 
+extern std::string IMAGE_MET_COPY;
+
 MetTextEdit::MetTextEdit(MetTextEditStyle style,
-						 int w,
-						 int h,
-						 QWidget* parent) :
+	int w,
+	int h,
+	QWidget* parent) :
 	style(style),
 	w(w),
 	h(h),
+	menu(nullptr),
 	QPlainTextEdit(parent)
 {
 	setFixedWidth(w);
 	setFixedHeight(h);
 	setReadOnly(true);
+	setContextMenuPolicy(Qt::CustomContextMenu);
 	LoadStyleSheet();
 	setStyleSheet(style_sheet);
 }
@@ -76,6 +80,43 @@ void MetTextEdit::LoadStyleSheet()
         "QScrollBar::add-line:vertical:pressed {"
         "background-color: " + QString(COLOR_DEEP_GRAY) + ";"
         "}";
+}
+
+void MetTextEdit::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton) {
+		if (menu)
+			menu->close();
+
+		menu = new MetMenu();
+
+		QIcon icon_copy = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_COPY)));
+		QAction* act_copy = menu->addAction(icon_copy, "Copy");
+		connect(act_copy, &QAction::triggered, this, [=]()
+			{
+				copy();
+				menu->close();
+				menu = nullptr;
+			});
+
+		QAction* act_select_all = menu->addAction("Select all");
+		connect(act_select_all, &QAction::triggered, this, [=]()
+			{
+				selectAll();
+				menu->close();
+				menu = nullptr;
+			});
+
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
+	}
 }
 
 MetTextEditStyle::MetTextEditStyle(QString bkg_color,

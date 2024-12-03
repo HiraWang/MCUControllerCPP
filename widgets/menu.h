@@ -16,9 +16,6 @@ public:
     MetMenu(QWidget* parent = nullptr);
     virtual ~MetMenu();
 
-protected:
-    virtual void mouseReleaseEvent(QMouseEvent* e) override;
-
 private:
     void SetupUi();
     void LoadStyleSheet();
