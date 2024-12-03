@@ -16,6 +16,7 @@
 #include "../widgets/line_edit.h"
 #include "../widgets/menu.h"
 #include "../widgets/process_unit.h"
+#include "../widgets/text_edit.h"
 #include "../widgets/tree.h"
 
 struct MetTreeData
@@ -113,6 +114,7 @@ private:
     QLCDNumber* lcd;
     QProgressBar* bar;
     MetTree* tree;
+    MetTextEdit* text;
     MetButton* button_run;
     MetParaList* para_list;
     MetMenu* menu;

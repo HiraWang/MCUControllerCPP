@@ -6,6 +6,7 @@
 
 extern bool g_normal;
 extern bool g_ui_test;
+extern std::string IMAGE_MET_RESET;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_STOP;
 
@@ -115,7 +116,8 @@ void AutomationView::SetupUi()
 	process_unit_list[0]->time_tot = 0;
 	process_unit_list[0]->time_edit->setText("0");
 	process_unit_list[0]->time_edit->setEnabled(false);
-	
+	process_unit_list[0]->time_edit->setReadOnly(true);
+
 	// prepare all process unit
 	all_process = new MetProcessUnit(process_unit_style, 0,
 								     "All process",
@@ -195,6 +197,11 @@ void AutomationView::SetupUi()
 	layout_left->addWidget(tree, 0, Qt::AlignTop);
 	container_left->setLayout(layout_left);
 
+	MetTextEditStyle text_style;
+	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - h_delta_1) / 2, this);
+	layout_right->addWidget(text, 0, Qt::AlignTop);
+	container_right->setLayout(layout_right);
+
 	layout_automation->addStretch(1);
 	for (int i = 0; i < unit_cnt; i++) {
 		layout_automation->addWidget(process_unit_list[i], 0, Qt::AlignCenter);
@@ -265,10 +272,30 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 				menu = nullptr;
 			});
 
+		QAction* act_plus_1_second = menu->addAction("Plus 1 second");
+		connect(act_plus_1_second, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() + 1;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QAction* act_minus_1_second = menu->addAction("Minus 1 second");
+		connect(act_minus_1_second, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() - 1;
+					if (time < 0)
+						time = 0;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
 		QAction* act_plus_1_minute = menu->addAction("Plus 1 minute");
 		connect(act_plus_1_minute, &QAction::triggered, this, [=]()
 			{
-				for (int i = 0; i < unit_cnt; i++) {
+				for (int i = 1; i < unit_cnt; i++) {
 					int time = process_unit_list[i]->time_edit->text().toInt() + 60;
 					process_unit_list[i]->time_edit->setText(QString::number(time));
 				}
@@ -277,11 +304,20 @@ void AutomationView::mousePressEvent(QMouseEvent* event)
 		QAction* act_minus_1_minute = menu->addAction("Minus 1 minute");
 		connect(act_minus_1_minute, &QAction::triggered, this, [=]()
 			{
-				for (int i = 0; i < unit_cnt; i++) {
+				for (int i = 1; i < unit_cnt; i++) {
 					int time = process_unit_list[i]->time_edit->text().toInt() - 60;
 					if (time < 0)
 						time = 0;
 					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QIcon icon_reset = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)));
+		QAction* act_reset = menu->addAction(icon_reset, "Reset");
+		connect(act_reset, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					process_unit_list[i]->time_edit->setText(QString::number(0));
 				}
 			});
 
@@ -378,6 +414,7 @@ void AutomationView::RunProcess()
 	(this->*process_function_list.front())();
 	process_function_list.pop_front();
 	process_unit_list[0]->StatusOn();
+	text->clear();
 	
 	worker->Reset();
 	thread->start();
@@ -396,6 +433,7 @@ void AutomationView::Update(int count)
 	all_process->SetLcd(QString::number(count));
 	MetProcessUnit** list = process_unit_list;
 	g_out << count << '\n';
+	text->appendPlainText(QString::number(count));
 
 	for (int i = 1; i < unit_cnt; i++) {
 		if (list[i - 1]->time_tot < count && count <= list[i]->time_tot) {
@@ -420,6 +458,7 @@ void AutomationView::Update(int count)
 void AutomationView::StartPumpAllChannel()
 {	
 	g_out << "StartPumpAllChannel\n";
+	text->appendPlainText("StartPumpAllChannel\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->On(1));
 		ShowSerialCodeInfo(reglo_icc->On(2));
@@ -430,6 +469,7 @@ void AutomationView::StartPumpAllChannel()
 void AutomationView::StopPumpChannelNo2()
 {
 	g_out << "StopPumpChannelNo2\n";
+	text->appendPlainText("StopPumpChannelNo2\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
@@ -439,6 +479,7 @@ void AutomationView::StopPumpChannelNo2()
 void AutomationView::StartPulseGenerator()
 {
 	g_out << "StartPulseGenerator\n";
+	text->appendPlainText("StartPulseGenerator\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(g1b->On());
 	}
@@ -448,6 +489,7 @@ void AutomationView::StartPulseGenerator()
 void AutomationView::StartPumpChannelNo2()
 {
 	g_out << "StartPumpChannelNo2\n";
+	text->appendPlainText("StartPumpChannelNo2\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
@@ -457,6 +499,7 @@ void AutomationView::StartPumpChannelNo2()
 void AutomationView::StopPulseGenerator()
 {
 	g_out << "StopPulseGenerator\n";
+	text->appendPlainText("StopPulseGenerator\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(g1b->Off());
 	}
@@ -466,6 +509,7 @@ void AutomationView::StopPulseGenerator()
 void AutomationView::StopPumpAllChannel()
 {
 	g_out << "StopPumpAllChannel\n";
+	text->appendPlainText("StopPumpAllChannel\n");
 	if (g_normal) {
 		ShowSerialCodeInfo(reglo_icc->Off(1));
 		ShowSerialCodeInfo(reglo_icc->Off(2));
