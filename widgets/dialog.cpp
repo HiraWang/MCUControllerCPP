@@ -21,7 +21,7 @@ MetDialog::~MetDialog()
 
 void MetDialog::SetupUi()
 {
-	setWindowTitle("Menu");
+	setWindowTitle("Dialog");
 	setFixedWidth(300);
 	setFixedHeight(500);
 	QString style_sheet = QString("QDialog { background-color: ") +
