@@ -256,6 +256,8 @@ void MetTree::LoadStyleSheet()
 
 void MetTree::mousePressEvent(QMouseEvent* event)
 {
+    QTreeView::mousePressEvent(event);
+
     if (event->button() == Qt::RightButton) {
         if (menu)
             menu->close();
@@ -264,7 +266,9 @@ void MetTree::mousePressEvent(QMouseEvent* event)
 
         QTreeWidgetItemIterator it(this);
         QAction* act_run;
-        if ((*it)->isExpanded()) {
+        bool is_expanded = (*it)->isExpanded();
+
+        if (is_expanded) {
             act_run = menu->addAction("Fold");
         } else {
             act_run = menu->addAction("Expand");
@@ -274,7 +278,7 @@ void MetTree::mousePressEvent(QMouseEvent* event)
             {
                 QTreeWidgetItemIterator it(this);
                 while (*it) {
-                    if ((*it)->isExpanded()) {
+                    if (is_expanded) {
                         (*it)->setExpanded(false);
                     } else {
                         (*it)->setExpanded(true);
