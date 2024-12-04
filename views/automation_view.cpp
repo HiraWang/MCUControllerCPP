@@ -17,7 +17,7 @@ AutomationView::AutomationView(int w,
                                QWidget* parent) :
 	w(w),
 	h(h),
-	h_delta_1(10),
+	h_delta_1(12),
 	h_delta_2(32),
 	serial_status(SERIAL_FAIL),
 	g1b(g1b),
@@ -200,11 +200,11 @@ void AutomationView::SetupUi()
 	container_left->setLayout(layout_left);
 
 	MetTextEditStyle text_style;
-	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 2 * h_delta_1) / 2, this);
-	canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 2 * h_delta_1) / 2, this);
+	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 20) / 2, this);
+	canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 20) / 2, this);
 	canvas->setContentsMargins(0, 0, 0, 0);
 	layout_right->addWidget(text, 0, Qt::AlignTop);
-	layout_right->addWidget(canvas, 0, Qt::AlignTop);
+	layout_right->addWidget(canvas, 0, Qt::AlignBottom);
 	container_right->setLayout(layout_right);
 
 	ui_timer = new QTimer(this);
