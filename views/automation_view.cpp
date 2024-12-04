@@ -4,8 +4,7 @@
 
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_normal;
-extern bool g_ui_test;
+extern int g_mode;
 extern std::string IMAGE_MET_RESET;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_STOP;
@@ -29,7 +28,8 @@ AutomationView::AutomationView(int w,
 {
 	InitLists();
 
-	if (g_ui_test) {
+	if (g_mode == Mode::UI_TEST ||
+		g_mode == Mode::MONITOR_TEST) {
 		serial_status = SERIAL_OK;
 		SetupUi();
 		return;
@@ -426,17 +426,23 @@ void AutomationView::RunProcess()
 	
 	worker->Reset();
 	thread->start();
-	ui_timer->start(10);
-	monitor_view->ToggleScanButton();
+	if (g_mode == Mode::DEBUG ||
+		g_mode == Mode::MONITOR_TEST) {
+		ui_timer->start(10);
+		monitor_view->ToggleScanButton();
+	}
 }
 
 void AutomationView::StopProcess()
 {
 	thread->terminate();
-	ui_timer->stop();
-	monitor_view->ToggleScanButton();
 	StopPulseGenerator();
 	StopPumpAllChannel();
+	if (g_mode == Mode::DEBUG ||
+		g_mode == Mode::MONITOR_TEST) {
+		ui_timer->stop();
+		monitor_view->ToggleScanButton();
+	}
 }
 
 void AutomationView::Update(int count)
@@ -471,7 +477,8 @@ void AutomationView::StartPumpAllChannel()
 {	
 	g_out << "StartPumpAllChannel\n";
 	text->appendPlainText("StartPumpAllChannel\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(1));
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
@@ -482,7 +489,8 @@ void AutomationView::StopPumpChannelNo2()
 {
 	g_out << "StopPumpChannelNo2\n";
 	text->appendPlainText("StopPumpChannelNo2\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
@@ -492,7 +500,8 @@ void AutomationView::StartPulseGenerator()
 {
 	g_out << "StartPulseGenerator\n";
 	text->appendPlainText("StartPulseGenerator\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->On());
 	}
 	g_out << '\n';
@@ -502,7 +511,8 @@ void AutomationView::StartPumpChannelNo2()
 {
 	g_out << "StartPumpChannelNo2\n";
 	text->appendPlainText("StartPumpChannelNo2\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
 	g_out << '\n';
@@ -512,7 +522,8 @@ void AutomationView::StopPulseGenerator()
 {
 	g_out << "StopPulseGenerator\n";
 	text->appendPlainText("StopPulseGenerator\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->Off());
 	}
 	g_out << '\n';
@@ -522,7 +533,8 @@ void AutomationView::StopPumpAllChannel()
 {
 	g_out << "StopPumpAllChannel\n";
 	text->appendPlainText("StopPumpAllChannel\n");
-	if (g_normal) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(1));
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}

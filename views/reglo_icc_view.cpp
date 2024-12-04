@@ -3,7 +3,7 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_ui_test;
+extern int g_mode;
 
 RegloIccView::RegloIccView(int w,
 						   int h,
@@ -15,7 +15,8 @@ RegloIccView::RegloIccView(int w,
 	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
-	if (g_ui_test) {
+	if (g_mode == Mode::UI_TEST ||
+		g_mode == Mode::MONITOR_TEST) {
 		serial_status = SERIAL_OK;
 		reglo_icc = nullptr;
 		SetupUi();

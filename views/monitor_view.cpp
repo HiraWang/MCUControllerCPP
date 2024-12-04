@@ -7,7 +7,7 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_ui_test;
+extern int g_mode;
 extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
@@ -39,12 +39,13 @@ MonitorView::MonitorView(int w,
 	menu(nullptr),
 	QWidget(parent)
 {
-	//if (g_ui_test) {
-	//	serial_status = SERIAL_OK;
-	//	due = nullptr;
-	//	SetupUi();
-	//	return;
-	//}
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::UI_TEST) {
+		serial_status = SERIAL_OK;
+		due = nullptr;
+		SetupUi();
+		return;
+	}
 
 	std::string str = para_list->list[MONITOR_KEYWORD].str;
 	std::wstring wstring = std::wstring(str.begin(), str.end());

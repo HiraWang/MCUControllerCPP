@@ -18,19 +18,20 @@ public:
     UpperView(QWidget* parent = nullptr);
     virtual ~UpperView();
     MetDialog* menu;
-    MetComboBox* combo_box;
+    MetComboBox* device_combo_box;
+    MetComboBox* mode_combo_box;
     MetButton* exit_button;
     MetButton* window_button;
     MetButton* load_config_button;
     MetButton* menu_button;
     MetButton* console_button;
     MetButton* result_dir_button;
-    MetButton* ui_test_button;
     MetButton* power_button;
 
 private:
     void SetupUi();
-    MetLabel* label;
+    MetLabel* device_label;
+    MetLabel* mode_label;
     QHBoxLayout* layout;
 };
 

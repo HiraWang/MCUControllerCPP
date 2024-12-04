@@ -7,7 +7,7 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_ui_test;
+extern int g_mode;
 
 G1BView::G1BView(int w,
 				 int h,
@@ -19,7 +19,8 @@ G1BView::G1BView(int w,
 	serial_status(SERIAL_OK),
 	QWidget(parent)
 {
-	if (g_ui_test) {
+	if (g_mode == Mode::UI_TEST ||
+		g_mode == Mode::MONITOR_TEST) {
 		serial_status = SERIAL_OK;
 		g1b = nullptr;
 		SetupUi();

@@ -47,8 +47,7 @@ std::string MONITOR_RESULT_DIR = "result";
 std::string LOG_FILE_PATH = MONITOR_RESULT_DIR + "\\output.txt";
 std::string CONFIG_MET = "\\configuration\\config.json";
 
-bool g_normal = true;
-bool g_ui_test = !g_normal;
+int g_mode = Mode::NORMAL;
 
 std::ofstream fout(LOG_FILE_PATH);
 MetLogBuf log_buf(fout.rdbuf(), std::cout.rdbuf());

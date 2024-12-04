@@ -27,12 +27,12 @@ private slots:
     void ToggleConsoleButton();
     void ToggleConfigDirButton();
     void ToggleResultDirButton();
-    void ToggleUiTestButton();
     void TogglePowerButton();
 
 private:
     // instance of class calls constructor in default
     QStringList device_list;
+    QStringList mode_list;
     // pointer to class does not call constructor in default
     MetParaList* para_list;
     MainWindowUI* ui;

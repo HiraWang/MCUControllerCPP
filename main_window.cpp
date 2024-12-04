@@ -47,14 +47,14 @@ MainWindow::MainWindow(QWidget* parent) :
 		this, &MainWindow::ToggleConsoleButton);
 	connect(ui->upper_view->result_dir_button, &QPushButton::released,
 		this, &MainWindow::ToggleResultDirButton);
-	connect(ui->upper_view->ui_test_button, &QPushButton::released,
-		this, &MainWindow::ToggleUiTestButton);
 	connect(ui->upper_view->power_button, &QPushButton::released,
 		this, &MainWindow::TogglePowerButton);
 
-	// set device list to combo box
+	// set device and mode list to combo box
 	device_list = { "Automation", "G1B", "Reglo ICC", "Monitor" };
-	ui->upper_view->combo_box->addItems(device_list);
+	mode_list = { "Normal", "Debug", "UI Test", "Monitor Test" };
+	ui->upper_view->device_combo_box->addItems(device_list);
+	ui->upper_view->mode_combo_box->addItems(mode_list);
 
 	// load data to para list
 	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
@@ -207,32 +207,22 @@ void MainWindow::ToggleConfigDirButton()
 	ShellExecute(nullptr, L"open", nullptr, nullptr, config_dir.c_str(), SW_SHOWNORMAL);
 }
 
-void MainWindow::ToggleUiTestButton()
-{
-	MetButton* button = ui->upper_view->ui_test_button;
-	extern bool g_normal;
-	extern bool g_ui_test;
-	if (button->status) {
-		button->SetButtonDefault();
-		g_ui_test = false;
-	} else {
-		button->SetButtonPressed();
-		g_ui_test = true;
-	}
-	g_normal = !g_ui_test;
-}
-
 void MainWindow::TogglePowerButton()
 {
 	MetButton* button = ui->upper_view->power_button;
-	int current_device = ui->upper_view->combo_box->currentIndex();
+
+	extern int g_mode;
+	int current_device = ui->upper_view->device_combo_box->currentIndex();
+	g_mode = ui->upper_view->mode_combo_box->currentIndex();
 
 	if (button->status) {
 		button->SetButtonDefault();
 		// remove pages from tab widget
 		ui->bottom_view->tab->hide();
 		ui->bottom_view->tab->clear();
-		ui->upper_view->combo_box->setEnabled(true);
+		ui->upper_view->device_combo_box->setEnabled(true);
+		ui->upper_view->mode_combo_box->setEnabled(true);
+
 		if (current_device == Device::AUTOMATION) {
 			ui->bottom_view->automation_view->~AutomationView();
 			ui->bottom_view->monitor_view->~MonitorView();
@@ -311,6 +301,7 @@ void MainWindow::TogglePowerButton()
 				ui->bottom_view->tab->show();
 		}
 		
-		ui->upper_view->combo_box->setEnabled(false);
+		ui->upper_view->device_combo_box->setEnabled(false);
+		ui->upper_view->mode_combo_box->setEnabled(false);
 	}
 }
