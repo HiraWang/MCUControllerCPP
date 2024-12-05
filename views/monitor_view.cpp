@@ -8,6 +8,7 @@
 #include "../widgets/msg_subwindow.h"
 
 extern int g_mode;
+extern MetMenu* g_menu;
 extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
@@ -209,8 +210,8 @@ void MonitorView::SetupUi()
 void MonitorView::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		if (menu)
-			menu->close();
+		if (g_menu)
+			g_menu->close();
 
 		menu = new MetMenu();
 

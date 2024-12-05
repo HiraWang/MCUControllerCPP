@@ -11,6 +11,7 @@
 #include "views/reglo_icc_view.h"
 #include "widgets/msg_subwindow.h"
 
+extern MetMenu* g_menu;
 extern std::string IMAGE_MET_CONSOLE;
 extern std::string IMAGE_MET_CONFIG;
 extern std::string IMAGE_MET_MENU;
@@ -75,8 +76,8 @@ MainWindow::~MainWindow()
 void MainWindow::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		if (menu)
-			menu->close();
+		if (g_menu)
+			g_menu->close();
 
 		menu = new MetMenu();
 

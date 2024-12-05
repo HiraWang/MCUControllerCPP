@@ -1,5 +1,7 @@
 #include "tree.h"
 
+extern MetMenu* g_menu;
+
 MetTree::MetTree(MetTreeStyle style,
                  int w,
                  int h,
@@ -259,8 +261,8 @@ void MetTree::mousePressEvent(QMouseEvent* event)
     QTreeView::mousePressEvent(event);
 
     if (event->button() == Qt::RightButton) {
-        if (menu)
-            menu->close();
+        if (g_menu)
+            g_menu->close();
 
         menu = new MetMenu();
 

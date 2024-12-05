@@ -1,5 +1,6 @@
 #include "text_edit.h"
 
+extern MetMenu* g_menu;
 extern std::string IMAGE_MET_COPY;
 
 MetTextEdit::MetTextEdit(MetTextEditStyle style,
@@ -85,8 +86,8 @@ void MetTextEdit::LoadStyleSheet()
 void MetTextEdit::mousePressEvent(QMouseEvent* event)
 {
 	if (event->button() == Qt::RightButton) {
-		if (menu)
-			menu->close();
+		if (g_menu)
+			g_menu->close();
 
 		menu = new MetMenu();
 

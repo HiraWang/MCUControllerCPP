@@ -3,6 +3,8 @@
 #include "color.h"
 #include "font.h"
 
+MetMenu* g_menu = nullptr;
+
 MetMenu::MetMenu(QWidget* parent) :
 	QMenu(parent)
 {
@@ -10,11 +12,12 @@ MetMenu::MetMenu(QWidget* parent) :
 	setAttribute(Qt::WA_TranslucentBackground);
 	LoadStyleSheet();
 	SetupUi();
+	g_menu = this;
 }
 
 MetMenu::~MetMenu()
 {
-
+	g_menu = nullptr;
 }
 
 void MetMenu::SetupUi()
