@@ -24,10 +24,12 @@ UpperView::~UpperView()
 void UpperView::SetupUi()
 {
 	MetLabelStyle label_style(COLOR_DEEP_GRAY, FONT_SIZE, COLOR_LIGHT_GRAY);
-	label = new MetLabel(label_style, "Device", 60, WIDGET_H, this);
+	device_label = new MetLabel(label_style, "Device", 60, WIDGET_H, this);
+	mode_label = new MetLabel(label_style, "Mode", 60, WIDGET_H, this);
 
 	MetComboBoxStyle combo_box_style;
-	combo_box = new MetComboBox(combo_box_style, 250, 20, this);
+	device_combo_box = new MetComboBox(combo_box_style, 250, 20, this);
+	mode_combo_box = new MetComboBox(combo_box_style, 250, 20, this);
 
 	// process orientated button style
 	MetButtonStyle button_style;
@@ -50,20 +52,27 @@ void UpperView::SetupUi()
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
-	MetButtonStyle debug_button_style(COLOR_ON_1, COLOR_DEBUG_1, COLOR_ON_2, COLOR_DEBUG_2,
-		COLOR_ON_3, COLOR_DEBUG_3);
-	ui_test_button = new MetButton(debug_button_style, "NORMAL", "UI TEST", BUTTON_W, BUTTON_W,
-		"", "", this);
-
 	MetButtonStyle power_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2, COLOR_ON_2,
 		COLOR_OFF_3, COLOR_ON_3);
 	power_button = new MetButton(power_button_style, "OFF", "ON", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
 
+	QWidget* container_combo_box = new QWidget(this);
+	QVBoxLayout* layout_combo_box = new QVBoxLayout();
+	QHBoxLayout* layout_device_combo_box = new QHBoxLayout();
+	QHBoxLayout* layout_mode_combo_box = new QHBoxLayout();
+
+	layout_device_combo_box->addWidget(device_label, 0, Qt::AlignTop | Qt::AlignLeft);
+	layout_device_combo_box->addWidget(device_combo_box, 0, Qt::AlignTop | Qt::AlignLeft);
+	layout_mode_combo_box->addWidget(mode_label, 0, Qt::AlignBottom | Qt::AlignLeft);
+	layout_mode_combo_box->addWidget(mode_combo_box, 0, Qt::AlignBottom | Qt::AlignLeft);
+	layout_combo_box->addItem(layout_device_combo_box);
+	layout_combo_box->addItem(layout_mode_combo_box);
+	container_combo_box->setLayout(layout_combo_box);
+
 	layout = new QHBoxLayout(this);
-	layout->addWidget(label, 0, Qt::AlignTop | Qt::AlignLeft);
-	layout->addWidget(combo_box, 0, Qt::AlignTop | Qt::AlignLeft);
+	layout->addWidget(container_combo_box, 0, Qt::AlignTop | Qt::AlignLeft);
 	layout->addStretch(10);
 	layout->addWidget(exit_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(window_button, 0, Qt::AlignTop | Qt::AlignRight);
@@ -71,7 +80,6 @@ void UpperView::SetupUi()
 	layout->addWidget(menu_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(console_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(result_dir_button, 0, Qt::AlignTop | Qt::AlignRight);
-	layout->addWidget(ui_test_button, 0, Qt::AlignTop | Qt::AlignRight);
 	layout->addWidget(power_button, 0, Qt::AlignTop | Qt::AlignRight);
 	setLayout(layout);
 }

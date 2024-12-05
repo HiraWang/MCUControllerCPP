@@ -11,10 +11,14 @@
 #include "../utility.h"
 #include "../views/g1b_view.h"
 #include "../views/reglo_icc_view.h"
+#include "../views/monitor_view.h"
 #include "../widgets/button.h"
+#include "../widgets/canvas.h"
 #include "../widgets/label.h"
 #include "../widgets/line_edit.h"
+#include "../widgets/menu.h"
 #include "../widgets/process_unit.h"
+#include "../widgets/text_edit.h"
 #include "../widgets/tree.h"
 
 struct MetTreeData
@@ -53,6 +57,7 @@ public:
                    int h,
                    DeviceG1B* g1b,
                    DeviceRegloIcc* reglo_icc,
+                   MonitorView* monitor_view,
                    QWidget* parent = nullptr);
     virtual ~AutomationView();
     void ScaleUpSize();
@@ -61,6 +66,10 @@ public:
 
 public slots:
     void Update(int);
+    void UpdateUi();
+
+protected:
+    void mousePressEvent(QMouseEvent* event);
 
 private slots:
     void ToggleRunButton();
@@ -97,6 +106,7 @@ private:
     DeviceG1B* g1b;
     DeviceRegloIcc* reglo_icc;
     QThread* thread;
+    QTimer* ui_timer;
     TimerWorker* worker;
     QHBoxLayout* layout;
     MetProcessUnit** process_unit_list;
@@ -109,11 +119,15 @@ private:
     QLCDNumber* lcd;
     QProgressBar* bar;
     MetTree* tree;
+    MetTextEdit* text;
+    MetCanvas* canvas;
     MetButton* button_run;
     MetParaList* para_list;
+    MetMenu* menu;
     QWidget* container_automation;
     QWidget* container_left;
     QWidget* container_right;
+    MonitorView* monitor_view;
     std::list<std::string> process_name_list;
     std::list<std::string> parameter_name_list;
     std::list<void (AutomationView::*)()> process_function_list;

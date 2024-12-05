@@ -1,10 +1,13 @@
 #include "tree.h"
 
+extern MetMenu* g_menu;
+
 MetTree::MetTree(MetTreeStyle style,
                  int w,
                  int h,
                  QWidget* parent) :
     style(style),
+    menu(nullptr),
     QTreeWidget(parent)
 {
     LoadStyleSheet();
@@ -251,6 +254,54 @@ void MetTree::LoadStyleSheet()
         "QScrollBar::add-line:horizontal:pressed {"
         "background-color: " + QString(COLOR_DEEP_GRAY) + ";"
         "}";
+}
+
+void MetTree::mousePressEvent(QMouseEvent* event)
+{
+    QTreeView::mousePressEvent(event);
+
+    if (event->button() == Qt::RightButton) {
+        if (g_menu)
+            g_menu->close();
+
+        menu = new MetMenu();
+
+        QTreeWidgetItemIterator it(this);
+        QAction* act_run;
+        bool is_expanded = (*it)->isExpanded();
+
+        if (is_expanded) {
+            act_run = menu->addAction("Fold");
+        } else {
+            act_run = menu->addAction("Expand");
+        }
+
+        connect(act_run, &QAction::triggered, this, [=]()
+            {
+                QTreeWidgetItemIterator it(this);
+                while (*it) {
+                    if (is_expanded) {
+                        (*it)->setExpanded(false);
+                    } else {
+                        (*it)->setExpanded(true);
+                    }
+                    ++it;
+                }
+
+                menu->close();
+                menu = nullptr;
+            });
+
+        menu->exec(QCursor::pos());
+    } else if (event->button() == Qt::LeftButton) {
+        if (menu) {
+            QAction* action = menu->actionAt(event->pos());
+            if (!action) {
+                menu->close();
+                menu = nullptr;
+            }
+        }
+    }
 }
 
 MetTreeStyle::MetTreeStyle(QString bkg_color,

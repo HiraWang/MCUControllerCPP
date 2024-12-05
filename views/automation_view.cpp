@@ -4,26 +4,33 @@
 
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_normal;
-extern bool g_ui_test;
+extern int g_mode;
+extern MetMenu* g_menu;
+extern std::string IMAGE_MET_RESET;
+extern std::string IMAGE_MET_RIGHT;
+extern std::string IMAGE_MET_STOP;
 
 AutomationView::AutomationView(int w,
                                int h,
 							   DeviceG1B* g1b,
 							   DeviceRegloIcc* reglo_icc,
+							   MonitorView* monitor_view,
                                QWidget* parent) :
 	w(w),
 	h(h),
-	h_delta_1(10),
+	h_delta_1(12),
 	h_delta_2(32),
 	serial_status(SERIAL_FAIL),
 	g1b(g1b),
 	reglo_icc(reglo_icc),
+	monitor_view(monitor_view),
+	menu(nullptr),
 	QWidget(parent)
 {
 	InitLists();
 
-	if (g_ui_test) {
+	if (g_mode == Mode::UI_TEST ||
+		g_mode == Mode::MONITOR_TEST) {
 		serial_status = SERIAL_OK;
 		SetupUi();
 		return;
@@ -112,7 +119,8 @@ void AutomationView::SetupUi()
 	process_unit_list[0]->time_tot = 0;
 	process_unit_list[0]->time_edit->setText("0");
 	process_unit_list[0]->time_edit->setEnabled(false);
-	
+	process_unit_list[0]->time_edit->setReadOnly(true);
+
 	// prepare all process unit
 	all_process = new MetProcessUnit(process_unit_style, 0,
 								     "All process",
@@ -167,18 +175,18 @@ void AutomationView::SetupUi()
 	container_left->setFixedWidth((width() - 750) / 2);
 	container_left->setFixedHeight(height()- h_delta_1);
 	container_left->setStyleSheet("QWidget#pulse_gen_container {"
-									   "background-color: " + QString(COLOR_GRAY) + ";"
-									   "border-radius: 10px;"
-									   "}");
+								  "background-color: " + QString(COLOR_LIGHT_GRAY) + ";"
+								  "border-radius: 10px;"
+								  "}");
 	container_automation->setFixedWidth(700);
 	container_automation->setFixedHeight(height());
 	container_right->setObjectName("pump_container");
 	container_right->setFixedWidth((width() - 750) / 2);
 	container_right->setFixedHeight(height() - h_delta_1);
 	container_right->setStyleSheet("QWidget#pump_container {"
-								  "background-color: " + QString(COLOR_GRAY) + ";"
-								  "border-radius: 10px;"
-								  "}");
+								   "background-color: " + QString(COLOR_LIGHT_GRAY) + ";"
+								   "border-radius: 10px;"
+								   "}");
 
 	QVBoxLayout* layout_automation = new QVBoxLayout();
 	QVBoxLayout* layout_left = new QVBoxLayout();
@@ -191,6 +199,17 @@ void AutomationView::SetupUi()
 	tree = new MetTree(tree_style, (width() - 750) / 2, height() - h_delta_1, this);
 	layout_left->addWidget(tree, 0, Qt::AlignTop);
 	container_left->setLayout(layout_left);
+
+	MetTextEditStyle text_style;
+	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 20) / 2, this);
+	canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 20) / 2, this);
+	canvas->setContentsMargins(0, 0, 0, 0);
+	layout_right->addWidget(text, 0, Qt::AlignTop);
+	layout_right->addWidget(canvas, 0, Qt::AlignBottom);
+	container_right->setLayout(layout_right);
+
+	ui_timer = new QTimer(this);
+	connect(ui_timer, &QTimer::timeout, this, &AutomationView::UpdateUi);
 
 	layout_automation->addStretch(1);
 	for (int i = 0; i < unit_cnt; i++) {
@@ -234,6 +253,93 @@ void AutomationView::LoadStyleSheet()
 	style_sheet_status_off =
 		"background-color: " + QString(COLOR_OFF_1) + ";"
 		"border-radius: 2px;";
+}
+
+void AutomationView::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton) {
+		if (g_menu)
+			g_menu->close();
+
+		menu = new MetMenu();
+
+		QIcon icon_run;
+		QAction* act_run;
+
+		if (button_run->status) {
+			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)));
+			act_run = menu->addAction(icon_run, "Stop");
+		} else {
+			icon_run = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)));
+			act_run = menu->addAction(icon_run, "Run");
+		}
+
+		connect(act_run, &QAction::triggered, this, [=]()
+			{
+				ToggleRunButton();
+				menu->close();
+				menu = nullptr;
+			});
+
+		QAction* act_plus_1_second = menu->addAction("Plus 1 second");
+		connect(act_plus_1_second, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() + 1;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QAction* act_minus_1_second = menu->addAction("Minus 1 second");
+		connect(act_minus_1_second, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() - 1;
+					if (time < 0)
+						time = 0;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QAction* act_plus_1_minute = menu->addAction("Plus 1 minute");
+		connect(act_plus_1_minute, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() + 60;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QAction* act_minus_1_minute = menu->addAction("Minus 1 minute");
+		connect(act_minus_1_minute, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					int time = process_unit_list[i]->time_edit->text().toInt() - 60;
+					if (time < 0)
+						time = 0;
+					process_unit_list[i]->time_edit->setText(QString::number(time));
+				}
+			});
+
+		QIcon icon_reset = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)));
+		QAction* act_reset = menu->addAction(icon_reset, "Reset");
+		connect(act_reset, &QAction::triggered, this, [=]()
+			{
+				for (int i = 1; i < unit_cnt; i++) {
+					process_unit_list[i]->time_edit->setText(QString::number(0));
+				}
+			});
+
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
+	}
 }
 
 void AutomationView::Set()
@@ -317,9 +423,15 @@ void AutomationView::RunProcess()
 	(this->*process_function_list.front())();
 	process_function_list.pop_front();
 	process_unit_list[0]->StatusOn();
+	text->clear();
 	
 	worker->Reset();
 	thread->start();
+	if (g_mode == Mode::DEBUG ||
+		g_mode == Mode::MONITOR_TEST) {
+		ui_timer->start(10);
+		monitor_view->ToggleScanButton();
+	}
 }
 
 void AutomationView::StopProcess()
@@ -327,6 +439,11 @@ void AutomationView::StopProcess()
 	thread->terminate();
 	StopPulseGenerator();
 	StopPumpAllChannel();
+	if (g_mode == Mode::DEBUG ||
+		g_mode == Mode::MONITOR_TEST) {
+		ui_timer->stop();
+		monitor_view->ToggleScanButton();
+	}
 }
 
 void AutomationView::Update(int count)
@@ -335,6 +452,7 @@ void AutomationView::Update(int count)
 	all_process->SetLcd(QString::number(count));
 	MetProcessUnit** list = process_unit_list;
 	g_out << count << '\n';
+	text->appendPlainText(QString::number(count));
 
 	for (int i = 1; i < unit_cnt; i++) {
 		if (list[i - 1]->time_tot < count && count <= list[i]->time_tot) {
@@ -359,7 +477,9 @@ void AutomationView::Update(int count)
 void AutomationView::StartPumpAllChannel()
 {	
 	g_out << "StartPumpAllChannel\n";
-	if (g_normal) {
+	text->appendPlainText("StartPumpAllChannel\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(1));
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
@@ -369,7 +489,9 @@ void AutomationView::StartPumpAllChannel()
 void AutomationView::StopPumpChannelNo2()
 {
 	g_out << "StopPumpChannelNo2\n";
-	if (g_normal) {
+	text->appendPlainText("StopPumpChannelNo2\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
@@ -378,7 +500,9 @@ void AutomationView::StopPumpChannelNo2()
 void AutomationView::StartPulseGenerator()
 {
 	g_out << "StartPulseGenerator\n";
-	if (g_normal) {
+	text->appendPlainText("StartPulseGenerator\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->On());
 	}
 	g_out << '\n';
@@ -387,7 +511,9 @@ void AutomationView::StartPulseGenerator()
 void AutomationView::StartPumpChannelNo2()
 {
 	g_out << "StartPumpChannelNo2\n";
-	if (g_normal) {
+	text->appendPlainText("StartPumpChannelNo2\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(2));
 	}
 	g_out << '\n';
@@ -396,7 +522,9 @@ void AutomationView::StartPumpChannelNo2()
 void AutomationView::StopPulseGenerator()
 {
 	g_out << "StopPulseGenerator\n";
-	if (g_normal) {
+	text->appendPlainText("StopPulseGenerator\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->Off());
 	}
 	g_out << '\n';
@@ -405,11 +533,18 @@ void AutomationView::StopPulseGenerator()
 void AutomationView::StopPumpAllChannel()
 {
 	g_out << "StopPumpAllChannel\n";
-	if (g_normal) {
+	text->appendPlainText("StopPumpAllChannel\n");
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(1));
 		ShowSerialCodeInfo(reglo_icc->Off(2));
 	}
 	g_out << '\n';
+}
+
+void AutomationView::UpdateUi()
+{
+	canvas->update();
 }
 
 MetTreeData AutomationView::GetRpm()

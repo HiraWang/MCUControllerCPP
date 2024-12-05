@@ -17,6 +17,13 @@
 extern std::ostream g_out;
 
 typedef enum {
+    NORMAL = 0,
+    DEBUG,
+    UI_TEST,
+    MONITOR_TEST
+} Mode;
+
+typedef enum {
     BUTTON_DEFAULT = false,
     BUTTON_PRESSED = true
 } ButtonStatus;

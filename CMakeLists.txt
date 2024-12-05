@@ -53,6 +53,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/color.h"
 			   "widgets/combo_box.h" 
 			   "widgets/combo_box.cpp"
+			   "widgets/dialog.h"
+			   "widgets/dialog.cpp"
 			   "widgets/font.h" 
 			   "widgets/helper.h"
 			   "widgets/helper.cpp"
@@ -76,6 +78,8 @@ target_sources(MCUControllerCPP PRIVATE
 			   "widgets/slider.cpp"
 			   "widgets/tab.h"
 			   "widgets/tab.cpp"
+			   "widgets/text_edit.h"
+			   "widgets/text_edit.cpp"
 			   "widgets/tree.h"
 			   "widgets/tree.cpp")
 

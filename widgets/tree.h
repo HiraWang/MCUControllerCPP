@@ -6,6 +6,7 @@
 
 #include "color.h"
 #include "font.h"
+#include "menu.h"
 
 class MetTreeStyle
 {
@@ -31,10 +32,14 @@ public:
 			QWidget* parent = nullptr);
 	virtual ~MetTree();
 
+protected:
+	void mousePressEvent(QMouseEvent* event);
+
 private:
 	void LoadStyleSheet();
 	MetTreeStyle style;
 	QString style_sheet;
+	MetMenu* menu;
 };
 
 #endif

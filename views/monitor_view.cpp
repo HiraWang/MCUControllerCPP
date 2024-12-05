@@ -7,7 +7,8 @@
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
-extern bool g_ui_test;
+extern int g_mode;
+extern MetMenu* g_menu;
 extern std::string IMAGE_MET_LEFT;
 extern std::string IMAGE_MET_RIGHT;
 extern std::string IMAGE_MET_UP;
@@ -20,6 +21,8 @@ extern std::string IMAGE_MET_PROCESS;
 extern std::string IMAGE_MET_RESULT;
 extern std::string IMAGE_MET_SCAN;
 extern std::string IMAGE_MET_STOP;
+extern std::string IMAGE_MET_ZOOM_IN;
+extern std::string IMAGE_MET_ZOOM_OUT;
 extern std::string MONITOR_BUFFER_DIR;
 extern std::string MONITOR_RESULT_DIR;
 
@@ -34,9 +37,11 @@ MonitorView::MonitorView(int w,
 	scale_y_interval(0.2f),
 	para_list(para_list),
 	serial_status(SERIAL_OK),
+	menu(nullptr),
 	QWidget(parent)
 {
-	if (g_ui_test) {
+	if (g_mode == Mode::NORMAL ||
+		g_mode == Mode::UI_TEST) {
 		serial_status = SERIAL_OK;
 		due = nullptr;
 		SetupUi();
@@ -80,7 +85,8 @@ void MonitorView::SetupUi()
 
 	helper = new Helper(HelperType::OSCILLOSCOPE);
 	helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
-	canvas = new MetCanvas(helper, width() - 30, height(), this);
+	canvas = new MetCanvas(helper, width() - 25, height() - 125, this);
+	canvas->setContentsMargins(0, 0, 0, 0);
 
 	timer = new QElapsedTimer();
 	ui_timer = new QTimer(this);
@@ -199,6 +205,69 @@ void MonitorView::SetupUi()
 	layout->addWidget(canvas, 0, { Qt::AlignHCenter, Qt::AlignBottom });
 	layout->addStretch(1);
 	setLayout(layout);
+}
+
+void MonitorView::mousePressEvent(QMouseEvent* event)
+{
+	if (event->button() == Qt::RightButton) {
+		if (g_menu)
+			g_menu->close();
+
+		menu = new MetMenu();
+
+		QAction* act_show_count = menu->addAction("Show count");
+		connect(act_show_count, &QAction::triggered, this, [=]()
+			{
+				QString msg;
+				if (due) {
+					msg = "Current count is " + QString::number(due->count);
+				} else {
+					msg = "No device detected";
+				}
+				MetMsgSubwindow(msg, MSG_INFO, menu);
+				menu->close();
+				menu = nullptr;
+			});
+
+		menu->addSeparator();
+
+		QIcon icon_zoom_in = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_IN)));
+		QAction* act_zoom_in = menu->addAction(icon_zoom_in, "Zoom in");
+		connect(act_zoom_in, &QAction::triggered, this, [=]()
+			{	
+				ToggleScaleXPlusButton();
+				ToggleScaleYPlusButton();
+			});
+
+		QIcon icon_zoom_out = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_ZOOM_OUT)));
+		QAction* act_zoom_out = menu->addAction(icon_zoom_out, "Zoom out");
+		connect(act_zoom_out, &QAction::triggered, this, [=]()
+			{
+				ToggleScaleXMinusButton();
+				ToggleScaleYMinusButton();
+			});
+
+		menu->addSeparator();
+
+		QIcon icon_render = QIcon(QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)));
+		QAction* act_render = menu->addAction(icon_render, "Screen shot");
+		connect(act_render, &QAction::triggered, this, [=]()
+			{
+				ToggleRenderButton();
+				menu->close();
+				menu = nullptr;
+			});
+
+		menu->exec(QCursor::pos());
+	} else if (event->button() == Qt::LeftButton) {
+		if (menu) {
+			QAction* action = menu->actionAt(event->pos());
+			if (!action) {
+				menu->close();
+				menu = nullptr;
+			}
+		}
+	}
 }
 
 void MonitorView::Update()

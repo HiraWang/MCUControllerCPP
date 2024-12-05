@@ -1,84 +1,61 @@
 #include "menu.h"
 
 #include "color.h"
-#include "label.h"
+#include "font.h"
 
-MetMenu::MetMenu(MetParaList* para_list,
-				 QWidget* parent) :
-	para_list(para_list),
-	QDialog(parent)
+MetMenu* g_menu = nullptr;
+
+MetMenu::MetMenu(QWidget* parent) :
+	QMenu(parent)
 {
-	layout_list = (QHBoxLayout**)calloc(para_list->size, sizeof(QHBoxLayout*));
-	line_edit_list = (MetLineEdit**)calloc(para_list->size, sizeof(MetLineEdit*));
+	setWindowFlags(Qt::FramelessWindowHint);
+	setAttribute(Qt::WA_TranslucentBackground);
+	LoadStyleSheet();
 	SetupUi();
+	g_menu = this;
 }
 
 MetMenu::~MetMenu()
 {
-	free(layout_list);
-	free(line_edit_list);
+	g_menu = nullptr;
 }
 
 void MetMenu::SetupUi()
 {
-	setWindowTitle("Menu");
-	setFixedWidth(300);
-	setFixedHeight(500);
-	QString style_sheet = QString("QDialog { background-color: ") +
-						  COLOR_GRAY +
-						  QString("; }");
+	setFixedWidth(200);
 	setStyleSheet(style_sheet);
-	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-	
-	layout = new QVBoxLayout(this);
-	for (int id = 0; id < para_list->size; id++) {
-		layout_list[id] = new QHBoxLayout();
-		MetLineEditStyle line_edit_style;
-		line_edit_list[id] = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
-		AddAttribute(para_list->list[id], layout_list[id],
-			line_edit_list[id], para_list->list[id].is_editable);
-		layout->addItem(layout_list[id]);
+	MetMenuCustomStyle* style = new MetMenuCustomStyle();
+	setStyle(style);
+}
+
+void MetMenu::LoadStyleSheet()
+{
+	style_sheet =
+		"QMenu {"
+		"background-color: " + QString(COLOR_GRAY) + ";"
+		"border: 2px solid black;"
+		"border-radius: 5px;"
+		"font: 14px;"
+		"color: " + QString(FONT_COLOR) + ";"
+		"}"
+		"QMenu::item {"
+		"height: 20px;"
+		"padding: 5px 0px 5px 10px;"
+		"border-radius: 5px;"
+		"}"
+		"QMenu::item:hover {"
+		"border-radius: 5px;"
+		"background-color: " + QString(COLOR_WHITE) + ";"
+		"}"
+		"QMenu::item:selected {"
+		"background-color: " + QString(COLOR_WHITE) + ";"
+		"}";
+}
+
+int MetMenuCustomStyle::pixelMetric(PixelMetric metric, const QStyleOption* option, const QWidget* widget) const
+{
+	if (metric == QStyle::PM_SmallIconSize) {
+		return 24;
 	}
-	setLayout(layout);
-}
-
-void MetMenu::AddAttribute(MetPara para,
-						   QHBoxLayout* layout,
-					       MetLineEdit* line_edit,
-						   bool is_editable)
-{
-	MetLabelStyle label_style(COLOR_NONE, FONT_SIZE, FONT_COLOR, "");
-	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
-		200, WIDGET_H, this);
-	if (para.str.empty()) {
-		line_edit->setText(QString::fromStdString(std::to_string(para.num)));
-	} else {
-		line_edit->setText(QString::fromStdString(para.str));
-	}
-	line_edit->setEnabled(is_editable);
-
-	layout->addWidget(label, 0, Qt::AlignLeft);
-	layout->addWidget(line_edit, 0, Qt::AlignRight);
-}
-
-void MetMenu::UpdateAttributes()
-{
-	for (int id = 0; id < para_list->size; id++) {
-		MetPara para = para_list->list[id];
-		if (para.str.empty()) {
-			line_edit_list[id]->setText(QString::fromStdString(std::to_string(para.num)));
-		} else {
-			line_edit_list[id]->setText(QString::fromStdString(para.str));
-		}
-	}
-}
-
-void MetMenu::Show()
-{
-	QDialog::show();
-}
-
-void MetMenu::Close()
-{
-	QDialog::close();
+	return QProxyStyle::pixelMetric(metric, option, widget);
 }
