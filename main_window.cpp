@@ -306,3 +306,18 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->mode_combo_box->setEnabled(false);
 	}
 }
+
+MainWindowController::MainWindowController() :
+	window(nullptr)
+{
+}
+
+MainWindowController::~MainWindowController()
+{
+	delete window;
+}
+
+void MainWindowController::Show() {
+	window = new MainWindow;
+	window->show();
+}

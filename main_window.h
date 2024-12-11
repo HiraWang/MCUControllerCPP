@@ -39,4 +39,19 @@ private:
     MetMenu* menu;
 };
 
+class MainWindowController : public QObject
+{
+    Q_OBJECT
+
+public:
+    MainWindowController();
+    ~MainWindowController();
+
+public slots:
+    void Show();
+
+private:
+    MainWindow* window;
+};
+
 #endif
