@@ -85,8 +85,8 @@ qt_add_executable(MCUControllerCPP
 qt_add_qml_module(MCUControllerCPP
     URI QmlSource
     VERSION 1.0
-    QML_FILES
-        splash_screen.qml
+    QML_FILES splash_screen.qml
+	RESOURCES images.qrc
 )
 
 set(MET_IMAGES ${./images/})

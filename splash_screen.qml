@@ -18,27 +18,79 @@ Loader {
         id: splash
         Window {
             id: splashWindow
-            width: 300
-            height: 200
+            width: 350
+            height: 300
             modality: Qt.ApplicationModal
             flags: Qt.SplashScreen
-            color: "#DEDEDE"
+            color: "white"
+
+            Image {
+                source: "qrc:/images/METIcon.jpg"
+                width: 300
+                height: 107
+                anchors.centerIn: parent
+            }
 
             ProgressBar {
                 id: progress
+                value: 0.5
+                from: 0
+                to : 100
+                padding: 1
+
                 anchors {
                     left: parent.left
                     right: parent.right
                     bottom: parent.bottom
                 }
-                value: 0
-                to : 100
-                from : 0
-            }
-
-            Text {
-                anchors.centerIn: parent
-                text: "Loading, please wait ..."
+            
+                background: Rectangle {
+                    implicitWidth: 200
+                    implicitHeight: 10
+                    color: "#e6e6e6"
+                    radius: 2
+                }
+            
+                contentItem: Item {
+                    implicitWidth: 200
+                    implicitHeight: 4
+            
+                    // Progress indicator for determinate state.
+                    Rectangle {
+                        width: progress.visualPosition * parent.width
+                        height: parent.height
+                        radius: 2
+                        color: "#17a81a"
+                        visible: !progress.indeterminate
+                    }
+            
+                    // Scrolling animation for indeterminate state.
+                    Item {
+                        anchors.fill: parent
+                        visible: progress.indeterminate
+                        clip: true
+            
+                        Row {
+                            spacing: 20
+            
+                            Repeater {
+                                model: progress.width / 40 + 1
+            
+                                Rectangle {
+                                    color: "#17a81a"
+                                    width: 20
+                                    height: progress.height
+                                }
+                            }
+                            XAnimator on x {
+                                from: 0
+                                to: -40
+                                loops: Animation.Infinite
+                                running: progress.indeterminate
+                            }
+                        }
+                    }
+                }
             }
 
             Timer {
