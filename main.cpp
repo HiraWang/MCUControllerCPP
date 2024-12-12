@@ -21,8 +21,8 @@ int main(int argc, char* argv[]) {
     const QUrl url(QStringLiteral("qrc:/QmlSource/splash_screen.qml"));
     QQmlComponent component(&engine, url);
     QObject* object = component.create();
-    MainWindowController* example = new MainWindowController();
-    QObject::connect(object, SIGNAL(qmlSignal()), example, SLOT(Show()));
+    MainWindowController* controller = new MainWindowController();
+    QObject::connect(object, SIGNAL(qmlLoaderFinish()), controller, SLOT(Show()));
 
     return app.exec();
 }

@@ -12,7 +12,7 @@ Loader {
             item.show();
         }
     }
-    signal qmlSignal
+    signal qmlLoaderFinish
 
     Component {
         id: splash
@@ -113,7 +113,7 @@ Loader {
                     if (progress.value >= 100) {
                         timer.stop();
                         loader.sourceComponent = undefined;
-                        loader.qmlSignal()
+                        loader.qmlLoaderFinish()
                     }
                 }
             }
