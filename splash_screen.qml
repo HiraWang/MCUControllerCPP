@@ -25,10 +25,20 @@ Loader {
             color: "white"
 
             Image {
+                id: image
                 source: "qrc:/images/METIcon.jpg"
                 width: 300
                 height: 107
                 anchors.centerIn: parent
+            }
+
+            Text {
+                anchors.horizontalCenter: image.horizontalCenter
+                anchors.top: image.bottom
+                text: ""
+                color: "#606060"
+                fontSizeMode: Text.Fit
+                font.pixelSize: 12
             }
 
             ProgressBar {
