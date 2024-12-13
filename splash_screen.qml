@@ -22,7 +22,14 @@ Loader {
             height: 300
             modality: Qt.ApplicationModal
             flags: Qt.SplashScreen
-            color: "white"
+            color: "transparent"
+
+            Rectangle {
+                width: parent.width
+                height: parent.height
+                radius: 10
+                color: "white"
+            }
 
             Image {
                 id: image
@@ -56,9 +63,9 @@ Loader {
             
                 background: Rectangle {
                     implicitWidth: 200
-                    implicitHeight: 10
+                    implicitHeight: 15
                     color: "#e6e6e6"
-                    radius: 2
+                    radius: 5
                 }
             
                 contentItem: Item {
@@ -69,7 +76,7 @@ Loader {
                     Rectangle {
                         width: progress.visualPosition * parent.width
                         height: parent.height
-                        radius: 2
+                        radius: 5
                         color: "#17a81a"
                         visible: !progress.indeterminate
                     }
