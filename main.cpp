@@ -17,8 +17,12 @@ int main(int argc, char* argv[]) {
     ResizeConsole(1520, 680);
     DWORD prev_mode;
     HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
+    HWND h_window = GetConsoleWindow();
+    HMENU h_menu = GetSystemMenu(h_window, FALSE);
+    EnableMenuItem(h_menu, SC_CLOSE, MF_GRAYED);
     GetConsoleMode(handle, &prev_mode);
     SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS | (prev_mode & ~ENABLE_QUICK_EDIT_MODE));
+    SetConsoleTitle(L"Debug Console");
 
     // Construct Qml engine and splash screen
     QQmlApplicationEngine engine;
