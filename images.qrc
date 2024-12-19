@@ -7,5 +7,6 @@
         <file>images/ArrowRight.png</file>
         <file>images/ArrowDown.png</file>
         <file>images/METIcon.jpg</file>
+        <file>images/ArrowUp.png</file>
     </qresource>
 </RCC>
