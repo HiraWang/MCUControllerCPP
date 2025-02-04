@@ -27,7 +27,8 @@ private:
     void AddAttribute(MetPara para,
                       QHBoxLayout* layout,
                       MetLineEdit* line_edit,
-                      bool is_editable);
+                      bool is_editable,
+                      unsigned char* para_count);
     QVBoxLayout* layout;
     MetParaList* para_list;
 };

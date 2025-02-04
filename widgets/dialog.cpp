@@ -23,29 +23,32 @@ void MetDialog::SetupUi()
 {
 	setWindowTitle("Dialog");
 	setFixedWidth(300);
-	setFixedHeight(500);
 	QString style_sheet = QString("QDialog { background-color: ") +
 						  COLOR_GRAY +
 						  QString("; }");
 	setStyleSheet(style_sheet);
 	setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 	
+	unsigned char para_count = 0;
 	layout = new QVBoxLayout(this);
 	for (int id = 0; id < para_list->size; id++) {
 		layout_list[id] = new QHBoxLayout();
 		MetLineEditStyle line_edit_style;
 		line_edit_list[id] = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 		AddAttribute(para_list->list[id], layout_list[id],
-			line_edit_list[id], para_list->list[id].is_editable);
+			line_edit_list[id], para_list->list[id].is_editable, &para_count);
 		layout->addItem(layout_list[id]);
 	}
+
+	setFixedHeight(para_count * 50);
 	setLayout(layout);
 }
 
 void MetDialog::AddAttribute(MetPara para,
 						     QHBoxLayout* layout,
 					         MetLineEdit* line_edit,
-						     bool is_editable)
+						     bool is_editable,
+						     unsigned char* para_count)
 {
 	MetLabelStyle label_style(COLOR_NONE, FONT_SIZE, FONT_COLOR, "");
 	MetLabel* label = new MetLabel(label_style, QString::fromStdString(para.name),
@@ -57,8 +60,14 @@ void MetDialog::AddAttribute(MetPara para,
 	}
 	line_edit->setEnabled(is_editable);
 
-	layout->addWidget(label, 0, Qt::AlignLeft);
-	layout->addWidget(line_edit, 0, Qt::AlignRight);
+	if (para.name.find("keyword") != std::string::npos) {
+		(*para_count)++;
+		layout->addWidget(label, 0, Qt::AlignLeft);
+		layout->addWidget(line_edit, 0, Qt::AlignRight);
+	} else {
+		label->setVisible(false);
+		line_edit->setVisible(false);
+	}
 }
 
 void MetDialog::UpdateAttributes()
