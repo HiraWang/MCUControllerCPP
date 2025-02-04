@@ -3,6 +3,8 @@
 #include "color.h"
 #include "label.h"
 
+extern std::string IMAGE_MET_RESET;
+
 MetDialog::MetDialog(MetParaList* para_list,
 					 QWidget* parent) :
 	para_list(para_list),
@@ -31,6 +33,23 @@ void MetDialog::SetupUi()
 	
 	unsigned char para_count = 0;
 	layout = new QVBoxLayout(this);
+	QHBoxLayout* layout_top = new QHBoxLayout();
+
+	MetTextEditStyle text_style;
+	text = new MetTextEdit(text_style, 265 - BUTTON_W, BUTTON_W, this);
+	layout_top->addWidget(text, 0, Qt::AlignLeft);
+
+	MetButtonStyle button_style;
+	refresh_button = new MetButton(button_style, "EXIT", "", BUTTON_W, BUTTON_W,
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)),
+		QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)), this);
+	connect(refresh_button, &QPushButton::released, this,
+		&MetDialog::ToggleRefreshButton);
+	layout_top->addWidget(refresh_button, 0, Qt::AlignRight);
+
+	layout->addItem(layout_top);
+
+	// add widgets for attributes
 	for (int id = 0; id < para_list->size; id++) {
 		layout_list[id] = new QHBoxLayout();
 		MetLineEditStyle line_edit_style;
@@ -40,7 +59,7 @@ void MetDialog::SetupUi()
 		layout->addItem(layout_list[id]);
 	}
 
-	setFixedHeight(para_count * 50);
+	setFixedHeight(BUTTON_W + para_count * 50);
 	setLayout(layout);
 }
 
@@ -79,6 +98,15 @@ void MetDialog::UpdateAttributes()
 		} else {
 			line_edit_list[id]->setText(QString::fromStdString(para.str));
 		}
+	}
+}
+
+void MetDialog::ToggleRefreshButton()
+{
+	text->clear();
+	std::vector<std::string> ports = ListComPorts();
+	for (std::vector<std::string>::iterator i = ports.begin(); i != ports.end(); ++i) {
+		text->appendPlainText(QString::fromStdString(*i));
 	}
 }
 

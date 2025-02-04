@@ -165,6 +165,7 @@ void MainWindow::ToggleLoadConfigButton()
 void MainWindow::ToggleMenuButton()
 {
 	MetButton* button = ui->upper_view->menu_button;
+	ui->upper_view->menu->ToggleRefreshButton();
 	if (button->status) {
 		button->SetButtonDefault();
 		ui->upper_view->menu->Close();

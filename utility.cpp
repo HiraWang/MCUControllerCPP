@@ -117,11 +117,12 @@ void ResizeConsole(int w, int h)
     SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
 }
 
-void ListComPorts()
+std::vector<std::string> ListComPorts()
 {
     HANDLE handle;
     CString file_name_tmp;
     bool no_com_ports = true;
+    std::vector<std::string> out;
 
     for (int i = 1; i < 20; i++) {
         std::string common_base_name = "\\\\.\\COM";
@@ -132,6 +133,7 @@ void ListComPorts()
         handle = CreateFileW(file_name_lp, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (handle != INVALID_HANDLE_VALUE) {
             std::wstring ws(file_name_lp);
+            out.push_back(std::string(ws.begin(), ws.end()));
             g_out << std::string(ws.begin(), ws.end()) << '\n';
             CloseHandle(handle);
             no_com_ports = false;
@@ -139,8 +141,11 @@ void ListComPorts()
     }
 
     if (no_com_ports) {
+        out.push_back("No serial port");
         g_out << "No serial port" << '\n';
     }
+
+    return out;
 }
 
 void RemoveAllFilesFromDir(QString path)
