@@ -58,6 +58,14 @@ void UpperView::SetupUi()
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
 
+	exit_button->setToolTip("exit program");
+	window_button->setToolTip("adjust window");
+	load_config_button->setToolTip("load config");
+	menu_button->setToolTip("menu");
+	console_button->setToolTip("console");
+	result_dir_button->setToolTip("open result directory");
+	power_button->setToolTip("power");
+
 	QWidget* container_combo_box = new QWidget(this);
 	QVBoxLayout* layout_combo_box = new QVBoxLayout();
 	QHBoxLayout* layout_device_combo_box = new QHBoxLayout();

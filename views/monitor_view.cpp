@@ -127,6 +127,18 @@ void MonitorView::SetupUi()
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
+	scan_button->setToolTip("scan");
+	scale_reset_button->setToolTip("reset");
+	scale_x_plus_button->setToolTip("x zoom out");
+	scale_y_plus_button->setToolTip("y zoom out");
+	scale_x_minus_button->setToolTip("x zoom in");
+	scale_y_minus_button->setToolTip("y zoom in");
+	plot_info_button->setToolTip("plot info");
+	render_button->setToolTip("render");
+	analyze_button->setToolTip("calculate freq");
+	buffer_dir_button->setToolTip("open buffer directory");
+	result_dir_button->setToolTip("open result directory");
+
 	connect(scan_button, &QPushButton::released, this,
 		&MonitorView::ToggleScanButton);
 	connect(scale_reset_button, &QPushButton::released, this,

@@ -87,6 +87,12 @@ void MetButton::LoadStyleSheet()
 		"border-radius: 5px;"
 		"font: bold " + style.font_size + ";"
 		"color: " + style.font_color + ";"
+		"}"
+		"QToolTip {"
+		"background-color: " + COLOR_BLACK + ";"
+		"border: 2px solid black;"
+		"border-radius: 5px;"
+		"color: " + COLOR_WHITE + ";"
 		"}";
 	style_sheet_pressed =
 		"QPushButton {"
@@ -109,6 +115,12 @@ void MetButton::LoadStyleSheet()
 		"border-radius: 5px;"
 		"font: bold " + style.font_size + ";"
 		"color: " + style.font_color + ";"
+		"}"
+		"QToolTip {"
+		"background-color: " + COLOR_BLACK + ";"
+		"border: 2px solid black;"
+		"border-radius: 5px;"
+		"color: " + COLOR_WHITE + ";"
 		"}";
 }
 
