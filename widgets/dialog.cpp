@@ -40,7 +40,7 @@ void MetDialog::SetupUi()
 	layout_top->addWidget(text, 0, Qt::AlignLeft);
 
 	MetButtonStyle button_style;
-	refresh_button = new MetButton(button_style, "EXIT", "", BUTTON_W, BUTTON_W,
+	refresh_button = new MetButton(button_style, "refresh", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESET)), this);
 	connect(refresh_button, &QPushButton::released, this,

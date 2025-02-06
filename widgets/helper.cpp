@@ -359,7 +359,6 @@ void Helper::paint(QPainter* painter, QPaintEvent* event, size_t count)
     painter->drawLine(0, height, width, height);
 }
 
-
 void Helper::AnalyzeData(size_t count)
 {
     std::string name = MONITOR_BUFFER_DIR + "\\buf_" + std::to_string(count) + ".bin";

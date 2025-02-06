@@ -41,10 +41,10 @@ MetProcessUnit::MetProcessUnit(MetProcessUnitStyle style,
 	time_edit = new MetLineEdit(line_edit_style, 100, WIDGET_H, this);
 
 	MetButtonStyle button_style;
-	button_minus_one = new MetButton(button_style, "MINUS", "MINUS", WIDGET_H, WIDGET_H,
+	button_minus_one = new MetButton(button_style, "minus", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MINUS)), this);
-	button_plus_one = new MetButton(button_style, "PLUS", "PLUS", WIDGET_H, WIDGET_H,
+	button_plus_one = new MetButton(button_style, "plus", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PLUS)), this);
 	
