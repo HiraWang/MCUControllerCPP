@@ -28,6 +28,7 @@ private slots:
     void ToggleConfigDirButton();
     void ToggleResultDirButton();
     void TogglePowerButton();
+    void ToggleDeviceComboBox();
 
 private:
     // instance of class calls constructor in default

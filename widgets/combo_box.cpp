@@ -51,6 +51,9 @@ void MetComboBox::LoadStyleSheet()
         "background: " + style.selection_bkg_color + ";"
         "color: " + style.hover_color + ";"
         "}"
+        "QComboBox QAbstractItemView:item:!enabled {"
+        "background: " + COLOR_OFF_1 + ";"
+        "}"
         // remove the dotted line of focus rect
         "QComboBox QAbstractItemView:item:selected:focus {"
         "border: -6px solid black;"

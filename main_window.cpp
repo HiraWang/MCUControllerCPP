@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 #include <QPainter>
+#include <QStandardItemModel>
 #include <QStyleOption>
 
 #include "devices/device.h"
@@ -49,6 +50,9 @@ MainWindow::MainWindow(QWidget* parent) :
 	mode_list = { "Normal", "Debug", "UI Test", "Monitor Test" };
 	ui->upper_view->device_combo_box->addItems(device_list);
 	ui->upper_view->mode_combo_box->addItems(mode_list);
+
+	connect(ui->upper_view->device_combo_box, &QComboBox::currentIndexChanged,
+		this, &MainWindow::ToggleDeviceComboBox);
 
 	// load data to para list
 	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
@@ -298,6 +302,24 @@ void MainWindow::TogglePowerButton()
 		
 		ui->upper_view->device_combo_box->setEnabled(false);
 		ui->upper_view->mode_combo_box->setEnabled(false);
+	}
+}
+
+void MainWindow::ToggleDeviceComboBox()
+{
+	QStandardItemModel* model =
+		dynamic_cast<QStandardItemModel*>(ui->upper_view->mode_combo_box->model());
+
+	for (int i = 0; i < mode_list.size(); i++) {
+		model->item(i)->setEnabled(true);
+	}
+	
+	if (ui->upper_view->device_combo_box->currentText() == "G1B" ||
+		ui->upper_view->device_combo_box->currentText() == "Reglo ICC") {
+		model->item(1)->setEnabled(false);
+		model->item(3)->setEnabled(false);
+	} else if (ui->upper_view->device_combo_box->currentText() == "Monitor") {
+		model->item(0)->setEnabled(false);
 	}
 }
 
