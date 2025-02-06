@@ -93,51 +93,39 @@ void MonitorView::SetupUi()
 	connect(ui_timer, &QTimer::timeout, this, &MonitorView::Update);
 
 	MetButtonStyle button_style;
-	scan_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	scan_button = new MetButton(button_style, "scan", "stop", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_SCAN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_STOP)), this);
-	scale_reset_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
+	scale_reset_button = new MetButton(button_style, "reset", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
-	scale_x_plus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
+	scale_x_plus_button = new MetButton(button_style, "x zoom in", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RIGHT)), this);
-	scale_y_plus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
+	scale_y_plus_button = new MetButton(button_style, "y zoom in", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_UP)), this);
-	scale_x_minus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
+	scale_x_minus_button = new MetButton(button_style, "x zoom out", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LEFT)), this);
-	scale_y_minus_button = new MetButton(button_style, "", "", WIDGET_H, WIDGET_H,
+	scale_y_minus_button = new MetButton(button_style, "y zoom out", "", WIDGET_H, WIDGET_H,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_DOWN)), this);
-	plot_info_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	plot_info_button = new MetButton(button_style, "hide plot info", "show plot info", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)), this);
-	render_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	render_button = new MetButton(button_style, "render", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_IMAGE)), this);
-	analyze_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	analyze_button = new MetButton(button_style, "calculate frequency", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_PROCESS)), this);
-	buffer_dir_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	buffer_dir_button = new MetButton(button_style, "open buffer directory", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_ATTACHED_FILES)), this);
-	result_dir_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	result_dir_button = new MetButton(button_style, "open result directory", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
-
-	scan_button->setToolTip("scan");
-	scale_reset_button->setToolTip("reset");
-	scale_x_plus_button->setToolTip("x zoom out");
-	scale_y_plus_button->setToolTip("y zoom out");
-	scale_x_minus_button->setToolTip("x zoom in");
-	scale_y_minus_button->setToolTip("y zoom in");
-	plot_info_button->setToolTip("plot info");
-	render_button->setToolTip("render");
-	analyze_button->setToolTip("calculate freq");
-	buffer_dir_button->setToolTip("open buffer directory");
-	result_dir_button->setToolTip("open result directory");
 
 	connect(scan_button, &QPushButton::released, this,
 		&MonitorView::ToggleScanButton);

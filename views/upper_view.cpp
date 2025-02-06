@@ -33,38 +33,30 @@ void UpperView::SetupUi()
 
 	// process orientated button style
 	MetButtonStyle button_style;
-	exit_button = new MetButton(button_style, "EXIT", "", BUTTON_W, BUTTON_W,
+	exit_button = new MetButton(button_style, "exit program", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_EXIT)), this);
-	window_button = new MetButton(button_style, "MAX", "FULL", BUTTON_W, BUTTON_W,
+	window_button = new MetButton(button_style, "maximize window", "fullscreen", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MAX_SIZE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_FULL_SCREEN)), this);
-	load_config_button = new MetButton(button_style, "LOAD", "", BUTTON_W, BUTTON_W,
+	load_config_button = new MetButton(button_style, "load config", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_LOAD)), this);
-	menu_button = new MetButton(button_style, "MENU", "CLOSE", BUTTON_W, BUTTON_W,
+	menu_button = new MetButton(button_style, "show menu", "close menu", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_MENU)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
-	console_button = new MetButton(button_style, "CONSOLE", "CLOSE", BUTTON_W, BUTTON_W,
+	console_button = new MetButton(button_style, "show console", "close console", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CONSOLE)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_CLOSE)), this);
-	result_dir_button = new MetButton(button_style, "", "", BUTTON_W, BUTTON_W,
+	result_dir_button = new MetButton(button_style, "open result directory", "", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_RESULT)), this);
 
 	MetButtonStyle power_button_style(COLOR_OFF_1, COLOR_ON_1, COLOR_OFF_2, COLOR_ON_2,
 		COLOR_OFF_3, COLOR_ON_3);
-	power_button = new MetButton(power_button_style, "OFF", "ON", BUTTON_W, BUTTON_W,
+	power_button = new MetButton(power_button_style, "power on", "power off", BUTTON_W, BUTTON_W,
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)),
 		QString::fromStdString(GetAbsPath(IMAGE_MET_POWER)), this);
-
-	exit_button->setToolTip("exit program");
-	window_button->setToolTip("adjust window");
-	load_config_button->setToolTip("load config");
-	menu_button->setToolTip("menu");
-	console_button->setToolTip("console");
-	result_dir_button->setToolTip("open result directory");
-	power_button->setToolTip("power");
 
 	QWidget* container_combo_box = new QWidget(this);
 	QVBoxLayout* layout_combo_box = new QVBoxLayout();
