@@ -134,7 +134,7 @@ std::vector<std::string> ListComPorts()
         if (handle != INVALID_HANDLE_VALUE) {
             std::wstring ws(file_name_lp);
             out.push_back(std::string(ws.begin(), ws.end()));
-            g_out << std::string(ws.begin(), ws.end()) << '\n';
+            g_out << "ListComPorts:" << std::string(ws.begin(), ws.end()) << '\n';
             CloseHandle(handle);
             no_com_ports = false;
         }
