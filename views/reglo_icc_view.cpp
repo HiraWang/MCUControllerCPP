@@ -23,9 +23,9 @@ RegloIccView::RegloIccView(int w,
 	}
 
 	std::string str = para_list->list[PUMP_KEYWORD].str;
-	std::wstring wstring = std::wstring(str.begin(), str.end());
+	std::wstring wstring = L"\\\\.\\" + std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
-	std::wcout << port << " " << sizeof(port) << '\n';
+	std::wcout << "RegloIccView:" << port << " " << sizeof(port) << '\n';
 
 	reglo_icc = new DeviceRegloIcc(port,
 								   CBR_9600,

@@ -125,7 +125,7 @@ void ListComPorts()
         handle = CreateFileW(file_name_lp, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
         if (handle != INVALID_HANDLE_VALUE) {
             std::wstring ws(file_name_lp);
-            g_out << std::string(ws.begin(), ws.end()) << '\n';
+            g_out << "ListComPorts:" << std::string(ws.begin(), ws.end()) << '\n';
             CloseHandle(handle);
             no_com_ports = false;
         }
