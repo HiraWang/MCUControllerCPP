@@ -49,9 +49,9 @@ MonitorView::MonitorView(int w,
 	}
 
 	std::string str = para_list->list[MONITOR_KEYWORD].str;
-	std::wstring wstring = std::wstring(str.begin(), str.end());
+	std::wstring wstring = L"\\\\.\\" + std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
-	std::wcout << port << " " << sizeof(port) << '\n';
+	std::wcout << "MonitorView:" << port << " " << sizeof(port) << '\n';
 
 	due = new DeviceArduinoDue(port,
 							   CBR_9600,
