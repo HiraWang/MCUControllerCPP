@@ -28,6 +28,7 @@ private slots:
     void ToggleConfigDirButton();
     void ToggleResultDirButton();
     void TogglePowerButton();
+    void ToggleDeviceComboBox();
 
 private:
     // instance of class calls constructor in default
@@ -37,6 +38,21 @@ private:
     MetParaList* para_list;
     MainWindowUI* ui;
     MetMenu* menu;
+};
+
+class MainWindowController : public QObject
+{
+    Q_OBJECT
+
+public:
+    MainWindowController();
+    ~MainWindowController();
+
+public slots:
+    void Show();
+
+private:
+    MainWindow* window;
 };
 
 #endif

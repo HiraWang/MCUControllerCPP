@@ -28,9 +28,9 @@ G1BView::G1BView(int w,
 	}
 
 	std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
-	std::wstring wstring = std::wstring(str.begin(), str.end());
+	std::wstring wstring = L"\\\\.\\" + std::wstring(str.begin(), str.end());
 	LPCWSTR port = wstring.data();
-	std::wcout << port << " " << sizeof(port) << '\n';
+	std::wcout << "G1BView:" << port << " " << sizeof(port) << '\n';
 
 	g1b = new DeviceG1B(port,
 				        CBR_1200,

@@ -2,6 +2,7 @@
 
 #include <QMessageBox>
 #include <QPainter>
+#include <QStandardItemModel>
 #include <QStyleOption>
 
 #include "devices/device.h"
@@ -25,13 +26,6 @@ MainWindow::MainWindow(QWidget* parent) :
 	para_list(new MetParaList()),
 	menu(nullptr)
 {
-	// optimize console
-	ResizeConsole(1520, 680);
-	DWORD prev_mode;
-	HANDLE handle = GetStdHandle(STD_INPUT_HANDLE);
-	GetConsoleMode(handle, &prev_mode);
-	SetConsoleMode(handle, ENABLE_EXTENDED_FLAGS | (prev_mode & ~ENABLE_QUICK_EDIT_MODE));
-
 	// set main window ui
     ui->SetupUi(this);
 
@@ -56,6 +50,9 @@ MainWindow::MainWindow(QWidget* parent) :
 	mode_list = { "Normal", "Debug", "UI Test", "Monitor Test" };
 	ui->upper_view->device_combo_box->addItems(device_list);
 	ui->upper_view->mode_combo_box->addItems(mode_list);
+
+	connect(ui->upper_view->device_combo_box, &QComboBox::currentIndexChanged,
+		this, &MainWindow::ToggleDeviceComboBox);
 
 	// load data to para list
 	if (para_list->LoadJsonFile() == PROGRAM_NO_CONFIG) {
@@ -172,6 +169,7 @@ void MainWindow::ToggleLoadConfigButton()
 void MainWindow::ToggleMenuButton()
 {
 	MetButton* button = ui->upper_view->menu_button;
+	ui->upper_view->menu->ToggleRefreshButton();
 	if (button->status) {
 		button->SetButtonDefault();
 		ui->upper_view->menu->Close();
@@ -305,4 +303,37 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->device_combo_box->setEnabled(false);
 		ui->upper_view->mode_combo_box->setEnabled(false);
 	}
+}
+
+void MainWindow::ToggleDeviceComboBox()
+{
+	QStandardItemModel* model =
+		dynamic_cast<QStandardItemModel*>(ui->upper_view->mode_combo_box->model());
+
+	for (int i = 0; i < mode_list.size(); i++) {
+		model->item(i)->setEnabled(true);
+	}
+	
+	if (ui->upper_view->device_combo_box->currentText() == "G1B" ||
+		ui->upper_view->device_combo_box->currentText() == "Reglo ICC") {
+		model->item(1)->setEnabled(false);
+		model->item(3)->setEnabled(false);
+	} else if (ui->upper_view->device_combo_box->currentText() == "Monitor") {
+		model->item(0)->setEnabled(false);
+	}
+}
+
+MainWindowController::MainWindowController() :
+	window(nullptr)
+{
+}
+
+MainWindowController::~MainWindowController()
+{
+	delete window;
+}
+
+void MainWindowController::Show() {
+	window = new MainWindow;
+	window->show();
 }

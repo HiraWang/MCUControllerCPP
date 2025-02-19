@@ -8,80 +8,86 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-project("MCUControllerCPP")
+project(MCUControllerCPP)
 
 set(CMAKE_PREFIX_PATH $ENV{QTDIR})
-# set(QT6_DIR C:/Qt/6.5.3/msvc2019_64/lib/cmake/Qt6)
 
 FIND_PACKAGE(OpenGL REQUIRED)
-find_package(Qt6 COMPONENTS Widgets Core Gui OpenGL OpenGLWidgets REQUIRED)
+find_package(Qt6 COMPONENTS Widgets Core Gui Quick OpenGL OpenGLWidgets REQUIRED)
 
-add_executable(MCUControllerCPP)
+qt_standard_project_setup()
 
-target_sources(MCUControllerCPP PRIVATE
-			   main.cpp
-			   MET.rc
-			   images.qrc
-			   "main_window.h" 
-			   "main_window.cpp"
-			   "main_window_ui.h"
-			   "utility.h"
-			   "utility.cpp" 
-			   "devices/device.h"
-			   "devices/device.cpp"
-			   "devices/due.cpp"
-			   "devices/g1b.cpp"
-			   "devices/reglo_icc.cpp"
-			   "views/automation_view.h"
-			   "views/automation_view.cpp"
-			   "views/bottom_view.h"
-			   "views/bottom_view.cpp"
-			   "views/g1b_view.h"
-			   "views/g1b_view.cpp"
-			   "views/monitor_view.h"
-			   "views/monitor_view.cpp"
-			   "views/pump_channel_view.h"
-			   "views/pump_channel_view.cpp"
-			   "views/reglo_icc_view.h"
-			   "views/reglo_icc_view.cpp"
-			   "views/upper_view.h"
-			   "views/upper_view.cpp"
-			   "widgets/button.h" 
-			   "widgets/button.cpp"
-			   "widgets/canvas.h"
-			   "widgets/canvas.cpp"
-			   "widgets/color.h"
-			   "widgets/combo_box.h" 
-			   "widgets/combo_box.cpp"
-			   "widgets/dialog.h"
-			   "widgets/dialog.cpp"
-			   "widgets/font.h" 
-			   "widgets/helper.h"
-			   "widgets/helper.cpp"
-			   "widgets/label.h"
-			   "widgets/label.cpp"
-			   "widgets/lcd.h"
-			   "widgets/lcd.cpp"
-			   "widgets/line_edit.h"
-			   "widgets/line_edit.cpp"
-			   "widgets/loading.h"
-			   "widgets/loading.cpp"
-			   "widgets/login_subwindow.h"
-			   "widgets/login_subwindow.cpp"
-			   "widgets/menu.h"
-			   "widgets/menu.cpp"
-			   "widgets/msg_subwindow.h"
-			   "widgets/msg_subwindow.cpp"
-			   "widgets/process_unit.h"
-			   "widgets/process_unit.cpp"
-			   "widgets/slider.h"
-			   "widgets/slider.cpp"
-			   "widgets/tab.h"
-			   "widgets/tab.cpp"
-			   "widgets/text_edit.h"
-			   "widgets/text_edit.cpp"
-			   "widgets/tree.h"
-			   "widgets/tree.cpp")
+qt_add_executable(MCUControllerCPP
+	main.cpp
+	MET.rc
+	images.qrc
+	main_window.h
+	main_window.cpp
+	main_window_ui.h
+	utility.h
+	utility.cpp
+	devices/device.h
+	devices/device.cpp
+	devices/due.cpp
+	devices/g1b.cpp
+	devices/reglo_icc.cpp
+	views/automation_view.h
+	views/automation_view.cpp
+	views/bottom_view.h
+	views/bottom_view.cpp
+	views/g1b_view.h
+	views/g1b_view.cpp
+	views/monitor_view.h
+	views/monitor_view.cpp
+	views/pump_channel_view.h
+	views/pump_channel_view.cpp
+	views/reglo_icc_view.h
+	views/reglo_icc_view.cpp
+	views/upper_view.h
+	views/upper_view.cpp
+	widgets/button.h
+	widgets/button.cpp
+	widgets/canvas.h
+	widgets/canvas.cpp
+	widgets/color.h
+	widgets/combo_box.h
+	widgets/combo_box.cpp
+	widgets/dialog.h
+	widgets/dialog.cpp
+	widgets/font.h
+	widgets/helper.h
+	widgets/helper.cpp
+	widgets/label.h
+	widgets/label.cpp
+	widgets/lcd.h
+	widgets/lcd.cpp
+	widgets/line_edit.h
+	widgets/line_edit.cpp
+	widgets/loading.h
+	widgets/loading.cpp
+	widgets/login_subwindow.h
+	widgets/login_subwindow.cpp
+	widgets/menu.h
+	widgets/menu.cpp
+	widgets/msg_subwindow.h
+	widgets/msg_subwindow.cpp
+	widgets/process_unit.h
+	widgets/process_unit.cpp
+	widgets/slider.h
+	widgets/slider.cpp
+	widgets/tab.h
+	widgets/tab.cpp
+	widgets/text_edit.h
+	widgets/text_edit.cpp
+	widgets/tree.h
+	widgets/tree.cpp)
+
+qt_add_qml_module(MCUControllerCPP
+    URI QmlSource
+    VERSION 1.0
+    QML_FILES splash_screen.qml
+	RESOURCES images.qrc
+)
 
 set(MET_IMAGES ${./images/})
 
@@ -91,6 +97,7 @@ target_link_libraries(MCUControllerCPP PRIVATE
 					  Qt6::Widgets
 					  Qt6::Core
 					  Qt6::Gui
+					  Qt6::Quick
 					  Qt6::OpenGL
 					  Qt6::OpenGLWidgets
 					  ${OPENGL_LIBRARIES})

@@ -33,6 +33,7 @@ MetButton::MetButton(MetButtonStyle style,
 	setFixedHeight(h);
 	LoadStyleSheet();
 	setStyleSheet(style_sheet_default);
+	setToolTip(name_default);
 }
 
 MetButton::~MetButton()
@@ -49,6 +50,7 @@ void MetButton::SetButtonDefault()
 		setIcon(icon_default);
 	}
 	setStyleSheet(style_sheet_default);
+	setToolTip(name_default);
 	status = BUTTON_DEFAULT;
 }
 
@@ -61,6 +63,7 @@ void MetButton::SetButtonPressed()
 		setIcon(icon_pressed);
 	}
 	setStyleSheet(style_sheet_pressed);
+	setToolTip(name_pressed);
 	status = BUTTON_PRESSED;
 }
 
@@ -87,6 +90,12 @@ void MetButton::LoadStyleSheet()
 		"border-radius: 5px;"
 		"font: bold " + style.font_size + ";"
 		"color: " + style.font_color + ";"
+		"}"
+		"QToolTip {"
+		"background-color: " + COLOR_BLACK + ";"
+		"border: 2px solid black;"
+		"border-radius: 5px;"
+		"color: " + COLOR_WHITE + ";"
 		"}";
 	style_sheet_pressed =
 		"QPushButton {"
@@ -109,6 +118,12 @@ void MetButton::LoadStyleSheet()
 		"border-radius: 5px;"
 		"font: bold " + style.font_size + ";"
 		"color: " + style.font_color + ";"
+		"}"
+		"QToolTip {"
+		"background-color: " + COLOR_BLACK + ";"
+		"border: 2px solid black;"
+		"border-radius: 5px;"
+		"color: " + COLOR_WHITE + ";"
 		"}";
 }
 
