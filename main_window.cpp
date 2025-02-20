@@ -318,8 +318,12 @@ void MainWindow::ToggleDeviceComboBox()
 		ui->upper_view->device_combo_box->currentText() == "Reglo ICC") {
 		model->item(1)->setEnabled(false);
 		model->item(3)->setEnabled(false);
+		ui->upper_view->mode_combo_box->setCurrentIndex(0);
 	} else if (ui->upper_view->device_combo_box->currentText() == "Monitor") {
 		model->item(0)->setEnabled(false);
+		ui->upper_view->mode_combo_box->setCurrentIndex(1);
+	} else {
+		ui->upper_view->mode_combo_box->setCurrentIndex(0);
 	}
 }
 
