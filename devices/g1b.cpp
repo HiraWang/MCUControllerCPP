@@ -228,6 +228,7 @@ SerialCode DeviceG1B::SetFreq(int freq)
 	std::string node("source:");
 	std::string period_cmd = "pulse:period " + std::to_string(period) + "ns;";
 	std::string buf = node + period_cmd + "hold width;double off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -257,6 +258,7 @@ SerialCode DeviceG1B::SetPulseWidth(float pw)
 	std::string node("source:");
 	std::string pw_cmd = "pulse:width " + std::to_string(pw_ns) + "ns;";
 	std::string buf = node + pw_cmd + "hold width;double off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -283,6 +285,7 @@ SerialCode DeviceG1B::SetVoltage(int v)
 	this->voltage = v;
 	std::string node("source:");
 	std::string buf = node + "voltage " + std::to_string(v) + "V";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -309,6 +312,7 @@ SerialCode DeviceG1B::SetOffset(int offset)
 	this->offset = offset;
 	std::string node("source:");
 	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -333,6 +337,7 @@ SerialCode DeviceG1B::GetOffset(int* offset)
 SerialCode DeviceG1B::On()
 {
 	std::string buf = "output on";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -351,6 +356,7 @@ SerialCode DeviceG1B::On()
 SerialCode DeviceG1B::Off()
 {
 	std::string buf = "output off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
