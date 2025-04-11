@@ -131,7 +131,7 @@ SerialCode DeviceG1B::Read(char* buf, const int size)
 	if (!ReadFile(serial_handle, buf, size, &dw_bytes_read, NULL)) {
 		return SERIAL_FAIL_TO_READ;
 	} else {
-		//g_out << "Read : " << buf;
+		g_out << "Read " << dw_bytes_read << " bytes\n";
 		return SERIAL_OK;
 	}
 }
@@ -157,13 +157,13 @@ SerialCode DeviceG1B::Login()
 	g_out << g_g1b_password << '\n';
 
 	ret = LoginStepFunction("login step 1", std::string(),
-		"avtech-f8369be5fff1", 5, 200);
+		"avtech-f8369be5fff1", 5, 1000);
 	if (ret == SERIAL_OK) {
 		ret = LoginStepFunction("login step 2", std::string(g_g1b_account),
-			"Password", 5, 200);
+			"Password", 10, 1000);
 		if (ret == SERIAL_OK) {
 			ret = LoginStepFunction("login step 3", std::string(g_g1b_password),
-				"> ", 5, 200);
+				"> ", 10, 1000);
 			if (ret == SERIAL_OK) {
 				g_out << "login successful" << '\n';
 				q_login_ret.push(ret);
@@ -202,8 +202,6 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 	char* cmd = CopyStringToNewedCharArray(input);
 
 	while (strstr(buf, keyword) == NULL && cnt < max_cnt) {
-		g_out << name << " try no." << cnt << '\n';
-
 		if (cnt == 0) {
 			Write(cmd);
 			Sleep(time_delay);
@@ -212,6 +210,8 @@ SerialCode DeviceG1B::LoginStepFunction(std::string name,
 		Read(buf, MAXBYTE);
 		Sleep(time_delay);
 		cnt += 1;
+
+		g_out << name << " try no." << cnt << " buf " << buf << '\n';
 
 		if (cnt == max_cnt) {
 			return SERIAL_FAIL;
@@ -228,6 +228,7 @@ SerialCode DeviceG1B::SetFreq(int freq)
 	std::string node("source:");
 	std::string period_cmd = "pulse:period " + std::to_string(period) + "ns;";
 	std::string buf = node + period_cmd + "hold width;double off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -257,6 +258,7 @@ SerialCode DeviceG1B::SetPulseWidth(float pw)
 	std::string node("source:");
 	std::string pw_cmd = "pulse:width " + std::to_string(pw_ns) + "ns;";
 	std::string buf = node + pw_cmd + "hold width;double off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -283,6 +285,7 @@ SerialCode DeviceG1B::SetVoltage(int v)
 	this->voltage = v;
 	std::string node("source:");
 	std::string buf = node + "voltage " + std::to_string(v) + "V";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -309,6 +312,7 @@ SerialCode DeviceG1B::SetOffset(int offset)
 	this->offset = offset;
 	std::string node("source:");
 	std::string buf = node + "voltage:low " + std::to_string(offset) + "V";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -333,6 +337,7 @@ SerialCode DeviceG1B::GetOffset(int* offset)
 SerialCode DeviceG1B::On()
 {
 	std::string buf = "output on";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);
@@ -351,6 +356,7 @@ SerialCode DeviceG1B::On()
 SerialCode DeviceG1B::Off()
 {
 	std::string buf = "output off";
+	buf += std::string("\r\n");
 	g_out << buf << '\n';
 
 	char* cmd = CopyStringToNewedCharArray(buf);

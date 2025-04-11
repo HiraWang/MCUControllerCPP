@@ -223,6 +223,7 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->mode_combo_box->setEnabled(true);
 
 		if (current_device == Device::AUTOMATION) {
+			return;
 			ui->bottom_view->automation_view->~AutomationView();
 			ui->bottom_view->monitor_view->~MonitorView();
 			ui->bottom_view->g1b_view->~G1BView();
@@ -243,6 +244,7 @@ void MainWindow::TogglePowerButton()
 			ui->bottom_view->tab->removeTab(0);
 			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if ((current_device == Device::MONITOR)) {
+			return;
 			ui->bottom_view->monitor_view->~MonitorView();
 			ui->bottom_view->tab->removeTab(0);
 			ui->bottom_view->monitor_view = nullptr;
@@ -253,6 +255,7 @@ void MainWindow::TogglePowerButton()
 		int w = width() - 25;
 		int h = height() - 170;
 		if (current_device == Device::AUTOMATION) {
+			return;
 			ui->bottom_view->g1b_view = new G1BView(w, h,
 				para_list, ui->bottom_view);
 			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h,
@@ -293,6 +296,7 @@ void MainWindow::TogglePowerButton()
 			if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
 				ui->bottom_view->tab->show();
 		} else if (current_device == Device::MONITOR) {
+			return;
 			ui->bottom_view->monitor_view = new MonitorView(w, h, para_list, ui->bottom_view);
 			ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
 				device_list[current_device]);
