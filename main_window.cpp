@@ -223,16 +223,15 @@ void MainWindow::TogglePowerButton()
 		ui->upper_view->mode_combo_box->setEnabled(true);
 
 		if (current_device == Device::AUTOMATION) {
-			return;
 			ui->bottom_view->automation_view->~AutomationView();
-			ui->bottom_view->monitor_view->~MonitorView();
+			//ui->bottom_view->monitor_view->~MonitorView();
 			ui->bottom_view->g1b_view->~G1BView();
 			ui->bottom_view->reglo_icc_view->~RegloIccView();
-			for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
+			for (int i = 0; i < ui->bottom_view->tab->count() - 1; i++) {
 				ui->bottom_view->tab->removeTab(i);
 			}
 			ui->bottom_view->automation_view = nullptr;
-			ui->bottom_view->monitor_view = nullptr;
+			//ui->bottom_view->monitor_view = nullptr;
 			ui->bottom_view->g1b_view = nullptr;
 			ui->bottom_view->reglo_icc_view = nullptr;
 		} else if (current_device == Device::G1B) {
@@ -255,13 +254,12 @@ void MainWindow::TogglePowerButton()
 		int w = width() - 25;
 		int h = height() - 170;
 		if (current_device == Device::AUTOMATION) {
-			return;
 			ui->bottom_view->g1b_view = new G1BView(w, h,
 				para_list, ui->bottom_view);
 			ui->bottom_view->reglo_icc_view = new RegloIccView(w, h,
 				para_list, ui->bottom_view);
-			ui->bottom_view->monitor_view = new MonitorView(w, h,
-				para_list, ui->bottom_view);
+			//ui->bottom_view->monitor_view = new MonitorView(w, h,
+			//	para_list, ui->bottom_view);
 			ui->bottom_view->automation_view = new AutomationView(w, h,
 				ui->bottom_view->g1b_view->g1b,
 				ui->bottom_view->reglo_icc_view->reglo_icc,
@@ -270,8 +268,8 @@ void MainWindow::TogglePowerButton()
 
 			ui->bottom_view->tab->addTab(ui->bottom_view->automation_view,
 				device_list[Device::AUTOMATION]);
-			ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
-				device_list[Device::MONITOR]);
+			//ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
+			//	device_list[Device::MONITOR]);
 			ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
 				device_list[Device::G1B]);
 			ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
@@ -279,7 +277,7 @@ void MainWindow::TogglePowerButton()
 
 			if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK &&
 				ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK &&
-				ui->bottom_view->monitor_view->serial_status == SERIAL_OK &&
+				//ui->bottom_view->monitor_view->serial_status == SERIAL_OK &&
 				ui->bottom_view->automation_view->serial_status == SERIAL_OK) {
 				ui->bottom_view->tab->show();
 			}

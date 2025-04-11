@@ -196,17 +196,17 @@ void AutomationView::SetupUi()
 	layout_right->setContentsMargins(0, 0, 0, 0);
 
 	MetTreeStyle tree_style;
-	tree = new MetTree(tree_style, (width() - 750) / 2, height() - h_delta_1, this);
-	layout_left->addWidget(tree, 0, Qt::AlignTop);
-	container_left->setLayout(layout_left);
+	//tree = new MetTree(tree_style, (width() - 750) / 2, height() - h_delta_1, this);
+	//layout_left->addWidget(tree, 0, Qt::AlignTop);
+	//container_left->setLayout(layout_left);
 
 	MetTextEditStyle text_style;
-	text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 20) / 2, this);
-	canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 20) / 2, this);
-	canvas->setContentsMargins(0, 0, 0, 0);
-	layout_right->addWidget(text, 0, Qt::AlignTop);
-	layout_right->addWidget(canvas, 0, Qt::AlignBottom);
-	container_right->setLayout(layout_right);
+	//text = new MetTextEdit(text_style, (width() - 750) / 2, (height() - 20) / 2, this);
+	//canvas = new MetCanvas(monitor_view->helper, (width() - 750) / 2, (height() - 20) / 2, this);
+	//canvas->setContentsMargins(0, 0, 0, 0);
+	//layout_right->addWidget(text, 0, Qt::AlignTop);
+	//layout_right->addWidget(canvas, 0, Qt::AlignBottom);
+	//container_right->setLayout(layout_right);
 
 	ui_timer = new QTimer(this);
 	connect(ui_timer, &QTimer::timeout, this, &AutomationView::UpdateUi);
@@ -362,20 +362,20 @@ void AutomationView::Set()
 	all_process->SetLcd("0");
 	bar->reset();
 
-	while (parameter_name_list.size() > 0) {
-		QString name = QString::fromStdString(parameter_name_list.front());
-		parameter_name_list.pop_front();
+	//while (parameter_name_list.size() > 0) {
+	//	QString name = QString::fromStdString(parameter_name_list.front());
+	//	parameter_name_list.pop_front();
 
-		QList<QTreeWidgetItem*> list = tree->findItems(name, Qt::MatchContains | Qt::MatchRecursive, 0);
-		MetTreeData data = (this->*parameter_function_list.front())();
+	//	QList<QTreeWidgetItem*> list = tree->findItems(name, Qt::MatchContains | Qt::MatchRecursive, 0);
+	//	MetTreeData data = (this->*parameter_function_list.front())();
 
-		int i = 0;
-		foreach(QTreeWidgetItem * item, list) {
-			item->setText(1, QString::number(data.value[i++]));
-		}
+	//	int i = 0;
+	//	foreach(QTreeWidgetItem * item, list) {
+	//		item->setText(1, QString::number(data.value[i++]));
+	//	}
 
-		parameter_function_list.pop_front();
-	}
+	//	parameter_function_list.pop_front();
+	//}
 }
 
 void AutomationView::ToggleRunButton()
@@ -423,7 +423,7 @@ void AutomationView::RunProcess()
 	(this->*process_function_list.front())();
 	process_function_list.pop_front();
 	process_unit_list[0]->StatusOn();
-	text->clear();
+	//text->clear();
 	
 	worker->Reset();
 	thread->start();
@@ -452,7 +452,7 @@ void AutomationView::Update(int count)
 	all_process->SetLcd(QString::number(count));
 	MetProcessUnit** list = process_unit_list;
 	g_out << count << '\n';
-	text->appendPlainText(QString::number(count));
+	//text->appendPlainText(QString::number(count));
 
 	for (int i = 1; i < unit_cnt; i++) {
 		if (list[i - 1]->time_tot < count && count <= list[i]->time_tot) {
@@ -477,7 +477,7 @@ void AutomationView::Update(int count)
 void AutomationView::StartPumpAllChannel()
 {	
 	g_out << "StartPumpAllChannel\n";
-	text->appendPlainText("StartPumpAllChannel\n");
+	//text->appendPlainText("StartPumpAllChannel\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(1));
@@ -489,7 +489,7 @@ void AutomationView::StartPumpAllChannel()
 void AutomationView::StopPumpChannelNo2()
 {
 	g_out << "StopPumpChannelNo2\n";
-	text->appendPlainText("StopPumpChannelNo2\n");
+	//text->appendPlainText("StopPumpChannelNo2\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(2));
@@ -500,7 +500,7 @@ void AutomationView::StopPumpChannelNo2()
 void AutomationView::StartPulseGenerator()
 {
 	g_out << "StartPulseGenerator\n";
-	text->appendPlainText("StartPulseGenerator\n");
+	//text->appendPlainText("StartPulseGenerator\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->On());
@@ -511,7 +511,7 @@ void AutomationView::StartPulseGenerator()
 void AutomationView::StartPumpChannelNo2()
 {
 	g_out << "StartPumpChannelNo2\n";
-	text->appendPlainText("StartPumpChannelNo2\n");
+	//text->appendPlainText("StartPumpChannelNo2\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->On(2));
@@ -522,7 +522,7 @@ void AutomationView::StartPumpChannelNo2()
 void AutomationView::StopPulseGenerator()
 {
 	g_out << "StopPulseGenerator\n";
-	text->appendPlainText("StopPulseGenerator\n");
+	//text->appendPlainText("StopPulseGenerator\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(g1b->Off());
@@ -533,7 +533,7 @@ void AutomationView::StopPulseGenerator()
 void AutomationView::StopPumpAllChannel()
 {
 	g_out << "StopPumpAllChannel\n";
-	text->appendPlainText("StopPumpAllChannel\n");
+	//text->appendPlainText("StopPumpAllChannel\n");
 	if (g_mode == Mode::NORMAL ||
 		g_mode == Mode::DEBUG) {
 		ShowSerialCodeInfo(reglo_icc->Off(1));
