@@ -26,6 +26,8 @@ qt_add_executable(MCUControllerCPP
 	main_window_ui.h
 	utility.h
 	utility.cpp
+	test.h
+	test.cpp
 	devices/device.h
 	devices/device.cpp
 	devices/due.cpp
@@ -85,7 +87,8 @@ qt_add_executable(MCUControllerCPP
 qt_add_qml_module(MCUControllerCPP
     URI QmlSource
     VERSION 1.0
-    QML_FILES splash_screen.qml
+    QML_FILES splash_screen.qml 
+	QML_FILES test.qml
 	RESOURCES images.qrc
 )
 

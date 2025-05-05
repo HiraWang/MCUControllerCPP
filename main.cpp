@@ -2,8 +2,10 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
+#include <QQmlContext>
 
 #include "main_window.h"
+#include "test.h"
 
 int main(int argc, char* argv[]) {
     // Construct Qt Application
@@ -31,6 +33,12 @@ int main(int argc, char* argv[]) {
     QObject* object = component.create();
     MainWindowController* controller = new MainWindowController();
     QObject::connect(object, SIGNAL(qmlLoaderFinish()), controller, SLOT(Show()));
+
+    MyClass mine;
+    QQmlContext* ctx = engine.rootContext();
+    ctx->setContextProperty("myClass", &mine);
+    engine.load(QStringLiteral("qrc:/QmlSource/test.qml"));
+    mine.test();
 
     return app.exec();
 }
