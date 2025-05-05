@@ -34,11 +34,11 @@ int main(int argc, char* argv[]) {
     MainWindowController* controller = new MainWindowController();
     QObject::connect(object, SIGNAL(qmlLoaderFinish()), controller, SLOT(Show()));
 
-    MyClass mine;
+    MyClass my_class;
     QQmlContext* ctx = engine.rootContext();
-    ctx->setContextProperty("myClass", &mine);
+    ctx->setContextProperty("myClass", &my_class);
     engine.load(QStringLiteral("qrc:/QmlSource/test.qml"));
-    mine.test();
+    my_class.test();
 
     return app.exec();
 }
