@@ -1,8 +1,9 @@
 #include "utility.h"
 
+#include <Windows.h>
 #include <atlstr.h>
 #include <direct.h>
-#include <Windows.h>
+
 #include <fstream>
 #include <nlohmann/json.hpp>
 
@@ -53,251 +54,218 @@ std::ofstream fout(LOG_FILE_PATH);
 MetLogBuf log_buf(fout.rdbuf(), std::cout.rdbuf());
 std::ostream g_out = std::ostream(&log_buf);
 
-char* CopyStringToNewedCharArray(const std::string& str)
-{
-    const char* c_str = str.c_str();
-    rsize_t size = str.length() + 1;
-    char* arr = new char[size];
-    strcpy_s(arr, size, c_str);
-    //g_out << arr << '\n';
+char* CopyStringToNewedCharArray(const std::string& str) {
+  const char* c_str = str.c_str();
+  rsize_t size = str.length() + 1;
+  char* arr = new char[size];
+  strcpy_s(arr, size, c_str);
+  // g_out << arr << '\n';
 
-    return arr;
+  return arr;
 }
 
-std::string GetSeparator() 
-{
+std::string GetSeparator() {
 #ifdef _WIN32
-    std::string separator("\\");
+  std::string separator("\\");
 #else
-    std::string separator("/");
+  std::string separator("/");
 #endif
-    return separator;
+  return separator;
 }
 
-std::string GetCurrentPath() 
-{
-    char* buf = nullptr;
-    buf = _getcwd(nullptr, 0);
-    if (buf) {
-        std::string path = buf; // buf is copied to path
-        free(buf);
-        return path;
+std::string GetCurrentPath() {
+  char* buf = nullptr;
+  buf = _getcwd(nullptr, 0);
+  if (buf) {
+    std::string path = buf;  // buf is copied to path
+    free(buf);
+    return path;
+  } else {
+    return std::string();
+  }
+}
+
+std::string GetAbsPath(std::string file_name) {
+  std::string path = GetCurrentPath();
+  if (path.empty() || file_name.empty()) return std::string();
+  g_out << "get path : " << GetCurrentPath() + file_name << '\n';
+  return GetCurrentPath() + file_name;
+}
+
+void HideConsole() {
+  g_out << "hide console" << '\n';
+  ShowWindow(GetConsoleWindow(), SW_HIDE);
+}
+
+void ShowConsole() {
+  g_out << "show console" << '\n';
+  ShowWindow(GetConsoleWindow(), SW_SHOW);
+}
+
+void ResizeConsole(int w, int h) {
+  if (w <= 100 || h <= 100) {
+    return;
+  }
+  // g_out << "resize console" << '\n';
+  SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
+}
+
+std::vector<std::string> ListComPorts() {
+  HANDLE handle;
+  CString file_name_tmp;
+  bool no_com_ports = true;
+  std::vector<std::string> out;
+
+  for (int i = 1; i < 20; i++) {
+    std::string common_base_name = "\\\\.\\COM";
+    common_base_name += std::to_string(i);
+    file_name_tmp = common_base_name.c_str();
+    LPCTSTR file_name_lp = file_name_tmp;
+
+    handle = CreateFileW(file_name_lp, GENERIC_READ | GENERIC_WRITE, 0, NULL,
+                         OPEN_EXISTING, 0, NULL);
+    if (handle != INVALID_HANDLE_VALUE) {
+      std::wstring ws(file_name_lp);
+      out.push_back(std::string(ws.begin(), ws.end()));
+      g_out << "ListComPorts:" << std::string(ws.begin(), ws.end()) << '\n';
+      CloseHandle(handle);
+      no_com_ports = false;
+    }
+  }
+
+  if (no_com_ports) {
+    out.push_back("No serial port");
+    g_out << "No serial port" << '\n';
+  }
+
+  return out;
+}
+
+void RemoveAllFilesFromDir(QString path) {
+  QDir dir(path);
+  dir.setNameFilters(QStringList() << "*.*");
+  dir.setFilter(QDir::Files);
+  foreach (QString dirFile, dir.entryList()) {
+    dir.remove(dirFile);
+  }
+}
+
+void ShowSerialCodeInfo(SerialCode code) {
+  if (code == SERIAL_OK) {
+    g_out << "OK\n";
+  } else {
+    g_out << "FAIL\n";
+  }
+}
+
+void FFT(int size, std::complex<double>* x) {
+  // bit-reversal permutation
+  for (int i = 1, j = 0; i < size; ++i) {
+    for (int k = size >> 1; !((j ^= k) & k); k >>= 1)
+      ;
+    if (i > j) swap(x[i], x[j]);
+  }
+
+  // dynamic programming
+  for (int k = 2; k <= size; k <<= 1) {
+    float theta = -2.0 * 3.14159 / k;
+    std::complex<float> delta_w(cos(theta), sin(theta));
+
+    // do fft for each k
+    for (int j = 0; j < size; j += k) {
+      std::complex<double> w(1, 0);
+      for (int i = j; i < j + k / 2; i++) {
+        std::complex<double> a = x[i];
+        std::complex<double> b = x[i + k / 2] * w;
+        x[i] = a + b;
+        x[i + k / 2] = a - b;
+        w *= delta_w;
+      }
+    }
+  }
+
+  // scale
+  for (int i = 0; i < size; i++) {
+    x[i] /= sqrt(size);
+  }
+}
+
+MetPara::MetPara() : is_editable(false), num(0), str(""), name("") {}
+
+MetPara::~MetPara() {}
+
+void MetPara::Reset() {
+  is_editable = false;
+  num = 0;
+  str = "";
+  name = "";
+}
+
+MetParaList::MetParaList() : size(0), list(nullptr) {}
+
+MetParaList::MetParaList(const MetParaList& source) {
+  this->size = source.size;
+  if (this->size >= 0) {
+    this->list = new MetPara[this->size];
+  } else {
+    return;
+  }
+
+  for (int id = 0; id < this->size; id++) {
+    this->list[id] = source.list[id];
+  }
+}
+
+void MetParaList::operator=(const MetParaList& source) {
+  this->size = source.size;
+  if (this->size >= 0) {
+    this->list = new MetPara[this->size];
+  } else {
+    return;
+  }
+
+  for (int id = 0; id < this->size; id++) {
+    this->list[id] = source.list[id];
+  }
+}
+
+MetParaList::~MetParaList() { delete[] list; }
+
+ExitCode MetParaList::LoadJsonFile() {
+  // load data from json configuration file
+  std::ifstream f(GetAbsPath(CONFIG_MET));
+  if (f.fail()) {
+    return PROGRAM_NO_CONFIG;
+  }
+
+  json data = json::parse(f);
+  size = data.size();
+  if (!list) {
+    g_out << "create new list of met para" << '\n';
+    list = new MetPara[size];
+  } else {
+    g_out << "reset the list of met para" << '\n';
+    for (int id = 0; id < size; id++) {
+      list[id].Reset();
+    }
+  }
+
+  // Insert data to MetParaList
+  int id = 0;
+  for (json::iterator it = data.begin(); it != data.end(); ++it, id++) {
+    g_out << std::left << std::setw(20) << it.key() << " : " << it.value();
+    list[id].name = it.key();
+    if (it.value().is_string()) {
+      list[id].str = it.value();
+      g_out << std::right << std::setw(18) << list[id].str << '\n';
+    } else if (it.value().is_number()) {
+      list[id].num = it.value();
+      g_out << std::right << std::setw(20) << list[id].num << '\n';
     } else {
-        return std::string();
+      g_out << '\n';
     }
-}
+    list[id].is_editable = false;
+  }
 
-std::string GetAbsPath(std::string file_name) 
-{
-    std::string path = GetCurrentPath();
-    if (path.empty() || file_name.empty())
-        return std::string();
-    g_out << "get path : " << GetCurrentPath() + file_name << '\n';
-    return GetCurrentPath() + file_name;
-}
-
-void HideConsole()
-{
-    g_out << "hide console" << '\n';
-    ShowWindow(GetConsoleWindow(), SW_HIDE);
-}
-
-void ShowConsole()
-{
-    g_out << "show console" << '\n';
-    ShowWindow(GetConsoleWindow(), SW_SHOW);
-}
-
-void ResizeConsole(int w, int h)
-{
-    if (w <= 100 || h <= 100) {
-        return;
-    }
-    //g_out << "resize console" << '\n';
-    SetWindowPos(GetConsoleWindow(), HWND_TOP, 200, 200, w, h, SWP_HIDEWINDOW);
-}
-
-std::vector<std::string> ListComPorts()
-{
-    HANDLE handle;
-    CString file_name_tmp;
-    bool no_com_ports = true;
-    std::vector<std::string> out;
-
-    for (int i = 1; i < 20; i++) {
-        std::string common_base_name = "\\\\.\\COM";
-        common_base_name += std::to_string(i);
-        file_name_tmp = common_base_name.c_str();
-        LPCTSTR file_name_lp = file_name_tmp;
-
-        handle = CreateFileW(file_name_lp, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
-        if (handle != INVALID_HANDLE_VALUE) {
-            std::wstring ws(file_name_lp);
-            out.push_back(std::string(ws.begin(), ws.end()));
-            g_out << "ListComPorts:" << std::string(ws.begin(), ws.end()) << '\n';
-            CloseHandle(handle);
-            no_com_ports = false;
-        }
-    }
-
-    if (no_com_ports) {
-        out.push_back("No serial port");
-        g_out << "No serial port" << '\n';
-    }
-
-    return out;
-}
-
-void RemoveAllFilesFromDir(QString path)
-{
-    QDir dir(path);
-    dir.setNameFilters(QStringList() << "*.*");
-    dir.setFilter(QDir::Files);
-    foreach(QString dirFile, dir.entryList())
-    {
-        dir.remove(dirFile);
-    }
-}
-
-void ShowSerialCodeInfo(SerialCode code)
-{
-    if (code == SERIAL_OK) {
-        g_out << "OK\n";
-    } else {
-        g_out << "FAIL\n";
-    }
-}
-
-void FFT(int size, std::complex<double>* x)
-{
-    // bit-reversal permutation
-    for (int i = 1, j = 0; i < size; ++i) {
-        for (int k = size >> 1; !((j ^= k) & k); k >>= 1);
-        if (i > j) swap(x[i], x[j]);
-    }
-
-    // dynamic programming
-    for (int k = 2; k <= size; k <<= 1) {
-        float theta = -2.0 * 3.14159 / k;
-        std::complex<float> delta_w(cos(theta), sin(theta));
-
-        // do fft for each k
-        for (int j = 0; j < size; j += k) {
-            std::complex<double> w(1, 0);
-            for (int i = j; i < j + k / 2; i++) {
-                std::complex<double> a = x[i];
-                std::complex<double> b = x[i + k / 2] * w;
-                x[i] = a + b;
-                x[i + k / 2] = a - b;
-                w *= delta_w;
-            }
-        }
-    }
-
-    // scale
-    for (int i = 0; i < size; i++) {
-        x[i] /= sqrt(size);
-    }
-}
-
-MetPara::MetPara() : 
-    is_editable(false),
-    num(0),
-    str(""),
-    name("")
-{
-
-}
-
-MetPara::~MetPara()
-{
-
-}
-
-void MetPara::Reset()
-{
-    is_editable = false;
-    num = 0;
-    str = "";
-    name = "";
-}
-
-MetParaList::MetParaList() : 
-    size(0),
-    list(nullptr)
-{
-
-}
-
-MetParaList::MetParaList(const MetParaList& source)
-{
-    this->size = source.size;
-    if (this->size >= 0) {
-        this->list = new MetPara[this->size];
-    } else {
-        return;
-    }
-
-    for (int id = 0; id < this->size; id++) {
-        this->list[id] = source.list[id];
-    }
-}
-
-void MetParaList::operator = (const MetParaList& source)
-{
-    this->size = source.size;
-    if (this->size >= 0) {
-        this->list = new MetPara[this->size];
-    } else {
-        return;
-    }
-
-    for (int id = 0; id < this->size; id++) {
-        this->list[id] = source.list[id];
-    }
-}
-
-MetParaList::~MetParaList()
-{
-    delete[] list;
-}
-
-ExitCode MetParaList::LoadJsonFile()
-{
-    // load data from json configuration file
-    std::ifstream f(GetAbsPath(CONFIG_MET));
-    if (f.fail()) {
-        return PROGRAM_NO_CONFIG;
-    }
-
-    json data = json::parse(f);
-    size = data.size();
-    if (!list) {
-        g_out << "create new list of met para" << '\n';
-        list = new MetPara[size];
-    } else {
-        g_out << "reset the list of met para" << '\n';
-        for (int id = 0; id < size; id++) {
-            list[id].Reset();
-        }
-    }
-
-    // Insert data to MetParaList 
-    int id = 0;
-    for (json::iterator it = data.begin(); it != data.end(); ++it, id++) {
-        g_out << std::left << std::setw(20) << it.key() << " : " << it.value();
-        list[id].name = it.key();
-        if (it.value().is_string()) {
-            list[id].str = it.value();
-            g_out << std::right << std::setw(18) << list[id].str << '\n';
-        } else if (it.value().is_number()) {
-            list[id].num = it.value();
-            g_out << std::right << std::setw(20) << list[id].num << '\n';
-        } else {
-            g_out << '\n';
-        }
-        list[id].is_editable = false;
-    }
-
-    return PROGRAM_OK;
+  return PROGRAM_OK;
 }
