@@ -2,8 +2,8 @@
 
 BottomView::BottomView(QWidget* parent)
     : automation_view(nullptr),
-      g1b_view(nullptr),
-      reglo_icc_view(nullptr),
+      pulse_gen_view(nullptr),
+      pump_view(nullptr),
       monitor_view(nullptr),
       QWidget(parent) {
   SetupUi();

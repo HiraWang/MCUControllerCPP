@@ -1,4 +1,4 @@
-#include "g1b_view.h"
+#include "pulse_generator_view.h"
 
 #include <QTimer>
 
@@ -9,7 +9,8 @@
 
 extern int g_mode;
 
-G1BView::G1BView(int w, int h, MetParaList* para_list, QWidget* parent)
+PulseGenView::PulseGenView(int w, int h, MetParaList* para_list,
+                           QWidget* parent)
     : w(w),
       h(h),
       para_list(para_list),
@@ -25,7 +26,7 @@ G1BView::G1BView(int w, int h, MetParaList* para_list, QWidget* parent)
   std::string str = para_list->list[PULSE_GEN_KEYWORD].str;
   std::wstring wstring = L"\\\\.\\" + std::wstring(str.begin(), str.end());
   LPCWSTR port = wstring.data();
-  std::wcout << "G1BView:" << port << " " << sizeof(port) << '\n';
+  std::wcout << "PulseGenView:" << port << " " << sizeof(port) << '\n';
 
   g1b = new DeviceG1B(port, CBR_1200, 8, ONESTOPBIT, NOPARITY);
   serial_status = g1b->Open();
@@ -43,13 +44,13 @@ G1BView::G1BView(int w, int h, MetParaList* para_list, QWidget* parent)
   }
 }
 
-G1BView::~G1BView() {
+PulseGenView::~PulseGenView() {
   if (g1b && g1b->Close() != SERIAL_OK) {
     MetMsgSubwindow("device G1B close failed");
   }
 }
 
-void G1BView::SetupUi() {
+void PulseGenView::SetupUi() {
   setFixedWidth(w);
   setFixedHeight(h);
 
@@ -95,14 +96,17 @@ void G1BView::SetupUi() {
                              "", "", this);
 
   connect(freq_button, &QPushButton::released, this,
-          &G1BView::ToggleFreqButton);
-  connect(pw_button, &QPushButton::released, this, &G1BView::TogglePwButton);
+          &PulseGenView::ToggleFreqButton);
+  connect(pw_button, &QPushButton::released, this,
+          &PulseGenView::TogglePwButton);
   connect(voltage_button, &QPushButton::released, this,
-          &G1BView::ToggleVoltageButton);
+          &PulseGenView::ToggleVoltageButton);
   connect(offset_button, &QPushButton::released, this,
-          &G1BView::ToggleOffsetButton);
-  connect(out_button, &QPushButton::released, this, &G1BView::ToggleOutButton);
-  connect(img_button, &QPushButton::released, this, &G1BView::ToggleImgButton);
+          &PulseGenView::ToggleOffsetButton);
+  connect(out_button, &QPushButton::released, this,
+          &PulseGenView::ToggleOutButton);
+  connect(img_button, &QPushButton::released, this,
+          &PulseGenView::ToggleImgButton);
 
   helper = new Helper(HelperType::PULSE_CHART);
   helper->SetPulseChartInfo(0, 0, 0, 0);
@@ -178,35 +182,35 @@ void G1BView::SetupUi() {
   setLayout(layout);
 }
 
-void G1BView::SetSerialStatusOk() { serial_status = SERIAL_OK; }
+void PulseGenView::SetSerialStatusOk() { serial_status = SERIAL_OK; }
 
-void G1BView::SetSerialStatusFail() { serial_status = SERIAL_FAIL; }
+void PulseGenView::SetSerialStatusFail() { serial_status = SERIAL_FAIL; }
 
-void G1BView::ToggleFreqButton() {
+void PulseGenView::ToggleFreqButton() {
   freq_button->SetButtonDefault();
   int freq = freq_edit->text().toInt();
   g1b->SetFreq(freq);
 }
 
-void G1BView::TogglePwButton() {
+void PulseGenView::TogglePwButton() {
   pw_button->SetButtonDefault();
   float pw = pw_edit->text().toFloat();
   g1b->SetPulseWidth(pw);
 }
 
-void G1BView::ToggleVoltageButton() {
+void PulseGenView::ToggleVoltageButton() {
   voltage_button->SetButtonDefault();
   int voltage = voltage_edit->text().toInt();
   g1b->SetVoltage(voltage);
 }
 
-void G1BView::ToggleOffsetButton() {
+void PulseGenView::ToggleOffsetButton() {
   offset_button->SetButtonDefault();
   int offset = offset_edit->text().toInt();
   g1b->SetOffset(offset);
 }
 
-void G1BView::ToggleOutButton() {
+void PulseGenView::ToggleOutButton() {
   if (out_button->status) {
     out_button->SetButtonDefault();
     g1b->Off();
@@ -216,7 +220,7 @@ void G1BView::ToggleOutButton() {
   }
 }
 
-void G1BView::ToggleImgButton() {
+void PulseGenView::ToggleImgButton() {
   if (freq_edit->text().isEmpty() || pw_edit->text().isEmpty() ||
       voltage_edit->text().isEmpty() || offset_edit->text().isEmpty()) {
     return;
@@ -229,13 +233,13 @@ void G1BView::ToggleImgButton() {
   canvas->repaint();
 }
 
-void G1BView::Read() {
+void PulseGenView::Read() {
   if (g1b->Read() != SERIAL_OK) {
     MetMsgSubwindow("device G1B read failed");
   }
 }
 
-void G1BView::Write() {
+void PulseGenView::Write() {
   if (g1b->Write() != SERIAL_OK) {
     MetMsgSubwindow("device G1B write failed");
   }

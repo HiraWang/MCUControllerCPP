@@ -1,12 +1,11 @@
-#include "reglo_icc_view.h"
+#include "pump_view.h"
 
 #include "../widgets/login_subwindow.h"
 #include "../widgets/msg_subwindow.h"
 
 extern int g_mode;
 
-RegloIccView::RegloIccView(int w, int h, MetParaList* para_list,
-                           QWidget* parent)
+PumpView::PumpView(int w, int h, MetParaList* para_list, QWidget* parent)
     : w(w),
       h(h),
       para_list(para_list),
@@ -22,7 +21,7 @@ RegloIccView::RegloIccView(int w, int h, MetParaList* para_list,
   std::string str = para_list->list[PUMP_KEYWORD].str;
   std::wstring wstring = L"\\\\.\\" + std::wstring(str.begin(), str.end());
   LPCWSTR port = wstring.data();
-  std::wcout << "RegloIccView:" << port << " " << sizeof(port) << '\n';
+  std::wcout << "PumpView:" << port << " " << sizeof(port) << '\n';
 
   reglo_icc = new DeviceRegloIcc(port, CBR_9600, 8, ONESTOPBIT, NOPARITY);
   serial_status = reglo_icc->Open();
@@ -37,13 +36,13 @@ RegloIccView::RegloIccView(int w, int h, MetParaList* para_list,
   }
 }
 
-RegloIccView::~RegloIccView() {
+PumpView::~PumpView() {
   if (reglo_icc && reglo_icc->Close() != SERIAL_OK) {
     MetMsgSubwindow("device RegloIcc close failed");
   }
 }
 
-void RegloIccView::SetupUi() {
+void PumpView::SetupUi() {
   setFixedWidth(w);
   setFixedHeight(h);
 
@@ -59,13 +58,13 @@ void RegloIccView::SetupUi() {
   setLayout(layout);
 }
 
-void RegloIccView::Read() {
+void PumpView::Read() {
   if (reglo_icc->Read() != SERIAL_OK) {
     MetMsgSubwindow("device RegloIcc read failed");
   }
 }
 
-void RegloIccView::Write() {
+void PumpView::Write() {
   if (reglo_icc->Write() != SERIAL_OK) {
     MetMsgSubwindow("device RegloIcc write failed");
   }

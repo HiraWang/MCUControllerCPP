@@ -9,9 +9,9 @@
 #include <QWidget>
 
 #include "../utility.h"
-#include "../views/g1b_view.h"
 #include "../views/monitor_view.h"
-#include "../views/reglo_icc_view.h"
+#include "../views/pulse_generator_view.h"
+#include "../views/pump_view.h"
 #include "../widgets/button.h"
 #include "../widgets/canvas.h"
 #include "../widgets/label.h"

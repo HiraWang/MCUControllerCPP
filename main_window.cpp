@@ -7,9 +7,9 @@
 
 #include "devices/device.h"
 #include "views/automation_view.h"
-#include "views/g1b_view.h"
 #include "views/monitor_view.h"
-#include "views/reglo_icc_view.h"
+#include "views/pulse_generator_view.h"
+#include "views/pump_view.h"
 #include "widgets/msg_subwindow.h"
 
 extern MetMenu* g_menu;
@@ -217,23 +217,23 @@ void MainWindow::TogglePowerButton() {
     if (current_device == Device::AUTOMATION) {
       ui->bottom_view->automation_view->~AutomationView();
       ui->bottom_view->monitor_view->~MonitorView();
-      ui->bottom_view->g1b_view->~G1BView();
-      ui->bottom_view->reglo_icc_view->~RegloIccView();
+      ui->bottom_view->pulse_gen_view->~PulseGenView();
+      ui->bottom_view->pump_view->~PumpView();
       for (int i = 0; i < ui->bottom_view->tab->count(); i++) {
         ui->bottom_view->tab->removeTab(i);
       }
       ui->bottom_view->automation_view = nullptr;
       ui->bottom_view->monitor_view = nullptr;
-      ui->bottom_view->g1b_view = nullptr;
-      ui->bottom_view->reglo_icc_view = nullptr;
+      ui->bottom_view->pulse_gen_view = nullptr;
+      ui->bottom_view->pump_view = nullptr;
     } else if (current_device == Device::G1B) {
-      ui->bottom_view->g1b_view->~G1BView();
+      ui->bottom_view->pulse_gen_view->~PulseGenView();
       ui->bottom_view->tab->removeTab(0);
-      ui->bottom_view->g1b_view = nullptr;
+      ui->bottom_view->pulse_gen_view = nullptr;
     } else if ((current_device == Device::REGLO_ICC)) {
-      ui->bottom_view->reglo_icc_view->~RegloIccView();
+      ui->bottom_view->pump_view->~PumpView();
       ui->bottom_view->tab->removeTab(0);
-      ui->bottom_view->reglo_icc_view = nullptr;
+      ui->bottom_view->pump_view = nullptr;
     } else if ((current_device == Device::MONITOR)) {
       ui->bottom_view->monitor_view->~MonitorView();
       ui->bottom_view->tab->removeTab(0);
@@ -245,43 +245,45 @@ void MainWindow::TogglePowerButton() {
     int w = width() - 25;
     int h = height() - 170;
     if (current_device == Device::AUTOMATION) {
-      ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
-      ui->bottom_view->reglo_icc_view =
-          new RegloIccView(w, h, para_list, ui->bottom_view);
+      ui->bottom_view->pulse_gen_view =
+          new PulseGenView(w, h, para_list, ui->bottom_view);
+      ui->bottom_view->pump_view =
+          new PumpView(w, h, para_list, ui->bottom_view);
       ui->bottom_view->monitor_view =
           new MonitorView(w, h, para_list, ui->bottom_view);
       ui->bottom_view->automation_view =
-          new AutomationView(w, h, ui->bottom_view->g1b_view->g1b,
-                             ui->bottom_view->reglo_icc_view->reglo_icc,
+          new AutomationView(w, h, ui->bottom_view->pulse_gen_view->g1b,
+                             ui->bottom_view->pump_view->reglo_icc,
                              ui->bottom_view->monitor_view, ui->bottom_view);
 
       ui->bottom_view->tab->addTab(ui->bottom_view->automation_view,
                                    device_list[Device::AUTOMATION]);
       ui->bottom_view->tab->addTab(ui->bottom_view->monitor_view,
                                    device_list[Device::MONITOR]);
-      ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
+      ui->bottom_view->tab->addTab(ui->bottom_view->pulse_gen_view,
                                    device_list[Device::G1B]);
-      ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
+      ui->bottom_view->tab->addTab(ui->bottom_view->pump_view,
                                    device_list[Device::REGLO_ICC]);
 
-      if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK &&
-          ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK &&
+      if (ui->bottom_view->pulse_gen_view->serial_status == SERIAL_OK &&
+          ui->bottom_view->pump_view->serial_status == SERIAL_OK &&
           ui->bottom_view->monitor_view->serial_status == SERIAL_OK &&
           ui->bottom_view->automation_view->serial_status == SERIAL_OK) {
         ui->bottom_view->tab->show();
       }
     } else if (current_device == Device::G1B) {
-      ui->bottom_view->g1b_view = new G1BView(w, h, para_list, ui->bottom_view);
-      ui->bottom_view->tab->addTab(ui->bottom_view->g1b_view,
+      ui->bottom_view->pulse_gen_view =
+          new PulseGenView(w, h, para_list, ui->bottom_view);
+      ui->bottom_view->tab->addTab(ui->bottom_view->pulse_gen_view,
                                    device_list[current_device]);
-      if (ui->bottom_view->g1b_view->serial_status == SERIAL_OK)
+      if (ui->bottom_view->pulse_gen_view->serial_status == SERIAL_OK)
         ui->bottom_view->tab->show();
     } else if (current_device == Device::REGLO_ICC) {
-      ui->bottom_view->reglo_icc_view =
-          new RegloIccView(w, h, para_list, ui->bottom_view);
-      ui->bottom_view->tab->addTab(ui->bottom_view->reglo_icc_view,
+      ui->bottom_view->pump_view =
+          new PumpView(w, h, para_list, ui->bottom_view);
+      ui->bottom_view->tab->addTab(ui->bottom_view->pump_view,
                                    device_list[current_device]);
-      if (ui->bottom_view->reglo_icc_view->serial_status == SERIAL_OK)
+      if (ui->bottom_view->pump_view->serial_status == SERIAL_OK)
         ui->bottom_view->tab->show();
     } else if (current_device == Device::MONITOR) {
       ui->bottom_view->monitor_view =

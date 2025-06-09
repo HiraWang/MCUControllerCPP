@@ -9,13 +9,13 @@
 #include "../widgets/button.h"
 #include "pump_channel_view.h"
 
-class RegloIccView : public QWidget {
+class PumpView : public QWidget {
   Q_OBJECT
   // enable meta object abilities
 
  public:
-  RegloIccView(int w, int h, MetParaList* para_list, QWidget* parent = nullptr);
-  virtual ~RegloIccView();
+  PumpView(int w, int h, MetParaList* para_list, QWidget* parent = nullptr);
+  virtual ~PumpView();
   SerialCode serial_status;
   DeviceRegloIcc* reglo_icc;
 

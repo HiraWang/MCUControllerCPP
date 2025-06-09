@@ -10,13 +10,13 @@
 #include "../widgets/canvas.h"
 #include "../widgets/line_edit.h"
 
-class G1BView : public QWidget {
+class PulseGenView : public QWidget {
   Q_OBJECT
   // enable meta object abilities
 
  public:
-  G1BView(int w, int h, MetParaList* para_list, QWidget* parent = nullptr);
-  virtual ~G1BView();
+  PulseGenView(int w, int h, MetParaList* para_list, QWidget* parent = nullptr);
+  virtual ~PulseGenView();
   SerialCode serial_status;
   DeviceG1B* g1b;
 
