@@ -10,6 +10,7 @@
     "chunk size": 4096,
     "pump keyword": "COM3",
     "pulse gen keyword": "COM4",
+    "pulse gen device": "G1B",
     "pulse gen id": "admin",
     "pulse gen password": "default",
     "monitor keyword": "COM3"

@@ -33,15 +33,17 @@ typedef enum {
   SERIAL_FAIL_TO_WRITE = 7
 } SerialCode;
 
+// sorting with alphabet order
 typedef enum {
   BAUDRATE = 0,
-  BUFFER_SIZE,
   BYTESIZE,
+  CHUNK_SIZE,
   CHUNKS_PER_SCENE,
   MONITOR_KEYWORD,
   OFFSET,
   PARITY,
   PERIOD_MAX,
+  PULSE_GEN_DEVICE,
   PULSE_GEN_ID,
   PULSE_GEN_KEYWORD,
   PULSE_GEN_PASSWORD,

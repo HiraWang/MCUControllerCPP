@@ -33,13 +33,13 @@ MonitorView::MonitorView(int w, int h, MetParaList* para_list, QWidget* parent)
       call_analyze(false),
       scale_x_interval(0.5f),
       scale_y_interval(0.2f),
+      due(nullptr),
       para_list(para_list),
       serial_status(SERIAL_OK),
       menu(nullptr),
       QWidget(parent) {
   if (g_mode == Mode::NORMAL || g_mode == Mode::UI_TEST) {
     serial_status = SERIAL_OK;
-    due = nullptr;
     SetupUi();
     return;
   }

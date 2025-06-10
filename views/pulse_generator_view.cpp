@@ -13,12 +13,13 @@ PulseGenView::PulseGenView(int w, int h, MetParaList* para_list,
                            QWidget* parent)
     : w(w),
       h(h),
+      g1b(nullptr),
+      due(nullptr),
       para_list(para_list),
       serial_status(SERIAL_OK),
       QWidget(parent) {
   if (g_mode == Mode::UI_TEST || g_mode == Mode::MONITOR_TEST) {
     serial_status = SERIAL_OK;
-    g1b = nullptr;
     SetupUi();
     return;
   }
@@ -28,19 +29,38 @@ PulseGenView::PulseGenView(int w, int h, MetParaList* para_list,
   LPCWSTR port = wstring.data();
   std::wcout << "PulseGenView:" << port << " " << sizeof(port) << '\n';
 
-  g1b = new DeviceG1B(port, CBR_1200, 8, ONESTOPBIT, NOPARITY);
-  serial_status = g1b->Open();
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    g1b = new DeviceG1B(port, CBR_1200, 8, ONESTOPBIT, NOPARITY);
+    serial_status = g1b->Open();
 
-  if (serial_status != SERIAL_OK) {
-    MetMsgSubwindow("device G1B open failed");
-    g1b = nullptr;
-    return;
+    if (serial_status != SERIAL_OK) {
+      MetMsgSubwindow("device G1B open failed");
+      g1b = nullptr;
+      return;
+    } else {
+      g_out << "device G1B opened" << '\n';
+      QString account =
+          QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
+      QString password =
+          QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str);
+      MetLoginSubwindow(g1b, account, password, this);
+    }
+  } else if (para_list->list[PULSE_GEN_DEVICE].str == "DUE") {
+    due = new DeviceArduinoDue(port, CBR_1200, 8, ONESTOPBIT, NOPARITY);
+    serial_status = due->Open();
+
+    if (serial_status != SERIAL_OK) {
+      MetMsgSubwindow("device DUE open failed");
+      due = nullptr;
+      return;
+    } else {
+      g_out << "device DUE opened" << '\n';
+      SetupUi();
+    }
   } else {
-    g_out << "device G1B opened" << '\n';
-    QString account = QString::fromStdString(para_list->list[PULSE_GEN_ID].str);
-    QString password =
-        QString::fromStdString(para_list->list[PULSE_GEN_PASSWORD].str);
-    MetLoginSubwindow(g1b, account, password, this);
+    MetMsgSubwindow("invalid device");
+    serial_status = SERIAL_FAIL;
+    return;
   }
 }
 

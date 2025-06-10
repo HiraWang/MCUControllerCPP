@@ -250,7 +250,7 @@ ExitCode MetParaList::LoadJsonFile() {
     }
   }
 
-  // Insert data to MetParaList
+  // Insert data to MetParaList with the order of alphabet
   int id = 0;
   for (json::iterator it = data.begin(); it != data.end(); ++it, id++) {
     g_out << std::left << std::setw(20) << it.key() << " : " << it.value();

@@ -7,13 +7,13 @@ extern int g_mode;
 
 PumpView::PumpView(int w, int h, MetParaList* para_list, QWidget* parent)
     : w(w),
-      h(h),
+      h(h), 
+      reglo_icc(nullptr),
       para_list(para_list),
       serial_status(SERIAL_OK),
       QWidget(parent) {
   if (g_mode == Mode::UI_TEST || g_mode == Mode::MONITOR_TEST) {
     serial_status = SERIAL_OK;
-    reglo_icc = nullptr;
     SetupUi();
     return;
   }

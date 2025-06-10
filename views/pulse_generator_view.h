@@ -19,6 +19,7 @@ class PulseGenView : public QWidget {
   virtual ~PulseGenView();
   SerialCode serial_status;
   DeviceG1B* g1b;
+  DeviceArduinoDue* due;
 
  private slots:
   void SetupUi();
