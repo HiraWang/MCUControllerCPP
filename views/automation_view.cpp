@@ -31,9 +31,13 @@ AutomationView::AutomationView(int w, int h, DeviceG1B* g1b,
     return;
   }
 
-  if (!g1b || !reglo_icc) {
+  if (!g1b) {
     serial_status = SERIAL_FAIL;
-    MetMsgSubwindow("device G1B and RegloIcc not found");
+    MetMsgSubwindow("device G1B not found");
+    return;
+  } else if (!reglo_icc) {
+    serial_status = SERIAL_FAIL;
+    MetMsgSubwindow("device RegloIcc not found");
     return;
   } else {
     serial_status = SERIAL_OK;

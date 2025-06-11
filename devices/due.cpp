@@ -130,3 +130,95 @@ SerialCode DeviceArduinoDue::ReadBufferAndSave() {
 
   return SERIAL_OK;
 }
+
+SerialCode DeviceArduinoDue::SetFreq(int freq) {
+  this->frequency = freq;
+  int period = (int)(1.0f / (float)freq * 1000000.0f);
+  // g_out << period << '\n';
+  std::string period_cmd = std::to_string(period);
+  std::string buf = period_cmd + "p";
+  buf += std::string("\n");
+  g_out << buf << '\n';
+
+  char* cmd = CopyStringToNewedCharArray(buf);
+  DWORD size = (DWORD)strlen(cmd);
+  DWORD dw_bytes_read = 0;
+
+  if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+    delete[] cmd;
+    return SERIAL_FAIL_TO_WRITE;
+  } else {
+    delete[] cmd;
+    return SERIAL_OK;
+  }
+}
+
+SerialCode DeviceArduinoDue::GetFreq(int* freq) {
+  *freq = this->frequency;
+  return SERIAL_OK;
+}
+
+SerialCode DeviceArduinoDue::SetPulseWidth(float pw) {
+  this->pulse_width = pw;
+  float pw_ns = (float)pw * 1000.0f;
+  float period_ns = 1.0f / (float)this->frequency * 1000000000.0f;
+  int duty_cycle = (int)(pw_ns / period_ns * 255.0f);
+  // g_out << pw_ns << '\n';
+  std::string pw_cmd = std::to_string(duty_cycle);
+  std::string buf = pw_cmd + "d";
+  buf += std::string("\n");
+  g_out << buf << '\n';
+
+  char* cmd = CopyStringToNewedCharArray(buf);
+  DWORD size = (DWORD)strlen(cmd);
+  DWORD dw_bytes_read = 0;
+
+  if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+    delete[] cmd;
+    return SERIAL_FAIL_TO_WRITE;
+  } else {
+    delete[] cmd;
+    return SERIAL_OK;
+  }
+}
+
+SerialCode DeviceArduinoDue::GetPulseWidth(float* pw) {
+  *pw = this->pulse_width;
+  return SERIAL_OK;
+}
+
+SerialCode DeviceArduinoDue::On() {
+  std::string buf = "output on";
+  buf += std::string("\r\n");
+  g_out << buf << '\n';
+
+  char* cmd = CopyStringToNewedCharArray(buf);
+  DWORD size = (DWORD)strlen(cmd);
+  DWORD dw_bytes_read = 0;
+
+  if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+    delete[] cmd;
+    return SERIAL_FAIL_TO_WRITE;
+  } else {
+    delete[] cmd;
+    return SERIAL_OK;
+  }
+}
+
+SerialCode DeviceArduinoDue::Off() {
+  std::string buf = "output off";
+  buf += std::string("\r\n");
+  g_out << buf << '\n';
+
+  char* cmd = CopyStringToNewedCharArray(buf);
+  DWORD size = (DWORD)strlen(cmd);
+  DWORD dw_bytes_read = 0;
+
+  if (!WriteFile(serial_handle, cmd, size, &dw_bytes_read, NULL)) {
+    delete[] cmd;
+    return SERIAL_FAIL_TO_WRITE;
+  } else {
+    delete[] cmd;
+    return SERIAL_OK;
+  }
+}

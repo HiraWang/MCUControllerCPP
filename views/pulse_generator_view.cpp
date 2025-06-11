@@ -209,34 +209,70 @@ void PulseGenView::SetSerialStatusFail() { serial_status = SERIAL_FAIL; }
 void PulseGenView::ToggleFreqButton() {
   freq_button->SetButtonDefault();
   int freq = freq_edit->text().toInt();
-  g1b->SetFreq(freq);
+
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    g1b->SetFreq(freq);
+  } else if (para_list->list[PULSE_GEN_DEVICE].str == "DUE") {
+    due->SetFreq(freq);
+  } else {
+    return;
+  }
 }
 
 void PulseGenView::TogglePwButton() {
   pw_button->SetButtonDefault();
   float pw = pw_edit->text().toFloat();
-  g1b->SetPulseWidth(pw);
+
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    g1b->SetPulseWidth(pw);
+  } else if (para_list->list[PULSE_GEN_DEVICE].str == "DUE") {
+    due->SetPulseWidth(pw);
+  } else {
+    return;
+  }
 }
 
 void PulseGenView::ToggleVoltageButton() {
   voltage_button->SetButtonDefault();
   int voltage = voltage_edit->text().toInt();
-  g1b->SetVoltage(voltage);
+
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    g1b->SetVoltage(voltage);
+  } else {
+    return;
+  }
 }
 
 void PulseGenView::ToggleOffsetButton() {
   offset_button->SetButtonDefault();
   int offset = offset_edit->text().toInt();
-  g1b->SetOffset(offset);
+
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    g1b->SetOffset(offset);
+  } else {
+    return;
+  }
 }
 
 void PulseGenView::ToggleOutButton() {
-  if (out_button->status) {
-    out_button->SetButtonDefault();
-    g1b->Off();
+  if (para_list->list[PULSE_GEN_DEVICE].str == "G1B") {
+    if (out_button->status) {
+      out_button->SetButtonDefault();
+      g1b->Off();
+    } else {
+      out_button->SetButtonPressed();
+      g1b->On();
+    }
+  } else if (para_list->list[PULSE_GEN_DEVICE].str == "DUE") {
+    if (out_button->status) {
+      out_button->SetButtonDefault();
+      due->Off();
+    } else {
+      out_button->SetButtonPressed();
+      due->On();
+    }
   } else {
-    out_button->SetButtonPressed();
-    g1b->On();
+    return;
   }
 }
 
