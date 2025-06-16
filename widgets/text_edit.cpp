@@ -1,5 +1,7 @@
 #include "text_edit.h"
 
+#include <QScrollBar>
+
 extern MetMenu* g_menu;
 extern std::string IMAGE_MET_COPY;
 
@@ -9,6 +11,7 @@ MetTextEdit::MetTextEdit(MetTextEditStyle style, int w, int h, QWidget* parent)
   setFixedHeight(h);
   setReadOnly(true);
   setContextMenuPolicy(Qt::CustomContextMenu);
+  verticalScrollBar()->setContextMenuPolicy(Qt::NoContextMenu);
   LoadStyleSheet();
   setStyleSheet(style_sheet);
 }
