@@ -105,8 +105,18 @@ class DeviceArduinoDue : public SerialPort {
   virtual SerialCode Write() override;  // override
   virtual SerialCode Login() override;  // override
   SerialCode ReadBufferAndSave();
+  SerialCode SetFreq(int freq);
+  SerialCode GetFreq(int* freq);
+  SerialCode SetPulseWidth(float pw);
+  SerialCode GetPulseWidth(float* pw);
+  SerialCode On();
+  SerialCode Off();
   size_t count;
   bool activate;
+
+ private:
+  int frequency;
+  float pulse_width;
 };
 
 #endif
