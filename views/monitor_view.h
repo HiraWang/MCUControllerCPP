@@ -6,6 +6,7 @@
 #include <QLCDNumber>
 #include <QTimer>
 #include <QWidget>
+#include <thread>
 
 #include "../devices/device.h"
 #include "../utility.h"
