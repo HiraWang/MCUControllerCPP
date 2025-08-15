@@ -72,6 +72,8 @@ MonitorView::~MonitorView() {
 void MonitorView::SetupUi() {
   setFixedWidth(w);
   setFixedHeight(h);
+  RemoveAllFilesFromDir(MONITOR_BUFFER_DIR.c_str());
+  RemoveAllFilesFromDir(MONITOR_RESULT_DIR.c_str());
 
   helper = new Helper(HelperType::OSCILLOSCOPE);
   helper->InitOscilloscopeInfo(para_list->list[OFFSET].num, 1000.0f, 0.0f);
