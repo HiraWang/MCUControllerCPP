@@ -35,14 +35,14 @@ qt_add_executable(MCUControllerCPP
 	views/automation_view.cpp
 	views/bottom_view.h
 	views/bottom_view.cpp
-	views/g1b_view.h
-	views/g1b_view.cpp
+	views/pulse_generator_view.h
+	views/pulse_generator_view.cpp
 	views/monitor_view.h
 	views/monitor_view.cpp
 	views/pump_channel_view.h
 	views/pump_channel_view.cpp
-	views/reglo_icc_view.h
-	views/reglo_icc_view.cpp
+	views/pump_view.h
+	views/pump_view.cpp
 	views/upper_view.h
 	views/upper_view.cpp
 	widgets/button.h

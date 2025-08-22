@@ -2,133 +2,121 @@
 #define DEVICE_H
 
 #include <windows.h>
-#include <iostream>
+
 #include <QObject>
+#include <iostream>
 
 #include "utility.h"
 
-typedef enum {
-    AUTOMATION,
-    G1B,
-    REGLO_ICC,
-    MONITOR
-} Device;
+typedef enum { AUTOMATION, G1B, REGLO_ICC, MONITOR } Device;
 
-class SerialPort : public QObject
-{
-    Q_OBJECT
+class SerialPort : public QObject {
+  Q_OBJECT
 
-public:
-    SerialPort(const wchar_t* port_name,
-               DWORD baud_rate,
-               BYTE byte_size,
-               BYTE stop_bits,
-               BYTE parity);
-    virtual ~SerialPort();
-    virtual SerialCode Open() = 0;
-    virtual SerialCode Close() = 0;
-    virtual SerialCode Read() = 0;
-    virtual SerialCode Write() = 0;
-    virtual SerialCode Login() = 0;
-    BYTE byte_size;
-    BYTE stop_bits;
-    BYTE parity;
-    DWORD baud_rate;
-    HANDLE serial_handle;
-    const wchar_t* port_name;
+ public:
+  SerialPort(const wchar_t* port_name, DWORD baud_rate, BYTE byte_size,
+             BYTE stop_bits, BYTE parity);
+  virtual ~SerialPort();
+  virtual SerialCode Open() = 0;
+  virtual SerialCode Close() = 0;
+  virtual SerialCode Read() = 0;
+  virtual SerialCode Write() = 0;
+  virtual SerialCode Login() = 0;
+  BYTE byte_size;
+  BYTE stop_bits;
+  BYTE parity;
+  DWORD baud_rate;
+  HANDLE serial_handle;
+  const wchar_t* port_name;
 };
 
-class DeviceG1B : public SerialPort
-{
-    Q_OBJECT
+class DeviceG1B : public SerialPort {
+  Q_OBJECT
 
-public:
-    DeviceG1B(const wchar_t* port_name,
-              DWORD baud_rate,
-              BYTE byte_size,
-              BYTE stop_bits,
-              BYTE parity);
-    virtual ~DeviceG1B();
-    virtual SerialCode Open() override;  // override
-    virtual SerialCode Close() override; // override
-    virtual SerialCode Read() override;  // override
-    virtual SerialCode Write() override; // override
-    virtual SerialCode Login() override; // override
-    SerialCode Read(char* buf, const int size); // overload
-    SerialCode Write(const char* buf);          // overload
-    SerialCode SetFreq(int freq);
-    SerialCode GetFreq(int* freq);
-    SerialCode SetPulseWidth(float pw);
-    SerialCode GetPulseWidth(float* pw);
-    SerialCode SetVoltage(int v);
-    SerialCode GetVoltage(int* v);
-    SerialCode SetOffset(int offset);
-    SerialCode GetOffset(int* offset);
-    SerialCode On();
-    SerialCode Off();
+ public:
+  DeviceG1B(const wchar_t* port_name, DWORD baud_rate, BYTE byte_size,
+            BYTE stop_bits, BYTE parity);
+  virtual ~DeviceG1B();
+  virtual SerialCode Open() override;          // override
+  virtual SerialCode Close() override;         // override
+  virtual SerialCode Read() override;          // override
+  virtual SerialCode Write() override;         // override
+  virtual SerialCode Login() override;         // override
+  SerialCode Read(char* buf, const int size);  // overload
+  SerialCode Write(const char* buf);           // overload
+  SerialCode SetFreq(int freq);
+  SerialCode GetFreq(int* freq);
+  SerialCode SetPulseWidth(float pw);
+  SerialCode GetPulseWidth(float* pw);
+  SerialCode SetVoltage(int v);
+  SerialCode GetVoltage(int* v);
+  SerialCode SetOffset(int offset);
+  SerialCode GetOffset(int* offset);
+  SerialCode On();
+  SerialCode Off();
 
-signals:
-    void SignalLoginFailed(void);
-    void SignalLoginFinished(void);
+ signals:
+  void SignalLoginFailed(void);
+  void SignalLoginFinished(void);
 
-private:
-    SerialCode LoginStepFunction(std::string name,
-                                 std::string input,
-                                 const char* keyword,
-                                 int max_cnt,
-                                 DWORD time_delay);
-    int offset;
-    int voltage;
-    int frequency;
-    float pulse_width;
+ private:
+  SerialCode LoginStepFunction(std::string name, std::string input,
+                               const char* keyword, int max_cnt,
+                               DWORD time_delay);
+  int offset;
+  int voltage;
+  int frequency;
+  float pulse_width;
 };
 
-class DeviceRegloIcc : public SerialPort
-{
-public:
-    DeviceRegloIcc(const wchar_t* port_name,
-                   DWORD baud_rate,
-                   BYTE byte_size,
-                   BYTE stop_bits,
-                   BYTE parity);
-    virtual ~DeviceRegloIcc();
-    virtual SerialCode Open() override;  // override
-    virtual SerialCode Close() override; // override
-    virtual SerialCode Read() override;  // override
-    virtual SerialCode Write() override; // override
-    virtual SerialCode Login() override; // override
-    SerialCode SetRpm(BYTE channel, float rpm);
-    SerialCode GetRpm(float* rpm, BYTE channel);
-    SerialCode SetCw(BYTE channel);
-    SerialCode SetCcw(BYTE channel);
-    SerialCode GetDir(bool* dir, BYTE channel);
-    SerialCode On(BYTE channel);
-    SerialCode Off(BYTE channel);
+class DeviceRegloIcc : public SerialPort {
+ public:
+  DeviceRegloIcc(const wchar_t* port_name, DWORD baud_rate, BYTE byte_size,
+                 BYTE stop_bits, BYTE parity);
+  virtual ~DeviceRegloIcc();
+  virtual SerialCode Open() override;   // override
+  virtual SerialCode Close() override;  // override
+  virtual SerialCode Read() override;   // override
+  virtual SerialCode Write() override;  // override
+  virtual SerialCode Login() override;  // override
+  SerialCode SetRpm(BYTE channel, float rpm);
+  SerialCode GetRpm(float* rpm, BYTE channel);
+  SerialCode SetCw(BYTE channel);
+  SerialCode SetCcw(BYTE channel);
+  SerialCode GetDir(bool* dir, BYTE channel);
+  SerialCode On(BYTE channel);
+  SerialCode Off(BYTE channel);
 
-private:
-    SerialCode SetAddress();
-    SerialCode SetRpmMode(BYTE channel);
-    float rpm[2];
-    bool direction[2];
+ private:
+  SerialCode SetAddress();
+  SerialCode SetRpmMode(BYTE channel);
+  float rpm[2];
+  bool direction[2];
 };
 
-class DeviceArduinoDue : public SerialPort
-{
-public:
-    DeviceArduinoDue(const wchar_t* port_name,
-                     DWORD baud_rate,
-                     BYTE byte_size,
-                     BYTE stop_bits,
-                     BYTE parity);
-    virtual ~DeviceArduinoDue();
-    virtual SerialCode Open() override;  // override
-    virtual SerialCode Close() override; // override
-    virtual SerialCode Read() override;  // override
-    virtual SerialCode Write() override; // override
-    virtual SerialCode Login() override; // override
-    SerialCode ReadBufferAndSave();
-    size_t count;
-    bool activate;
+class DeviceArduinoDue : public SerialPort {
+ public:
+  DeviceArduinoDue(const wchar_t* port_name, DWORD baud_rate, BYTE byte_size,
+                   BYTE stop_bits, BYTE parity);
+  virtual ~DeviceArduinoDue();
+  virtual SerialCode Open() override;   // override
+  virtual SerialCode Close() override;  // override
+  virtual SerialCode Read() override;   // override
+  virtual SerialCode Write() override;  // override
+  virtual SerialCode Login() override;  // override
+  SerialCode ReadBufferAndSave();
+  SerialCode SetFreq(int freq);
+  SerialCode GetFreq(int* freq);
+  SerialCode SetPulseWidth(float pw);
+  SerialCode GetPulseWidth(float* pw);
+  SerialCode On();
+  SerialCode Off();
+  size_t count;
+  bool activate;
+
+ private:
+  int frequency;
+  float pulse_width;
 };
 
 #endif
